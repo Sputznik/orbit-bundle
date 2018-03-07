@@ -1,0 +1,56 @@
+#orbit_filter_view{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10000;
+}
+
+#orbit_backdrop{
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	position: absolute;
+}
+
+#orbit_content{
+	top: 10%;
+	margin: 0 auto;
+	position: relative;
+	width: 70%;
+	min-width: 300px;
+	height: 60%;
+	background: #fff;
+	padding: 30px;
+	overflow-y: scroll;
+}
+
+i.mce-i-icon {
+    font: 400 20px/1 dashicons;
+    padding: 0;
+    vertical-align: top;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-left: -2px;
+    padding-right: 2px
+}
+
+.orbit_parent{
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+}
+
+.orbit_display .orbit-form-group{
+	background: #eee;
+	border-radius: 5px;
+	padding: 15px;
+}
+
+@media(max-width: 768px){
+	.orbit_parent{
+		display: grid;
+		grid-template-columns: 1fr;
+	}	
+}
