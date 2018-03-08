@@ -9,7 +9,7 @@ class ORBIT_QUERY_BASE{
 	function __construct(){
 		
 		$this->shortcode = '';
-		$this->shortcode_slug = '';
+		
 		
 		$this->init();
 		
@@ -21,8 +21,8 @@ class ORBIT_QUERY_BASE{
 		add_shortcode( $this->shortcode, array( $this, 'plain_shortcode' ), 100 );
 		add_shortcode( $this->shortcode."_ajax", array( $this, 'ajax_shortcode' ), 100 );
 		
-		add_action( 'wp_ajax_'.$this->shortcode_slug, array( $this, 'ajax_callback' ) );
-		add_action( 'wp_ajax_nopriv_'.$this->shortcode_slug, array( $this, 'ajax_callback' ) );
+		add_action( 'wp_ajax_'.$this->shortcode, array( $this, 'ajax_callback' ) );
+		add_action( 'wp_ajax_nopriv_'.$this->shortcode, array( $this, 'ajax_callback' ) );
 		
 	}
 	
@@ -35,7 +35,7 @@ class ORBIT_QUERY_BASE{
 	}
 	
 	function get_atts( $atts ){
-		$defaults_atts = apply_filters( $this->shortcode_slug.'_atts', $this->get_default_atts() );
+		$defaults_atts = apply_filters( $this->shortcode.'_atts', $this->get_default_atts() );
 		$atts = shortcode_atts( $defaults_atts, $atts, $this->shortcode );
 		return $atts;
 	}

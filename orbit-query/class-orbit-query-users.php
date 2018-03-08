@@ -4,8 +4,7 @@ class ORBIT_QUERY_USERS extends ORBIT_QUERY_BASE{
 	
 	function __construct(){
 		
-		$this->shortcode = 'posts-query-users';
-		$this->shortcode_slug = 'posts_query_users';
+		$this->shortcode = 'orbit_query_users';
 		
 		$this->init();
 	}
@@ -18,7 +17,8 @@ class ORBIT_QUERY_USERS extends ORBIT_QUERY_BASE{
 			'exclude' 		=> '',
 			'include' 		=> '',
 			'orderby'		=> 'ID',
-			'number'		=> '0',
+			'order'			=> 'ASC',
+			'number'		=> '10',
 			'paged'			=> '1',
 			'style'			=> '',
 			'id'			=> 'users-'.rand()
@@ -36,6 +36,7 @@ class ORBIT_QUERY_USERS extends ORBIT_QUERY_BASE{
 			'exclude' 		=> ! empty($atts['exclude']) ? explode(',', $atts['exclude']) : '',
 			'include' 		=> ! empty($atts['include']) ? explode(',', $atts['include']) : '',
 			'orderby'		=> $atts['orderby'],
+			'order'			=> $atts['order'],
 			'number'		=> $atts['number'],
 			'paged'			=> $atts['paged'],
 		);
@@ -43,7 +44,7 @@ class ORBIT_QUERY_USERS extends ORBIT_QUERY_BASE{
 		$this->query = new WP_User_Query( $query_atts );
 		
 		if( ! empty( $this->query->results ) ){
-			the_pq_users( $atts );
+			the_oq_users( $atts );
 		}
 			
 		return ob_get_clean();
@@ -51,5 +52,5 @@ class ORBIT_QUERY_USERS extends ORBIT_QUERY_BASE{
 	
 }
 
-global $posts_query_users;	
-$posts_query_users = new ORBIT_QUERY_USERS;
+global $orbit_query_users;	
+$orbit_query_users = new ORBIT_QUERY_USERS;

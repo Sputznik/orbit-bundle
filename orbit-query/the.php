@@ -11,6 +11,6 @@ function the_oq_pagination( $atts ){
 }
 
 function the_oq_users( $atts ){
-	global $posts_query_users;
-	$posts_query_users->include_template_file( 'users', $atts );
+	global $orbit_query_users;
+	$orbit_query_users->include_template_file( 'users', $atts );
 }

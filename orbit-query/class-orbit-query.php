@@ -5,7 +5,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 	function __construct(){
 		
 		$this->shortcode = 'orbit_query';
-		$this->shortcode_slug = 'orbit_query';
+		
 		
 		$this->init();
 	}
@@ -115,7 +115,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 	
 	// CREATE AJAX URL TO REQUEST SUBSEQUENT POSTS LATER
 	function get_ajax_url($args, $dont_include = array()){
-		$url = admin_url( 'admin-ajax.php' )."?action=".$this->shortcode_slug;
+		$url = admin_url( 'admin-ajax.php' )."?action=".$this->shortcode;
 		foreach($args as $key=>$val){
 			if(!in_array($key, $dont_include) && $val){
 				

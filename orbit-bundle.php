@@ -10,7 +10,8 @@
 	
 	$inc_files = array(
 		"orbit-search/orbit-search.php",
-		"orbit-query/orbit-query.php"
+		"orbit-query/orbit-query.php",
+		"orbit-templates/orbit-templates.php",
 	);
 	
 	foreach( $inc_files as $inc_file ){

@@ -10,8 +10,6 @@
 	}
 }
 
-
-
 .orbit-search-results .orbit-articles-db{
 	list-style:none;
 	padding-left:0;
@@ -75,4 +73,80 @@
 
 .orbit-form-group{
 	margin-bottom: 20px;
+}
+
+
+/* ORBIT TEMPLATES */
+.orbit-list-db{
+	list-style: none;	
+	padding: 0;
+}
+.orbit-thumbnail-bg{
+	background-color: #eee;
+	min-height: 200px;
+	background-size: cover;
+	background-position: center;
+}
+.orbit-three-grid, .orbit-jumbo-grid{
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-gap: 20px;
+}
+.orbit-jumbo-grid .orbit-article-db, .orbit-three-grid .orbit-article-db{
+	border: #eee solid 1px;	
+}
+.orbit-jumbo-grid .orbit-article-db{
+	display: grid;
+	grid-template-areas: "image" "content";
+	grid-template-columns: 1fr 1fr;
+}
+
+.orbit-jumbo-grid{
+	grid-template-columns: 1fr;
+}
+
+.orbit-list-scroll{
+	white-space: nowrap;
+	overflow: auto;
+	overflow-y: auto;
+}
+.orbit-list-scroll li.orbit-article-db{
+	width: 230px;
+	display: inline-block;
+	margin: 0 10px;
+	position: relative;
+}
+.orbit-list-scroll li.orbit-article-db:first-child{
+	margin-left: 0;
+}
+
+.orbit-overlay{
+	position: absolute;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	width: 100%;
+	padding: 10px;
+	white-space: normal;
+	color: #fff;
+}
+.orbit-overlay-link{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.orbit-post-content{
+	padding: 20px;
+}
+.orbit-author{
+	display: grid;
+	grid-template-columns: 40px 1fr;
+}
+
+@media( max-width: 768px ){
+	.orbit-three-grid, .orbit-jumbo-grid .orbit-article-db{
+		grid-template-columns: 1fr;	
+	}
 }

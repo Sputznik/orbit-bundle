@@ -98,6 +98,25 @@
 			<?php
 				
 			endif;
+			
+			?>
+			<script>
+				jQuery(document).ready(function($) {
+					
+					var anchors = [
+						['admin.php?page=orbit-types', 'edit.php?post_type=orbit-types'],
+						['admin.php?page=orbit-taxonomies', 'edit-tags.php?taxonomy=orbit_taxonomy&post_type=orbit-types'],
+						['admin.php?page=orbit-templates', 'edit.php?post_type=orbit-tmp'],
+						['admin.php?page=orbit-form', 'edit.php?post_type=orbit-form'],
+					];
+					
+					for( var i=0; i<anchors.length; i++ ){
+						$( "a[href='" + anchors[i][0] + "']" ).attr( 'href', anchors[i][1] );
+					}
+					
+				});
+			</script>
+			<?php
 		}
 		
 		function wp_admin_script( $hook ) {

@@ -3,10 +3,12 @@
 class ORBIT_TEMPLATES{
 	
 	var $templates;
+	var $posts;
 		
 	function __construct(){
 		
 		$this->templates = array();
+		$this->posts = array();
 		
 		/* ADD FORMS THROUGH THE BACKEND */
 		add_filter( 'orbit_post_type_vars', array( $this, 'create_post_type' ) );
@@ -19,14 +21,23 @@ class ORBIT_TEMPLATES{
 			return plugin_dir_path(__FILE__)."templates/articles-db.php";
 		} );
 		
+		/* OVERRIDE THE TEMPLATE FROM ORBIT USERS QUERY */
+		add_filter( 'orbit_query_template_users-db', function( $template_url ){
+			return plugin_dir_path(__FILE__)."templates/users-db.php";
+		} );
+		
 		/* ADD TO THE ORBIT QUERY ATTS */
 		add_filter( 'orbit_query_atts', function( $atts ){
-			
 			$atts['style_id'] = 0;  
-			
 			return $atts;
-			
 		});
+		
+		/* ADD TO THE ORBIT USER QUERY ATTS */
+		add_filter( 'orbit_query_users_atts', function( $atts ){
+			$atts['style_id'] = 0;  
+			return $atts;
+		});
+		
 		
 		/* OVERRIDE SINGLE TEMPLATE FOR ORBIT-TYPES */
 		add_filter( 'single_template', function( $single_template ){
@@ -212,7 +223,7 @@ class ORBIT_TEMPLATES{
 		}
 		
 		/* CHECK IF TEMPLATE IS IN THE DB */
-		$post = get_post( $post_id );
+		$post = $this->get_post( $post_id );
 		if( isset( $post->post_content ) ){
 			/* SET THE TEMPLATE IN CACHE */
 			$this->templates[ $post_id ] = $post->post_content;
@@ -224,12 +235,48 @@ class ORBIT_TEMPLATES{
 		
 	}
 	
+	function get_post( $post_id ){
+		
+		/* CHECK IF THE POST IS IN CACHE */
+		if( isset( $this->posts[ $post_id ] ) ){
+			return $this->posts[ $post_id ];
+		}
+		
+		// SET IN CACHE
+		$this->posts[ $post_id ] = get_post( $post_id );
+		
+		return $this->posts[ $post_id ];
+	}
+	
+	function print_template_class( $post_id ){
+		
+		$class = '';
+		
+		$post = $this->get_post( $post_id );
+		
+		if( isset( $post->post_title ) && $post->post_title ){
+			$class = sanitize_title( $post->post_title );
+		}
+		
+		if( $post_id ){
+			$class .= ' orbit-list-'.$post_id;
+		}
+		
+		$class .= ' orbit-list-db ';
+		
+		echo $class;
+	}
+	
 	function print_template( $post_id ){
 		
 		echo $this->get_template( $post_id );
 		
 	}
 	
+	function set_user( $user ){
+		global $orbit_user;
+		$orbit_user = $user;
+	}
 	
 	
 	function get_templates_list(){

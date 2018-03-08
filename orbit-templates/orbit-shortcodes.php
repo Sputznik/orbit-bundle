@@ -99,3 +99,27 @@
 		
 		return get_avatar( get_the_author_meta( 'ID' ), $atts['size'] );
 	} );
+	
+	
+	add_shortcode( 'orbit_user', function( $atts ){
+		
+		/* CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE */
+		$atts = shortcode_atts( array('field' => 'name', 'avatar_size'	=> 32), $atts, 'orbit_avatar' );
+		
+		global $orbit_user;
+		
+		switch( $atts['field'] ){
+			
+			case 'avatar':
+				return get_avatar( $orbit_user->ID, $atts['avatar_size'] );
+			
+			case 'url':
+				return get_author_posts_url( $orbit_user->ID );
+				
+			case 'description':
+				return get_user_meta( $orbit_user->ID, 'description', true );
+			
+		}
+		
+		return $orbit_user->display_name;
+	} );
