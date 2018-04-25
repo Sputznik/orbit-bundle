@@ -24,7 +24,7 @@ class ORBIT_QUERY_USERS extends ORBIT_QUERY_BASE{
 			'id'			=> 'users-'.rand()
 		);
 	}
-
+	
 	function plain_shortcode($atts){
 		ob_start();
 		$atts = $this->get_atts($atts);

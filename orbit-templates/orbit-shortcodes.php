@@ -69,7 +69,9 @@
 		
 		/* CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE */
 		$atts = shortcode_atts( array(
-			'taxonomy' => 'post_tag'
+			'taxonomy' 	=> 'post_tag',
+			'seperator'	=> ',',
+			'link'		=> '1'
 		), $atts, 'orbit_terms' );
 		
 		global $post;
@@ -80,10 +82,18 @@
 		
 		$i = 1;
 		foreach( $term_list as $term ){
+			if( $atts['link'] == '1' ){
+				$html .= "<a href='".get_term_link( $term )."'>";
+			}
+			
 			$html .= $term->name; 
 			
+			if( $atts['link'] == '1' ){
+				$html .= "</a>";
+			}
+			
 			if( $i < count( $term_list ) ){
-				$html .= ",";
+				$html .= $atts['seperator'];
 			}
 		}
 		

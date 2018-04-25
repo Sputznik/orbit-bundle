@@ -47,6 +47,8 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 	
 	function plain_shortcode($atts){
 		ob_start();
+		
+		/* GET ATTRIBUTES FROM THE SHORTCODE */
 		$atts = $this->get_atts($atts);
 		
 		/* ADD STICKY POSTS */
@@ -60,7 +62,8 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			$atts['post__not_in'] = $this->get_sticky_posts();
 			$atts['post__not_in'] = implode(',', $atts['post__not_in']);
 		}
-			
+		
+		/* CREATE QUERY ATTRIBUTES WITH DEFAULT VALUES FROM THE SHORTCODE ATTRIBUTES */	
 		$query_atts = array(
 			'post_type'				=> $this->explode_to_arr( $atts['post_type'] ), 
 			'post_status'			=> $atts['post_status'],
@@ -72,10 +75,10 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			's' 					=> $atts['s'],
 			'post__not_in' 			=> $this->explode_to_arr( $atts['post__not_in'] ),
 			'post__in'				=> $this->explode_to_arr( $atts['post__in'] ),
-			//'ignore_sticky_posts'	=> 1,
 			'offset'				=> self::get_offset($atts)
 		);
 		
+		/* SET TAXONOMY QUERY IF ANY */
 		if( isset( $atts['tax_query'] ) && !empty( $atts['tax_query'] ) ){
 			$tax_arr = $this->explode_to_arr( $atts['tax_query'], "#" );
 			
@@ -98,13 +101,15 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			
 		}
 		
-		$atts['url'] = $this->get_ajax_url($atts, array('paged'));	
+		
 			
 		$this->query = new WP_Query( $query_atts );
 		
 		if( $this->query->have_posts() ){
 			the_oq_articles( $atts );
-			the_oq_pagination( $atts );
+			if( $this->query->max_num_pages > 1 ){
+				the_oq_pagination( $atts );
+			}
 			wp_reset_postdata();
 		}
 			
@@ -112,52 +117,8 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 	}
 	
 	
-	
-	// CREATE AJAX URL TO REQUEST SUBSEQUENT POSTS LATER
-	function get_ajax_url($args, $dont_include = array()){
-		$url = admin_url( 'admin-ajax.php' )."?action=".$this->shortcode;
-		foreach($args as $key=>$val){
-			if(!in_array($key, $dont_include) && $val){
-				
-				$url .= "&".$key."=".$val;
-			}
-				
-		}
-		return $url;
-	}
-		
-	function ajax_shortcode( $atts ){
-		ob_start();
-		
-		$atts = $this->get_atts($atts);
-		
-		$atts['url'] = $this->get_ajax_url($atts, array('paged'));	
-		
-		echo "<div data-behaviour='oq-reload-html' data-url='".$atts['url']."'></div>";
-		
-		return ob_get_clean();
-	}
-	
-	function ajax_callback(){
-		
-		$shortcode_str = '['.$this->shortcode;
-			
-		$default_atts = self::get_default_atts();
-		
-		/* init all attributes for the shortcodes */
-		foreach($_GET as $key=>$val){
-			if(isset($_GET[$key])){
-				$val = $_GET[$key];
-			}
-			$shortcode_str .= ' '.$key.'="'.$val.'"';
-		}
-			
-		$shortcode_str .= ']';
-			
-		//echo $shortcode_str;
-		echo do_shortcode($shortcode_str);
-		
-		wp_die();
+	function get_ajax_url( $atts ){
+		return $this->get_ajax_url_from_args( $atts, array('paged') );
 	}
 	
 }
