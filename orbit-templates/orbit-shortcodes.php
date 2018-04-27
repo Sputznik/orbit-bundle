@@ -70,7 +70,7 @@
 		/* CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE */
 		$atts = shortcode_atts( array(
 			'taxonomy' 	=> 'post_tag',
-			'seperator'	=> ',',
+			'seperator'	=> ', ',
 			'link'		=> '1'
 		), $atts, 'orbit_terms' );
 		
@@ -95,10 +95,45 @@
 			if( $i < count( $term_list ) ){
 				$html .= $atts['seperator'];
 			}
+			$i++;
 		}
 		
 		return $html;
 		
+	} );
+	
+	/* SHORTCODE TO RETURN CUSTOM FIELD */
+	add_shortcode( 'orbit_cf', function( $atts ){
+			
+		/* CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE */
+		$atts = shortcode_atts( array(
+			'id' 			=> 'name',
+			'label'			=> '',
+			'hide_if_empty'	=> true,
+			'is_link'		=> false
+		), $atts, 'orbit_cf' );
+		
+		global $post;
+		
+		$meta_value = get_post_meta( $post->ID, $atts['id'], true );
+		
+		$text = '';
+		
+		if( !$atts['hide_if_empty'] || ( $atts['hide_if_empty'] && $meta_value ) ){
+			
+			if( $atts['is_link'] && $atts['label'] ){
+				$text = "<a href='".$meta_value."' target='_blank'>".$atts['label']."</a>";
+			}
+			else{
+				if( $atts['label'] ){
+					$text = $atts['label'];
+				}
+				$text .= $meta_value;	
+			}
+			
+		}
+		
+		return $text;
 	} );
 	
 	/* SHORTCODE TO RETURN THE AUTHOR LINK */

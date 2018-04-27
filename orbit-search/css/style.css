@@ -116,6 +116,12 @@
 	margin: 0 10px;
 	position: relative;
 }
+
+li.orbit-article-db img{
+	max-width: 100%;
+	height: auto;
+}
+
 .orbit-list-scroll li.orbit-article-db:first-child{
 	margin-left: 0;
 }

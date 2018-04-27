@@ -31,7 +31,7 @@
 		/* ENQUEUE STYLESHEETS AND SCRIPTS */
 		function assets() {
 			
-			wp_enqueue_style( 'orbit-search', plugin_dir_url( __FILE__ ).'css/style.css', array(), "1.0.7" );
+			wp_enqueue_style( 'orbit-search', plugin_dir_url( __FILE__ ).'css/style.css', array(), "1.0.9" );
 			
 			wp_enqueue_script('typeahead', plugin_dir_url( __FILE__ ).'js/typeahead.min.js', array('jquery'), '1.0.0', true );
 			wp_enqueue_script('orbit-search-script', plugin_dir_url( __FILE__ ).'js/main.js', array( 'jquery', 'typeahead' ), '1.0.1', true );
