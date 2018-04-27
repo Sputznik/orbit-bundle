@@ -7,6 +7,11 @@
 	<input type="text" name="<?php _e($slug);?>" placeholder="<?php _e($f['text']);?>" style="width:100%;" value="<?php _e( $f['val'] ); ?>" />
 	<!-- TEXTBOX END -->
 	
+	<?php elseif( $f['type'] == 'number' ): $f['default'] = isset( $f['default'] ) ? $f['default'] : 0;?>
+	<!-- TEXTBOX -->
+	<input type="number" name="<?php _e($slug);?>" placeholder="<?php _e($f['text']);?>" style="width:100%;" value="<?php _e( $f['val'] ? $f['val'] : $f['default'] ); ?>" />
+	<!-- TEXTBOX END -->
+	
 	<?php elseif( $f['type'] == 'checkbox' ):?>
 	<!-- CHECKBOX -->
 	

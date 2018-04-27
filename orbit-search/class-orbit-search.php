@@ -54,6 +54,11 @@
 							'text' 		=> 'Select Post Types', 
 							'options'	=> array()
 						),
+						'posts_per_page'	=> array(
+							'type'		=> 'number',
+							'text'		=> 'Posts Per Page',
+							'default'	=> 10
+						)
 					)
 				),
 			);
@@ -117,6 +122,12 @@
 			if( !$post_types ){ $post_types = array(); } 		/* IF VALUE IS NOT SET */
 			$post_types = implode(',', $post_types);			/* CONVERTING ARRAY TO STRING */
 			$shortcode_str .= "post_type='".$post_types."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
+			
+			
+			/* POSTS PER PAGE - FORM */
+			$posts_per_page = get_post_meta( $atts['id'], 'posts_per_page', true );
+			if( !$posts_per_page ){ $posts_per_page = 10; }
+			$shortcode_str .= "posts_per_page='".$posts_per_page."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
 			
 			$tax_query_str = '';
 			
