@@ -32,7 +32,9 @@
 	add_shortcode( 'orbit_author', function(){ return get_the_author(); } );
 	
 	/* SHORTCODE TO RETURN THE AUTHOR LINK */
-	add_shortcode( 'orbit_author_link', function(){ return get_the_author_link(); } );
+	add_shortcode( 'orbit_author_link', function(){ 
+		return get_author_posts_url( get_the_author_meta( 'ID' ) );
+	} );
 	
 	/* SHORTCODE TO RETURN THE DATE OF THE POST */
 	add_shortcode( 'orbit_date', function(){ return get_the_date(); } );
