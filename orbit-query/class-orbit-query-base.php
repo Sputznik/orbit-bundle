@@ -18,7 +18,7 @@ class ORBIT_QUERY_BASE{
 	function init(){
 		add_action( 'wp_enqueue_scripts', array( $this, 'assets') );
 		
-		add_shortcode( $this->shortcode, array( $this, 'plain_shortcode' ), 100 );
+		add_shortcode( $this->shortcode, array( $this, 'main_shortcode' ), 100 );
 		add_shortcode( $this->shortcode."_ajax", array( $this, 'ajax_shortcode' ), 100 );
 		
 		add_action( 'wp_ajax_'.$this->shortcode, array( $this, 'ajax_callback' ) );
@@ -42,6 +42,46 @@ class ORBIT_QUERY_BASE{
 		$atts['url'] = $this->get_ajax_url( $atts );	
 		
 		return $atts;
+	}
+	
+	function get_cache_key( $atts ){
+		$atts = $this->get_atts( $atts );
+		return 'orbit_query_'.substr( base64_encode( http_build_query( $atts ) ), 0, 30 );
+	}
+	
+	function get_cache( $atts ){
+		$cache_key = $this->get_cache_key( $atts );
+		
+		// try to get value from Wordpress cache
+		return get_transient( $cache_key );
+	}
+	
+	function set_cache( $data, $atts ){
+		$cache_key = $this->get_cache_key( $atts );
+		// store value in cache for hours
+		set_transient( $cache_key, $data, 3600 * $atts['cache'] ); 
+	}
+	
+	function main_shortcode( $atts ){
+		
+		$data = false;
+		
+		if( isset( $atts['cache'] ) && $atts['cache'] ){
+			$data = $this->get_cache( $atts ); 
+		}
+		
+		// if no value in the cache
+		if ( $data === false ) {
+			
+			$data = $this->plain_shortcode( $atts );
+			
+			if( isset( $atts['cache'] ) && $atts['cache'] ){
+				$this->set_cache( $data, $atts );
+			}
+		}
+		
+		return $data;
+		
 	}
 
 	function plain_shortcode( $atts ){
@@ -82,8 +122,18 @@ class ORBIT_QUERY_BASE{
 		/* GET ATTRIBUTES FROM THE SHORTCODE */
 		$atts = $this->get_atts( $atts );
 		
-		/* CREATE PARENT ELEMENT THAT WILL HOLD THE AJAX CALLBACK POSTS */
-		echo "<div data-behaviour='oq-reload-html' data-url='".$atts['url']."'></div>";
+		$cache = false;
+		
+		if( isset( $atts['cache'] ) && $atts['cache'] ){
+			$cache = $this->get_cache( $atts ); 
+		}
+		
+		if ( $cache === false ) {
+			/* CREATE PARENT ELEMENT THAT WILL HOLD THE AJAX CALLBACK POSTS */
+			$cache = "<div data-behaviour='oq-reload-html' data-url='".$atts['url']."'></div>";
+		}
+		
+		echo $cache;
 		
 		return ob_get_clean();
 	}

@@ -12,6 +12,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 	
 	function get_default_atts() {	
 		return array(
+			'cache'					=> '',
 			'tax_query'				=> '',
 			'sticky_posts'			=> '0',
 			'exclude_sticky_posts'	=> '0',
