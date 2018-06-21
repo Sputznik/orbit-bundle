@@ -46,7 +46,14 @@ class ORBIT_QUERY_BASE{
 	
 	function get_cache_key( $atts ){
 		$atts = $this->get_atts( $atts );
-		return 'orbit_query_'.substr( base64_encode( http_build_query( $atts ) ), 0, 30 );
+		
+		$cache_key = 'oq_1';
+		
+		if( isset( $atts['cache_key' ] ) ){
+			$cache_key = 'oq_'.$atts['cache_key'].'_'.$atts['cache'];
+		}
+		
+		return $cache_key;
 	}
 	
 	function get_cache( $atts ){
@@ -66,7 +73,7 @@ class ORBIT_QUERY_BASE{
 		
 		$data = false;
 		
-		if( isset( $atts['cache'] ) && $atts['cache'] ){
+		if( isset( $atts['cache'] ) && $atts['cache'] && is_numeric( $atts['cache'] ) ){
 			$data = $this->get_cache( $atts ); 
 		}
 		
@@ -124,7 +131,7 @@ class ORBIT_QUERY_BASE{
 		
 		$cache = false;
 		
-		if( isset( $atts['cache'] ) && $atts['cache'] ){
+		if( isset( $atts['cache'] ) && $atts['cache'] && is_numeric( $atts['cache'] ) ){
 			$cache = $this->get_cache( $atts ); 
 		}
 		
