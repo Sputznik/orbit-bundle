@@ -13,7 +13,6 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 	function get_default_atts() {	
 		return array(
 			'cache'					=> '0',
-			'cache_key'				=> '1',
 			'tax_query'				=> '',
 			'sticky_posts'			=> '0',
 			'exclude_sticky_posts'	=> '0',
@@ -33,6 +32,10 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			'style'					=> '',
 			'id'					=> 'posts-'.rand()
 		);
+	}
+	
+	function unique_atts(){
+		return array('post_type', 'post_status', 'posts_per_page', 'tag', 'offset', 'cache');
 	}
 
 	function get_offset($atts){
