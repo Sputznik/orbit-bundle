@@ -9,9 +9,11 @@
     */
 	
 	$inc_files = array(
+		"class-orbit-shortcode.php",
 		"orbit-search/orbit-search.php",
 		"orbit-query/orbit-query.php",
 		"orbit-templates/orbit-templates.php",
+		"orbit-cache/orbit-cache.php",
 	);
 	
 	foreach( $inc_files as $inc_file ){

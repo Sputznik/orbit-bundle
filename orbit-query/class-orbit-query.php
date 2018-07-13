@@ -6,8 +6,13 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 		
 		$this->shortcode = 'orbit_query';
 		
+		add_filter( 'orbit_shortcode_cache_key_str', function( $cache_key ){
+			$cache_key = 'oq';
+			return $cache_key;
+		});
 		
-		$this->init();
+		parent::__construct();
+		
 	}
 	
 	function get_default_atts() {	
@@ -34,8 +39,10 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 		);
 	}
 	
+	function remove_atts_from_cache_key(){
+		return array('url', 'tax_query', 'id');
+	}
 	
-
 	function get_offset($atts){
 		return (((int)$atts['paged'] - 1) * (int)$atts['posts_per_page']) + (int)$atts['offset'];
 	}
@@ -48,7 +55,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 		return ! empty( $str ) ? explode( $seperator, $str ) : '';
 	}
 	
-	function plain_shortcode($atts){
+	function plain_shortcode( $atts, $content = false ){
 		ob_start();
 		
 		/* GET ATTRIBUTES FROM THE SHORTCODE */
@@ -81,6 +88,11 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			'offset'				=> self::get_offset($atts)
 		);
 		
+		/* DONT FETCH SQL_CALC_FOUND_ROWS */
+		if( $atts['pagination'] == '0' ){
+			$query_atts['no_found_rows'] = true;
+		}
+		
 		/* SET TAXONOMY QUERY IF ANY */
 		if( isset( $atts['tax_query'] ) && !empty( $atts['tax_query'] ) ){
 			$tax_arr = $this->explode_to_arr( $atts['tax_query'], "#" );
@@ -104,8 +116,6 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			
 		}
 		
-		
-			
 		$this->query = new WP_Query( $query_atts );
 		
 		if( $this->query->have_posts() ){
@@ -119,7 +129,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 		return ob_get_clean();
 	}
 	
-	
+	/* OVERRIDDEN FROM THE PARENT */
 	function get_ajax_url( $atts ){
 		return $this->get_ajax_url_from_args( $atts, array('paged') );
 	}

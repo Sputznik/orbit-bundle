@@ -6,7 +6,7 @@ class ORBIT_QUERY_USERS extends ORBIT_QUERY_BASE{
 		
 		$this->shortcode = 'orbit_query_users';
 		
-		$this->init();
+		parent::__construct();
 	}
 	
 	function get_default_atts() {	
@@ -25,7 +25,7 @@ class ORBIT_QUERY_USERS extends ORBIT_QUERY_BASE{
 		);
 	}
 	
-	function plain_shortcode($atts){
+	function plain_shortcode( $atts, $content = false ){
 		ob_start();
 		$atts = $this->get_atts($atts);
 			
