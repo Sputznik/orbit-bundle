@@ -34,9 +34,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 		);
 	}
 	
-	function unique_atts(){
-		return array('post_type', 'post_status', 'posts_per_page', 'tag', 'offset', 'cache');
-	}
+	
 
 	function get_offset($atts){
 		return (((int)$atts['paged'] - 1) * (int)$atts['posts_per_page']) + (int)$atts['offset'];

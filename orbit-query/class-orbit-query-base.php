@@ -44,19 +44,17 @@ class ORBIT_QUERY_BASE{
 		return $atts;
 	}
 	
-	function unique_atts(){
-		return array();
-	}
+	
 	
 	function get_cache_key( $atts ){
 		$atts = $this->get_atts( $atts );
 		
 		$cache_key = $this->shortcode;
 		
-		$unique_atts = $this->unique_atts();
+		//$unique_atts = $this->unique_atts();
 		
-		foreach( $unique_atts as $unique_att ){
-			$cache_key .= $atts[$unique_att];	
+		foreach( $atts as $key => $val ){
+			$cache_key .= $val;
 		}
 		
 		return $cache_key;
