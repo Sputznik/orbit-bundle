@@ -7,7 +7,10 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 		$this->shortcode = 'orbit_query';
 		
 		add_filter( 'orbit_shortcode_cache_key_str', function( $cache_key ){
-			$cache_key = 'oq';
+			if( $cache_key == 'orbit_query' ){
+				$cache_key = 'oq';
+			}
+			
 			return $cache_key;
 		});
 		

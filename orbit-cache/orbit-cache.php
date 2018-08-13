@@ -19,13 +19,10 @@
 		
 		function plain_shortcode( $atts, $content = false ){
 			ob_start();
-			echo $content;
+			echo do_shortcode( $content );
 			return ob_get_clean();
 			
 		}
-		
-		
-		
 	}
 	
 	global $orbit_cache;

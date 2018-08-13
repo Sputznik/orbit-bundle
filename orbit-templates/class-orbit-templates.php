@@ -94,23 +94,27 @@ class ORBIT_TEMPLATES{
 	function override_post_text( $text, $meta_field ){
 		global $orbit_vars, $post;
 		
-		/* GET POST TYPE OF THE POST */
-		$post_type = $post->post_type;
+		if( $post && isset( $post->post_type ) ){
 			
-		/* CHECK IF THE POST TYPE IS ONE OF THE CUSTOM ORBIT TYPES */
-		if( isset( $orbit_vars['post_types'] ) ){
+			/* GET POST TYPE OF THE POST */
+			$post_type = $post->post_type;
 				
-			foreach( $orbit_vars['post_types'] as $new_post_type ){
+			/* CHECK IF THE POST TYPE IS ONE OF THE CUSTOM ORBIT TYPES */
+			if( isset( $orbit_vars['post_types'] ) ){
 					
-				if( isset( $new_post_type['slug'] ) && $post_type == $new_post_type['slug'] && isset( $new_post_type[ $meta_field ] ) && $new_post_type[ $meta_field ] ){
+				foreach( $orbit_vars['post_types'] as $new_post_type ){
 						
-					$text = do_shortcode( $new_post_type[ $meta_field ] );
+					if( isset( $new_post_type['slug'] ) && $post_type == $new_post_type['slug'] && isset( $new_post_type[ $meta_field ] ) && $new_post_type[ $meta_field ] ){
+							
+						$text = do_shortcode( $new_post_type[ $meta_field ] );
+							
+					}
 						
 				}
-					
 			}
-		}
 			
+		}
+		
 		return $text;
 	}
 		
@@ -167,10 +171,15 @@ class ORBIT_TEMPLATES{
 	/* GET THE TEMPLATE ID OF THE CURRENT POST */
 	function get_current_post_template_id(){
 		global $post, $orbit_vars;
+		
+		if( $post && isset( $post->post_type ) ){
 			
-		if( isset( $orbit_vars['post_types'] ) && isset( $orbit_vars['post_types'][ $post->post_type ] ) && isset( $orbit_vars['post_types'][ $post->post_type ]['orbit-tmpl'])  ){
-			return $orbit_vars['post_types'][ $post->post_type ]['orbit-tmpl'];
+			if( isset( $orbit_vars['post_types'] ) && isset( $orbit_vars['post_types'][ $post->post_type ] ) && isset( $orbit_vars['post_types'][ $post->post_type ]['orbit-tmpl'])  ){
+				return $orbit_vars['post_types'][ $post->post_type ]['orbit-tmpl'];
+			}
+			
 		}
+		
 		
 		return 0;
 		
