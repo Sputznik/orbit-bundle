@@ -44,7 +44,7 @@ class ORBIT_SHORTCODE{
 			}
 		}
 		
-		return $cache_key;
+		return md5( $cache_key );
 	}
 	
 	function get_cache( $atts ){
