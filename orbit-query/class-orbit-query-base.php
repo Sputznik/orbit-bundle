@@ -27,8 +27,12 @@ class ORBIT_QUERY_BASE extends ORBIT_SHORTCODE{
 		$template_url = $template.'.php';	
 		
 		$theme_templates_url = apply_filters( 'orbit_query_template_'.$template , get_stylesheet_directory()."/orbit-query/".$template_url );
-		$plugin_templates_url = plugin_dir_path(__FILE__)."templates/".$template_url;
+		if( is_child_theme() && !file_exists( $theme_templates_url ) ){
+			// include from the parent theme
+			$theme_templates_url = apply_filters( 'orbit_query_template_'.$template , get_template_directory()."/orbit-query/".$template_url );
+		}
 		
+		$plugin_templates_url = plugin_dir_path(__FILE__)."templates/".$template_url;
 		
 		if( file_exists( $theme_templates_url ) ){
 			include( $theme_templates_url );
