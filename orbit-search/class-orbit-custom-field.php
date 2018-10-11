@@ -96,17 +96,15 @@
 			foreach( $meta_boxes as $meta_box ){
 				
 				add_meta_box( 
-					$meta_box['id'], 			// Unique ID
-					$meta_box['title'], 		// Box title
-					array( $this, 'box_html' ), // Content callback
+					$meta_box['id'], 													// Unique ID
+					$meta_box['title'], 												// Box title
+					array( $this, 'box_html' ), 										// Content callback
 					$post_type,
-					'advanced',					// Context
-					'default',					// Priority
+					isset( $meta_box['context'] ) ? $meta_box['context'] : 'normal', 	// Context
+					'default',															// Priority
 					$meta_box
 				);
 			}
-			
-			
 		}
 		
 		function box_html( $post, $box ) {

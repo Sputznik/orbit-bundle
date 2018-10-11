@@ -219,6 +219,18 @@ class ORBIT_TEMPLATES{
 					),
 				)
 			),
+			array(
+				'id'		=> 'orbit-tmp-settings',
+				'title'		=> 'Template Settings',
+				'context'	=> 'side',
+				'fields'	=> array(
+					'css_class' => array( 
+						'type' 		=> 'text',
+						'text' 		=> 'CSS CLASS', 
+						'help'		=> 'Custom CSS class/classes for the unordered list that displays the list of posts',
+					),
+				)
+			),
 		);
 			
 		return $meta_box;
@@ -257,18 +269,27 @@ class ORBIT_TEMPLATES{
 		return $this->posts[ $post_id ];
 	}
 	
+	/* CSS CLASS TO THE UNLISTED LIST THAT IS HAVING THE LIST OF POSTS */
 	function print_template_class( $post_id ){
 		
 		$class = '';
 		
 		$post = $this->get_post( $post_id );
 		
+		// ADDING POST TITLE
 		if( isset( $post->post_title ) && $post->post_title ){
 			$class = sanitize_title( $post->post_title );
 		}
 		
+		// ADDING POST ID
 		if( $post_id ){
 			$class .= ' orbit-list-'.$post_id;
+		}
+		
+		// ADDING CUSTOM CSS CLASS THROUGH CUSTOM FIELD
+		$custom_css_class = get_post_meta( $post_id, 'css_class', true );
+		if( $custom_css_class ){
+			$class .= ' '.$custom_css_class;
 		}
 		
 		$class .= ' orbit-list-db ';

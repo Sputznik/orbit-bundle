@@ -44,7 +44,6 @@
 	
 	<label><?php _e( $f['text'] );?></label>
 	<textarea style="width: 100%;" name="<?php _e($slug);?>" rows="10" placeholder="<?php _e( $f['text'] );?>"><?php _e( $f['val'] ); ?></textarea>
-	<?php if( isset( $f['help'] ) ):?><p><?php _e( $f['help'] );?></p><?php endif; ?>	
 	<!-- TEXTAREA END -->
 	
 	<?php elseif( $f['type'] == 'dropdown' && isset( $f['options'] ) && count( $f['options'] ) ):?>
@@ -58,7 +57,7 @@
 	</select>
 	<!-- DROPDOWN END -->
 	
-	<?php elseif( $f['type'] == 'help' ):?>
-	<?php if( isset( $f['help'] ) ):?><p><?php _e( $f['help'] );?></p><?php endif; ?>	
 	<?php endif; ?>
+	
+	<?php if( isset( $f['help'] ) ):?><p><?php _e( $f['help'] );?></p><?php endif; ?>	
 </div>
