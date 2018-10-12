@@ -7,8 +7,6 @@
 			/* ENQUEUE SCRIPTS ON ADMIN DASHBOARD */
 			add_action( 'admin_enqueue_scripts', array( $this, 'wp_admin_script') );	
 			
-			
-			
 			add_action('admin_head', array( $this, 'admin_head' ), 50);
 			
 			add_action('admin_footer', array( $this, 'wp_admin_footer' ) );
@@ -27,7 +25,7 @@
 			remove_menu_page('edit.php?post_type=orbit-tmp');
 			
 			/* ADD MAIN MENU FOR THE PLUGIN */
-			add_menu_page( 'Orbit Settings', 'Orbit Settings', 'manage_options', 'orbit-types', array( $this, 'menu_page' ) );
+			add_menu_page( 'Orbit Bundle', 'Orbit Bundle', 'manage_options', 'orbit-types', array( $this, 'menu_page' ) );
 			
 			/* ADD SUB MENU ITEMS FOR ORBIT TYPES */
 			add_submenu_page( 'orbit-types', 'Orbit Types', 'Orbit Types', 'manage_options', 'orbit-types', array( $this, 'menu_page' ) );
@@ -42,6 +40,74 @@
 			add_submenu_page( 'orbit-types', 'SearchForms', 'Orbit SearchForms', 'manage_options', 'orbit-form', array( $this, 'menu_page' ) );
 			//add_submenu_page( 'orbit-types', 'New SearchForm', 'New SearchForm', 'manage_options', 'orbit-form-new', array( $this, 'menu_page' ) );
 			
+			add_submenu_page( 'orbit-types', 'Settings', 'Orbit Settings', 'manage_options', 'orbit-settings', array( $this, 'settings_page' ) );
+		}
+		
+		public function kv_options_init() { 
+			 register_setting(
+				'vaajo_general', // Option group
+				'vaajo_general', // Option name
+				array( $this, 'sanitize' ) // Sanitize
+			);
+
+			add_settings_section(
+				'setting_section_id', // ID
+				'All Settings', // Title
+				array( $this, 'print_section_info' ), // Callback
+				'vaajo-setting-admin' // Page
+			); 
+			 add_settings_field(
+				'logo_image', 
+				'Logo Image', 
+				array( $this, 'logo_image_callback' ), 
+				'vaajo-setting-admin', 
+				'setting_section_id'
+			);  		
+			
+		register_setting(
+				'vaajo_social', // Option group
+				'vaajo_social', // Option name
+				array( $this, 'sanitize' ) // Sanitize
+			);
+			add_settings_section(
+				'setting_section_id', // ID
+				'Social Settings', // Title
+				array( $this, 'print_section_info' ), // Callback
+				'vaajo-setting-social' // Page
+			);  
+			
+		add_settings_field(
+				'fb_url', // ID
+				'Facebook URL', // Title 
+				array( $this, 'fb_url_callback' ), // Callback
+				'vaajo-setting-social', // Page
+				'setting_section_id' // Section           
+			);
+			
+			
+		register_setting(
+				'vaajo_footer', // Option group
+				'vaajo_footer', // Option name
+				array( $this, 'sanitize' ) // Sanitize
+			);
+			add_settings_section(
+				'setting_section_id', // ID
+				'Footer Details', // Title
+				array( $this, 'print_section_info' ), // Callback
+				'vaajo-setting-footer' // Page
+			);         
+
+			add_settings_field(
+				'hide_more_themes', 
+				'Hide Find more themes at Kvcodes.com', 
+				array( $this, 'hide_more_themes_callback' ), 
+				'vaajo-setting-footer', 
+				'setting_section_id'
+			);
+	}
+		
+		function settings_page(){
+			include "pages/settings.php";
 		}
 		
 		function menu_page(){

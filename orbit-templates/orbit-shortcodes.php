@@ -60,7 +60,7 @@
 		$thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id ), $atts['size'] );
 		
 		if( is_array( $thumbnail ) ){
-			return "<div class='orbit-thumbnail-bg' style='background-image: url(".$thumbnail[0].");'></div>";
+			return "<div class='orbit-thumbnail-bg' style='background-image: url(".$thumbnail[0].");'><a href='".get_the_permalink()."'></a></div>";
 		}
 			
 		return '';

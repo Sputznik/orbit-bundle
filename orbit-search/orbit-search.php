@@ -6,7 +6,6 @@
 		"class-orbit-custom-field.php",
 		"class-orbit-filter.php",
 		"class-orbit-search.php",
-		"class-orbit-admin.php",
 	);
 	
 	foreach( $inc_files as $inc_file ){

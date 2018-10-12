@@ -14,6 +14,7 @@
 		"orbit-query/orbit-query.php",
 		"orbit-templates/orbit-templates.php",
 		"orbit-cache/orbit-cache.php",
+		"admin/class-orbit-admin.php"
 	);
 	
 	foreach( $inc_files as $inc_file ){
