@@ -1,7 +1,4 @@
 <?php
-	$this->options_general = get_option( 'vaajo_general' );
-	$this->options_social = get_option( 'vaajo_social' );
-	$this->options_footer = get_option( 'vaajo_footer' ); 
 	
 	$screens = array(
 		'general'	=> array(

@@ -42,7 +42,7 @@
 			
 			add_submenu_page( 'orbit-types', 'Settings', 'Orbit Settings', 'manage_options', 'orbit-settings', array( $this, 'settings_page' ) );
 		}
-		
+		/*
 		public function kv_options_init() { 
 			 register_setting(
 				'vaajo_general', // Option group
@@ -105,6 +105,7 @@
 				'setting_section_id'
 			);
 	}
+		*/
 		
 		function settings_page(){
 			include "pages/settings.php";
