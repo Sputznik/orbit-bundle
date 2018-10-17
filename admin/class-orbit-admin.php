@@ -192,18 +192,19 @@
 			
 			
 			if( ( $hook == 'post.php' ) && ( $post_type == 'orbit-form' || $post_type == 'page' ) ){
-				wp_enqueue_script('orbit-form-default', plugin_dir_url( __FILE__ ).'js/of.default.js', array( 'jquery'), '1.0.9', true );
+				wp_enqueue_script('orbit-form-default', plugins_url( 'orbit-bundle/dist/js/of.default.js' ), array( 'jquery'), '1.0.9', true );
 			}
 			
 			if( $hook == 'post.php' && $post_type == 'orbit-form' ) {
-				wp_enqueue_script('orbit-form', plugin_dir_url( __FILE__ ).'js/orbit_form.js', array( 'jquery', 'orbit-form-default' ), '2.0.1', true );
+				wp_enqueue_script('orbit-form', plugins_url( 'orbit-bundle/dist/js/orbit_form_tinymce_btn.js' ), array( 'jquery', 'orbit-form-default' ), '2.0.1', true );
 			}
 			
 			if( $hook == 'post.php' && $post_type == 'page' ) {
-				wp_enqueue_script('orbit-query', plugin_dir_url( __FILE__ ).'js/orbit_query.js', array( 'jquery', 'orbit-form-default' ), '2.0.8', true );
+				wp_enqueue_script('orbit-query', plugins_url( 'orbit-bundle/dist/js/orbit_query_tinymce_btn.js' ), array( 'jquery', 'orbit-form-default' ), '1.0.0', true );
 			}
 			
-			wp_enqueue_style( 'orbit-form', plugin_dir_url( __FILE__ ).'css/admin-style.css', array(), "1.0.7" );
+			wp_enqueue_style( 'orbit-form', plugins_url( 'orbit-bundle/dist/css/admin-style.css' ), array(), "1.0.7" );
+			
 			
 		}
 

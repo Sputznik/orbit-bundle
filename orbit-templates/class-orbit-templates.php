@@ -193,7 +193,7 @@ class ORBIT_TEMPLATES{
 				'name' 			=> 'Orbit Templates',
 				'singular_name' => 'Orbit Template',
 			),
-			'supports'	=> array( 'title', 'editor' ),
+			'supports'	=> array( 'title', 'editor', 'custom-fields' ),
 			'public'	=> false,
 			'menu_icon'	=> 'dashicons-media-spreadsheet'
 		);

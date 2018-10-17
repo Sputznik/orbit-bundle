@@ -21,3 +21,96 @@
 		require_once( $inc_file );
 	}
 	
+	// GUTENBERG BLOCK
+	add_action( 'init', function(){
+		
+		wp_register_script(
+			'orbit-query-block',
+			plugins_url( 'dist/js/orbit-query-block.js', __FILE__ ),
+			array( 'wp-blocks', 'wp-element' ),
+			filemtime( plugin_dir_path( __FILE__ ) . 'dist/js/orbit-query-block.js' )
+		);
+		
+		wp_register_style(
+			'orbit-blocks',
+			plugins_url( 'dist/css/orbit-query.css', __FILE__ ),
+			array( 'wp-edit-blocks' ),
+			filemtime( plugin_dir_path( __FILE__ ) . 'dist/css/orbit-query.css' )
+		);
+		
+		/* LOCALIZE ORBIT SETTINGS */
+		$orbit_settings = array( 'post_types' => array(), 'styles' => array(), 'taxonomies' => array() );
+		
+		// POST TYPES
+		$post_types = get_post_types( array( 'public' => true ), 'objects' );
+		foreach( $post_types as $post_type ){
+			array_push( $orbit_settings['post_types'], array( 'label' => $post_type->label, 'value' => $post_type->name ) );
+		}
+		
+		// ORBIT TEMPLATES
+		global $orbit_templates;
+		$templates = $orbit_templates->get_templates_list();
+		foreach( $templates as $template ){
+			array_push( $orbit_settings['styles'], array( 'label' => $template->post_title, 'value' => $template->ID ) );
+		}
+		
+		// TAXONOMIES
+		$taxonomies = get_taxonomies( array( 'public' => true ), 'objects' );
+		array_push( $orbit_settings['taxonomies'], array( 'label' => 'Select None', 'value' => '' ) );
+		foreach( $taxonomies as $taxonomy ){
+			array_push( $orbit_settings['taxonomies'], array( 'label' => $taxonomy->label, 'value' => $taxonomy->name ) );
+		}
+		
+		$orbit_settings['orbit_query_atts'] = array(
+			'post_type'	=> array(
+				'type' 	=> 'string',
+			),
+			'posts_per_page' => array(
+				'type' 	=> 'number',
+			),
+			'style_id' 	=> array(
+				'type' 	=> 'number',
+			),
+			'style'	=> array(
+				'type' 	=> 'string',
+				'default'	=> 'db'
+			),
+			'taxonomy'	=> array(
+				'type' 	=> 'string',
+			),
+			'term'	=> array(
+				'type' 	=> 'string',
+			),
+			'tax_query'	=> array(
+				'type' 	=> 'string',
+				//'default'	=> 'category:uncategorized'
+			),
+		);
+		
+		/*
+		echo "<pre>";
+		print_r( $orbit_settings );
+		echo "</pre>";
+		wp_die();
+		*/ 
+		
+		wp_localize_script( 'orbit-query-block', 'orbit_settings', $orbit_settings );
+		/* LOCALIZE ORBIT SETTINGS */
+		
+		global $orbit_query;
+		
+		register_block_type( 'orbit-bundle/orbit-query', array(
+			'editor_script' 	=> 'orbit-query-block',
+			'editor_style'		=> 'orbit-blocks',
+			'attributes' 		=> $orbit_settings['orbit_query_atts'],
+			'render_callback'	=> array( $orbit_query, 'plain_shortcode' )
+		) );
+		
+	} );
+	
+	
+	/* ENQUEUE ASSETS */
+	add_action( 'wp_enqueue_scripts', function(){
+		wp_enqueue_style( 'orbit-blocks' );
+	} );
+	

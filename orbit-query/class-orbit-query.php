@@ -119,6 +119,12 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			
 		}
 		
+		/*
+		echo "<pre>";
+		print_r( $query_atts );
+		echo "</pre>";
+		*/
+		
 		$this->query = new WP_Query( $query_atts );
 		
 		if( $this->query->have_posts() ){

@@ -13,7 +13,7 @@
 				/* CUSTOM FIELDS FOR ORBIT-TYPES */
 				if( isset( $meta_box['orbit-types'] ) && count( $meta_box['orbit-types'] ) && isset( $meta_box['orbit-types'][0]['fields'] ) ){
 					$meta_box['orbit-types'][0]['fields']['custom_fields'] = array(
-						'type'	=> 'textarea',
+						'type'	=> 'repeater',
 						'text'	=> 'Custom Fields'
 					);
 				}
@@ -120,7 +120,7 @@
 						$f['options'] = apply_filters( 'orbit_custom_field_'.$slug.'_options', $f['options'] );
 					}
 					
-					include	"admin_templates/custom_field.php";
+					$this->field_html( $slug, $f );
 				
 				}
 				
@@ -128,6 +128,10 @@
 				
 			}
 			
+		}
+		
+		function field_html( $slug, $f ){
+			include	"admin_templates/custom_field.php";
 		}
 		
 		function save( $post_id ){

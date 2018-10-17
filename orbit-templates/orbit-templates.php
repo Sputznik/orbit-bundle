@@ -15,7 +15,7 @@
 			<div class="orbit-post-content">
 				<div class="orbit-author">
 					<a href="[orbit_author_link]">[orbit_avatar]</a>
-					<div class="small"><a href="[orbit_author_link]">[orbit_author]</a><br>[orbit_date]</div>
+					<div class="orbit-author-meta"><a href="[orbit_author_link]">[orbit_author]</a><br>[orbit_date]</div>
 				</div>
 				<h3><a href="[orbit_link]">[orbit_title]</a></h3>
 				<div class="post-excerpt">[orbit_excerpt]</div>
