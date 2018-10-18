@@ -97,15 +97,18 @@
 		wp_localize_script( 'orbit-query-block', 'orbit_settings', $orbit_settings );
 		/* LOCALIZE ORBIT SETTINGS */
 		
-		global $orbit_query;
 		
-		register_block_type( 'orbit-bundle/orbit-query', array(
-			'editor_script' 	=> 'orbit-query-block',
-			'editor_style'		=> 'orbit-blocks',
-			'attributes' 		=> $orbit_settings['orbit_query_atts'],
-			'render_callback'	=> array( $orbit_query, 'plain_shortcode' )
-		) );
+		if( function_exists('register_block_type') ){
 		
+			global $orbit_query;
+		
+			register_block_type( 'orbit-bundle/orbit-query', array(
+				'editor_script' 	=> 'orbit-query-block',
+				'editor_style'		=> 'orbit-blocks',
+				'attributes' 		=> $orbit_settings['orbit_query_atts'],
+				'render_callback'	=> array( $orbit_query, 'plain_shortcode' )
+			) );
+		}
 	} );
 	
 	

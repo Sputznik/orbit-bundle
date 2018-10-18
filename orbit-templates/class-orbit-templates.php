@@ -39,10 +39,10 @@ class ORBIT_TEMPLATES{
 		});
 		
 		
-		/* OVERRIDE SINGLE TEMPLATE FOR ORBIT-TYPES */
+		/* OVERRIDE SINGLE TEMPLATE FOR POST-TYPES */
 		add_filter( 'single_template', function( $single_template ){
 			
-			if( $this->get_current_post_template_id() ){
+			if( $this->get_current_post_template_id( 'single' ) ){
 				$single_template = plugin_dir_path(__FILE__)."templates/single.php";
 			}
 			
@@ -50,20 +50,17 @@ class ORBIT_TEMPLATES{
 			
 		} );
 		
-		
-		/* ADD TEMPLATES TO THE CUSTOM FIELDS */
-		add_filter( 'orbit_custom_field_orbit-tmpl_options', function( $options ){
-				
-			global $orbit_templates;
-				
-			$templates = $orbit_templates->get_templates_list();
-			$options[ '0' ] = 'Default';	
-			foreach( $templates as $template ){
-				$options[ $template->ID ] = $template->post_title;
+		/* OVERRIDE ARCHIVE TEMPLATE FOR POST-TYPES */
+		add_filter( 'archive_template', function( $archive_template ){
+			
+			if( $this->get_current_post_template_id( 'archives' ) ){
+				$archive_template = plugin_dir_path(__FILE__)."templates/archives.php";
 			}
-				
-			return $options;
+			
+			return $archive_template;
+			
 		} );
+		
 		
 		/* ADD TEMPLATES CUSTOM FIELDS AS OPTION TO ORBIT TYPES */
 		add_filter( 'orbit_meta_box_vars', array( $this, 'meta_box_fields' ) );
@@ -85,7 +82,18 @@ class ORBIT_TEMPLATES{
 		/* OVERRIDE CONTENT FOR ORBIT POST TYPES */
 		add_filter( 'the_content', array( $this, 'override_content' ) );
 		add_filter( 'get_the_content', array( $this, 'override_content' ) );
+		
+		/* ADD ADMIN SCREENS TO ORBIT SETTINGS PAGE */
+		add_filter( 'orbit_admin_settings_screens', function( $screens ){
 			
+			$screens['override'] = array(
+				'label'		=> 'Override Templates',
+				'action'	=> 'override',
+				'tab'		=> plugin_dir_path(__FILE__).'admin-templates/settings-override.php'
+			);
+			
+			return $screens;
+		});
 		
 	}
 	
@@ -131,14 +139,6 @@ class ORBIT_TEMPLATES{
 		/* CUSTOM FIELDS FOR ORBIT-TYPES */
 		if( isset( $meta_box['orbit-types'] ) && count( $meta_box['orbit-types'] ) && isset( $meta_box['orbit-types'][0]['fields'] ) ){
 				
-			/* ADD TEMPLATES CUSTOM FIELDS AS OPTION TO ORBIT TYPES */
-			$meta_box['orbit-types'][0]['fields']['orbit-tmpl'] = array(
-					'type'		=> 'dropdown',
-					'text'		=> 'Choose Orbit Template To Override Single Template',
-					'help'		=> 'To override the default template.',
-					'options'	=> array()
-				);
-				
 			/* OVERRIDE CONTENT */
 			$meta_box['orbit-types'][0]['fields']['override_content'] = array(
 					'type'		=> 'textarea',
@@ -154,28 +154,33 @@ class ORBIT_TEMPLATES{
 				);
 		}
 		
-		/* CUSTOM FIELDS FOR ORBIT-FORM */
-		if( isset( $meta_box['orbit-form'] ) && count( $meta_box['orbit-form'] ) && isset( $meta_box['orbit-form'][0]['fields'] ) ){
-			/* ADD TEMPLATES CUSTOM FIELDS AS OPTION TO ORBIT TYPES */
-			$meta_box['orbit-form'][0]['fields']['orbit-tmpl'] = array(
-					'type'		=> 'dropdown',
-					'text'		=> 'Choose Orbit Template',
-					'help'		=> 'To override the default template.',
-					'options'	=> array()
-				);
-		}
 		return $meta_box;
 		
 	}
 	
+	function update_override_options( $data ){
+		update_option( 'orbit_override_templates', $data );
+	}
+	
+	function get_override_options(){
+		return get_option( 'orbit_override_templates' );
+	}
+	
 	/* GET THE TEMPLATE ID OF THE CURRENT POST */
-	function get_current_post_template_id(){
+	function get_current_post_template_id( $template_type ){
+		
+		/*
+		* TEMPLATE TYPE CAN BE EITHER SINGLE OR ARCHIVE
+		*/
+		
 		global $post, $orbit_vars;
+		
+		$data = $this->get_override_options();
 		
 		if( $post && isset( $post->post_type ) ){
 			
-			if( isset( $orbit_vars['post_types'] ) && isset( $orbit_vars['post_types'][ $post->post_type ] ) && isset( $orbit_vars['post_types'][ $post->post_type ]['orbit-tmpl'])  ){
-				return $orbit_vars['post_types'][ $post->post_type ]['orbit-tmpl'];
+			if( is_array( $data ) && isset( $data[$post->post_type] ) && isset( $data[$post->post_type][$template_type] ) ){
+				return $data[$post->post_type][$template_type];
 			}
 			
 		}
