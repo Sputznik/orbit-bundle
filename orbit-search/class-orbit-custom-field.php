@@ -14,7 +14,27 @@
 				if( isset( $meta_box['orbit-types'] ) && count( $meta_box['orbit-types'] ) && isset( $meta_box['orbit-types'][0]['fields'] ) ){
 					$meta_box['orbit-types'][0]['fields']['custom_fields'] = array(
 						'type'	=> 'repeater',
-						'text'	=> 'Custom Fields'
+						'text'	=> 'Custom Fields',
+						'items'	=> array(
+							'type' => array( 
+								'type' 		=> 'dropdown',
+								'text' 		=> 'Select Field Type',
+								'options'	=> array(
+									'text'		=> 'Text',
+									'dropdown'	=> 'Dropdown'
+								)
+							),
+							'text' => array( 
+								'type' 		=> 'text',
+								'text' 		=> 'Label',
+							),
+							'options' => array( 
+								'type' 		=> 'textarea',
+								'text' 		=> 'Options',
+								'help'		=> 'Only valid for dropdown or checkboxes'
+							),
+						),
+						
 					);
 				}
 				
@@ -28,20 +48,30 @@
 						'fields'	=> array()
 					);
 					
-					$fields = explode("\r\n", $orbit_vars['post_types'][$post_type]['custom_fields']);
+					$fields = $orbit_vars['post_types'][$post_type]['custom_fields'];
 					
 					if( is_array( $fields ) && count( $fields ) ){
+						
 						foreach( $fields as $field ){
-							if( $field ){
+							
+							if( isset( $field['text'] ) && isset( $field['type'] ) ){
+								$slug_field = sanitize_title( $field['text'] );
 								
-								$slug_field = sanitize_title( $field );
+								if( isset( $field['options'] ) ){
+									$options = explode( "\r\n", $field['options'] );
+									
+									$field['options'] = array();
+									
+									foreach( $options as $opt ){
+										$opt_slug = sanitize_title( $opt );
+										$field['options'][$opt_slug] = $opt;
+									}
+								}
 								
-								$new_meta_box['fields'][$slug_field] = array(
-									'type'	=> 'text',
-									'text'	=> $field
-								);
-								
+								$new_meta_box['fields'][$slug_field] = $field;
+							
 							}
+							
 						}
 						
 						if( !isset( $meta_box[ $post_type ] ) ){
@@ -53,6 +83,12 @@
 					}
 					
 				}
+				/*
+				echo "<pre>";
+				print_r( $meta_box );
+				echo "</pre>";
+				wp_die();
+				*/
 				
 				return $meta_box;
 			});
@@ -120,6 +156,9 @@
 						$f['options'] = apply_filters( 'orbit_custom_field_'.$slug.'_options', $f['options'] );
 					}
 					
+					// GETTING VALUE FROM THE POST META TABLE
+					$f['val'] = get_post_meta( $post->ID, $slug, true );
+					
 					$this->field_html( $slug, $f );
 				
 				}
@@ -134,16 +173,19 @@
 			include	"admin_templates/custom_field.php";
 		}
 		
-		function save( $post_id ){
+		function save( $post_id ){ 
 			$meta_boxes = $this->get_meta_boxes();
 			foreach( $meta_boxes as $meta_box ){
 				
 				if( isset( $meta_box[ 'fields' ] ) ){
+					
+					
 				
 					foreach( $meta_box[ 'fields' ] as $slug => $f ){
 						
-						if(	array_key_exists( $slug, $_POST ) ){
+						if( array_key_exists( $slug, $_POST ) ){
 							update_post_meta( $post_id, $slug, $_POST[ $slug ] );
+							
 						}
 						
 					}

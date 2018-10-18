@@ -205,7 +205,7 @@
 			
 			wp_enqueue_style( 'orbit-form', plugins_url( 'orbit-bundle/dist/css/admin-style.css' ), array(), "1.0.7" );
 			
-			
+			wp_enqueue_script('orbit-cf', plugins_url( 'orbit-bundle/dist/js/orbit_cf.js' ), array( 'jquery' ), '1.0.2', true );
 		}
 
 		

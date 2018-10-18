@@ -1,6 +1,5 @@
 <?php global $post;?>
 <div class="form-field">
-	<?php $f['val'] = get_post_meta( $post->ID, $slug, true ); ?>
 	
 	<!-- PRINTING THE LABEL -->
 	<?php if( isset( $f['text'] ) ):?><label><?php _e( $f['text'] );?></label><?php endif;?>
@@ -35,11 +34,31 @@
 	
 	<?php elseif( $f['type'] == 'repeater' ):?>
 	<!-- REPEATER -->
-	<table>
-		<tr>
-			<td>Label</td>
-		</tr>
-	</table>	
+	<div data-behaviour='orbit-repeater' data-slug='<?php _e( $slug );?>' data-slugs='<?php _e( implode( ',', array_keys( $f['items'] ) ) );?>' style="border: #ddd solid 1px;padding:20px;background: #eee;">
+		<div class='hidden-item' style="display:none;">
+		<?php 
+			foreach( $f['items'] as $item_slug => $item ){ 
+				$this->field_html( $item_slug, $item ); 
+			}
+		?>
+		</div>
+		
+		<div class='nested-fields'>
+			<?php $i = 0; foreach( $f['val'] as $row ): if( implode( ',', array_keys( $row ) ) == implode( ',', array_keys( $f['items'] ) ) ):?>
+			<div class='item'>
+			<?php 
+				foreach( $f['items'] as $item_slug => $item ){ 
+					if( isset( $row[ $item_slug ] ) ){
+						$item['val'] = $row[ $item_slug ];
+						$this->field_html( $slug.'['.$i.']['.$item_slug.']', $item ); 
+					}
+				}
+			?>
+			</div>
+			<?php $i++;endif;endforeach;?>
+		</div>
+		<button type='button' data-behaviour='clone' class='button'>Add Item</button>
+	</div>	
 	<!-- REPEATER END -->
 	
 	<?php elseif( $f['type'] == 'dropdown' && isset( $f['options'] ) && count( $f['options'] ) ):?>
