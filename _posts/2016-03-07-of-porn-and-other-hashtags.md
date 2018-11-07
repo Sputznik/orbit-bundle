@@ -1,0 +1,29 @@
+---
+ID: 403
+post_title: Of porn and other hashtags
+author: Susan George Gordon
+post_excerpt: "It's very easy to flow where the culture is flowing but it takes courage and wisdom from above to be counter-cultural. Why would you be like everybody else when you are called to be different?"
+layout: post
+permalink: >
+  https://churchbuzz.in/of-porn-and-other-hashtags/
+published: true
+post_date: 2016-03-07 10:39:25
+---
+I, like a good percentage of people in my generation like to think that I am social media savvy. I have Facebook, Instagram, twitter and LinkedIn accounts! I know there are many more cooler and younger sites out there now. What can I say, I am not that cool or young anymore! Sigh!
+
+Out of all the social media sites I use, I like Instagram the best. It's just neat. And there are only pictures. I love pictures. And the filters make you look like you are so fancy! Who doesn't like to look fancy? Not me! With Instagram, also came the hashtag frenzy! You know, the symbol (#) we used to write 'number'. If you want to be popular, or get more followers, or find like-minded people, or to know what's trending; hashtags are very useful. You can kind of know how insta-savvy a person is by seeing the number and the kind of hashtags on one's pics. One might think it's quite irrelevant, but it's not. It's serious business; for people who want it to be!
+
+Just like every other thing, hashtags too evolved. Initially, we used to have hashtags like #family, #friends, #food , #tbt etc. But now, things have taken off to a different level, almost to the level that if it's not suffixed with -porn or -gasm it's not cool! I see a lot of people whom I follow on instagram, most of whom I met at church, using hashtags like #foodporn , #architectureporn, #foodgasm etc. generously. Currently, there are 83, 482, 627 tags under #foodporn , 1, 111, 855 under #wordporn, 1, 979, 528 under #architectureporn and 15, 411, 853 under #foodgasm. Now, don't think that I am under the delusion that this world is a little piece of heaven. I know it's quite the contrary. But what baffles me is the use of these terms by church-going christians. By using these terms what you are trying to convey is that the picture you have posted is good or even great. So when one suffixes something with –porn one is basically saying that porn is good. Here’s some news for you. Porn is not good. It is the opposite of good.
+
+I don't know if you know this but Instagram doesn't allow you to hashtag anything with #sex or #porn. They are still banned by Instagram. The makers of Instagram are still trying to "protect" it's users from these very socially accepted terms while Christians are trying to be cool with the trending hashtags. Irony?
+
+Oxford dictionary defines porn as "Printed or visual material containing the explicit description or display of sexual organs or activity, intended to stimulate sexual excitement." I am not saying people are actually thinking of porn while putting the hashtags. But why would you tag something with a hashtag like #foodgasm if you don't actually mean what it means? And what it means doesn't even make sense! Let us be people who actually mean what we say. Let's not say random things just because other people are. Do you still want to use #foodporn under the pic of a place full of pancakes? Or write #architectureporn under the pic of India gate in sunset? Please think about it.
+
+I have also heard people replacing abuses with words that sound like them. Guess what? It doesn't matter that you replaced them. People heard exactly the word you were trying to replace it with! I understand if you are trying to get rid of using bad language by saying less offensive or non offensive things. But you need to put an expiry date on that because people are watching and are getting influenced whether we like it or not! You may be living a good christian life, but your words can set very bad examples.
+Enough of what I have seen other people do or say. Let me tell you of something I have been convicted of. If you check my Facebook account you will find that in the past I have commented on many pics of my girl friends with the comment , "sexy", "hot" etc. The Oxford dictionary meaning of sexy is "sexually attractive or exciting". I know for a fact that I did not find any of my girl friends sexually attractive. I could have easily replaced them with "beautiful" or "lovely" . But I went with what was trending and popular and accepted by the world. It's just the way we are. We want to be cool. We want to blend in.
+We are living in a day and age where living/speaking a counter-culture life is the hardest thing to do. But we are called to do exactly that! I know that I am struggling and probably many of you are too. The advantage we have is that we are not called to do everything on our own. We have the assistance of the HolySpirit- the helper, nudging and prompting us even when we are failing day after day.
+So let us "not be conformed to this world,but be transformed by the renewal of our mind, that by testing we may discern what is the will of God, what is good and acceptable and perfect. (Romans 12:2 adapted)
+
+It's very easy to flow where the culture is flowing but it takes courage and wisdom from above to be counter-cultural. Why would you be like everybody else when you are called to be different? If the world loves us, it's time to question our citizenship, for it says, " If you were of the world, the world would love you as its own; but because you are not of the world, but I chose you out of the world, therefore the world hates you." John 15:19
+
+I think it's high time the world hated us! What do you think?

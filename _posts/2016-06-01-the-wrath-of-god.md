@@ -1,0 +1,28 @@
+---
+ID: 608
+post_title: The Wrath of God
+author: Stephen Thomas
+post_excerpt: >
+  The wrath of God brings a picture of an
+  erratic capricious deity, who loses His
+  temper, and is out to get humanity. On
+  the contrary, God’s wrath is devoid of
+  any such unprincipled quality.
+layout: post
+permalink: https://churchbuzz.in/the-wrath-of-god/
+published: true
+post_date: 2016-06-01 11:06:15
+---
+<b>What Does The “Wrath” of God Mean?</b>
+
+‘Wrath’ is an old English word defined as a ‘deep, intense anger and indignation’. ‘Anger’ is defined as ‘stirring of resentful displeasure and strong antagonism, by a sense of injury or insult’; ‘indignation’ as ‘righteous anger aroused by injustice and baseness’. Such is the nature of wrath. The bible talks about ‘wrath’ with reference to both God and man.
+
+There are two terms used in the bible to express “Wrath.” The word <span style="color: #ff0000;"><b><i>θυμός</i></b></span> <i>(Thumós)</i>, which is derived from <i>thuō</i> means “rush along, getting heated up, breathing violently.” The English words “Thermos” or “Thermometer” originates from this word.  It is strictly a <span style="text-decoration: underline;">passion driven</span> behavior, that is, actions emerging out of strong impulses or intense emotion. It is mostly with reference to the gods of the heathen and humans, indicating rage.
+
+The word <span style="color: #ff0000;"><b><i>ὀργή</i></b></span><em>(orgḗ)</em> which is derived from the word <i>orgáō</i>, means “to teem, swelling up to judiciously oppose.” This is, a properly settled, firm, controlled, and just feeling; an aversion to that which is unjust or evil. The moment we hear the word “Wrath” in relation to God, we think of an erratic, uncontrollable, capricious deity, who loses His temper, and is out to get humanity. On the contrary, God’s wrath is devoid of any such unprincipled quality.
+
+When Isaiah says, “Holy, Holy, Holy, is the Lord of hosts... <span style="color: #000080;"><i>(Isaiah 6:3)</i></span>,” he is talking of an infinitely holy God who has a constant aversion to ALL that is evil. That is why, Paul says, “the wrath of God is revealed from heaven against all ungodliness and unrighteousness of men... <span style="color: #000080;"><i>(Romans 1:18)</i></span>.” Paul uses the present tense, when depicting this attribute of God. That is, God’s aversion to ALL that is evil, is constant. Please understand that this wrath of God is only revealed to mankind who “...suppress the truth in unrighteousness... <span style="color: #000080;"><i>(Romans 1:18)</i></span>.”
+
+Notice what they do for the wrath of God to be revealed against them. First of all, they “... <span style="text-decoration: underline;"><span style="color: #ff0000; text-decoration: underline;">suppress</span></span> the truth in unrighteousness... <span style="color: #000080;"><i>(Romans 1:18)</i></span>.” The word <span style="text-decoration: underline;"><span style="color: #ff0000; text-decoration: underline;">“suppress”</span></span> means “to hold down,” “conceal,” “stifle,” or “restrain.” There is a deliberate cover-up, or willful denial of the all-powerful God, who is the creator. Calvin in his Commentaries on the Epistle to the Romans explains, <i>“Man was created to be a spectator of this formed world, and that eyes were given him, that he might, by looking on so beautiful a picture, be led to the author himself...</i>.” However, mankind deliberately <span style="text-decoration: underline;"><span style="color: #ff0000; text-decoration: underline;">suppresses</span></span> the truth of the existence of a creator God, <i>although His invisible attributes are clearly seen, being understood by the things that are made, even His eternal power and Godhead, so that they are without excuse</i> <span style="color: #000080;"><i>(Romans 1:21)</i></span>. “It takes a concerted act of the will to deny that a vastly powerful God made and sustains the Creation (Kent Hughes).” By deliberately suppressing the truth of the existence of God, they became futile in their thoughts, and their foolish hearts were darkened. Professing to be wise in their own eyes, they became fools. No wonder did David say, “The fool has said in his heart, ‘There is no God’ <span style="color: #000080;"><i>(Psalm 14:1)</i></span>.” As a result, they turned to idolatry, immorality and gross iniquity <span style="color: #000080;"><i>(Romans 1:21-32)</i></span>.
+
+Secondly, notice that they “...suppress <span style="text-decoration: underline;"><span style="color: #ff0000; text-decoration: underline;">the truth</span></span> in unrighteousness… <span style="color: #000080;"><i>(Romans 1:18)</i></span>.” Humanity without Christ suppress the truth God has faithfully revealed. Jesus said, “I am the way, <span style="text-decoration: underline;"><span style="color: #ff0000; text-decoration: underline;">the truth</span></span>, and the life. No one comes to the Father except through Me <span style="color: #000080;"><i>(John 14:6)</i></span>.” The good news of the Gospel is that the love of God surpasses anything that mankind can suppress. Because “God did not appoint us to wrath, but to obtain salvation through our Lord Jesus Christ... <span style="color: #000080;"><i>(1 Thessalonians 5:9)</i></span>.” Jesus said, “He who believes in the Son has everlasting life; and he who does not believe in the Son shall not see life, but the wrath of God abides on him <span style="color: #000080;"><i>(John 3:36)</i></span>.” The only way to escape the wrath of God is by embracing <span style="text-decoration: underline;"><span style="color: #ff0000; text-decoration: underline;">the Truth</span></span>, who is Christ.
