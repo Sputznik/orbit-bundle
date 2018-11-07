@@ -12,3 +12,5 @@ Create wordpress custom post types and custom taxonomies. Search and filter thro
 1. Create a folder "orbit_query" within the theme.
 2. To create a new template "card". Create a file with the name "articles-card" inside the folder "wp-content/[your-theme]/orbit_query".
 3. To use the new created template, within the shortcode [orbit_query] use [orbit_query style=card].  
+
+Works with wp github plugin
