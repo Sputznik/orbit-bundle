@@ -114,6 +114,13 @@
 	
 	/* ENQUEUE ASSETS */
 	add_action( 'wp_enqueue_scripts', function(){
+		
 		wp_enqueue_style( 'orbit-blocks' );
+		
+		// ENQUEUE ORBIT QUERY CSS
+		wp_enqueue_style( 'orbit-query', plugins_url( 'dist/css/orbit-query.css', __FILE__ ), array() );
+		
 	} );
+	
+	
 	
