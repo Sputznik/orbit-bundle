@@ -44,7 +44,7 @@
 		</div>
 		
 		<div class='nested-fields'>
-			<?php $i = 0; foreach( $f['val'] as $row ): if( implode( ',', array_keys( $row ) ) == implode( ',', array_keys( $f['items'] ) ) ):?>
+			<?php $i = 0; if( is_array( $f['val'] ) ):foreach( $f['val'] as $row ): if( implode( ',', array_keys( $row ) ) == implode( ',', array_keys( $f['items'] ) ) ):?>
 			<div class='item'>
 			<?php 
 				foreach( $f['items'] as $item_slug => $item ){ 
@@ -55,7 +55,7 @@
 				}
 			?>
 			</div>
-			<?php $i++;endif;endforeach;?>
+			<?php $i++;endif;endforeach;endif;?>
 		</div>
 		<button type='button' data-behaviour='clone' class='button'>Add Item</button>
 	</div>	
