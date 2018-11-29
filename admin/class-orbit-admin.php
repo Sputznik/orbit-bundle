@@ -42,70 +42,6 @@
 			
 			add_submenu_page( 'orbit-types', 'Settings', 'Orbit Settings', 'manage_options', 'orbit-settings', array( $this, 'settings_page' ) );
 		}
-		/*
-		public function kv_options_init() { 
-			 register_setting(
-				'vaajo_general', // Option group
-				'vaajo_general', // Option name
-				array( $this, 'sanitize' ) // Sanitize
-			);
-
-			add_settings_section(
-				'setting_section_id', // ID
-				'All Settings', // Title
-				array( $this, 'print_section_info' ), // Callback
-				'vaajo-setting-admin' // Page
-			); 
-			 add_settings_field(
-				'logo_image', 
-				'Logo Image', 
-				array( $this, 'logo_image_callback' ), 
-				'vaajo-setting-admin', 
-				'setting_section_id'
-			);  		
-			
-		register_setting(
-				'vaajo_social', // Option group
-				'vaajo_social', // Option name
-				array( $this, 'sanitize' ) // Sanitize
-			);
-			add_settings_section(
-				'setting_section_id', // ID
-				'Social Settings', // Title
-				array( $this, 'print_section_info' ), // Callback
-				'vaajo-setting-social' // Page
-			);  
-			
-		add_settings_field(
-				'fb_url', // ID
-				'Facebook URL', // Title 
-				array( $this, 'fb_url_callback' ), // Callback
-				'vaajo-setting-social', // Page
-				'setting_section_id' // Section           
-			);
-			
-			
-		register_setting(
-				'vaajo_footer', // Option group
-				'vaajo_footer', // Option name
-				array( $this, 'sanitize' ) // Sanitize
-			);
-			add_settings_section(
-				'setting_section_id', // ID
-				'Footer Details', // Title
-				array( $this, 'print_section_info' ), // Callback
-				'vaajo-setting-footer' // Page
-			);         
-
-			add_settings_field(
-				'hide_more_themes', 
-				'Hide Find more themes at Kvcodes.com', 
-				array( $this, 'hide_more_themes_callback' ), 
-				'vaajo-setting-footer', 
-				'setting_section_id'
-			);
-	}
-		*/
 		
 		function settings_page(){
 			include "pages/settings.php";
@@ -203,9 +139,11 @@
 				wp_enqueue_script('orbit-query', plugins_url( 'orbit-bundle/dist/js/orbit_query_tinymce_btn.js' ), array( 'jquery', 'orbit-form-default' ), '1.0.0', true );
 			}
 			
-			wp_enqueue_style( 'orbit-form', plugins_url( 'orbit-bundle/dist/css/admin-style.css' ), array(), "1.0.7" );
+			wp_enqueue_style( 'orbit-form', plugins_url( 'orbit-bundle/dist/css/admin-style.css' ), array(), "1.0.8" );
 			
-			wp_enqueue_script('orbit-cf', plugins_url( 'orbit-bundle/dist/js/orbit_cf.js' ), array( 'jquery' ), '1.0.2', true );
+			wp_enqueue_script( 'orbit-repeater', plugins_url( 'orbit-bundle/dist/js/repeater.js' ), array( 'jquery' ), '1.0.0', true );
+			
+			wp_enqueue_script( 'orbit-cf', plugins_url( 'orbit-bundle/dist/js/orbit_cf.js' ), array( 'jquery', 'orbit-repeater' ), '1.0.3', true );
 		}
 
 		

@@ -34,7 +34,8 @@
 	
 	<?php elseif( $f['type'] == 'repeater' ):?>
 	<!-- REPEATER -->
-	<div data-behaviour='orbit-repeater' data-slug='<?php _e( $slug );?>' data-slugs='<?php _e( implode( ',', array_keys( $f['items'] ) ) );?>' style="border: #ddd solid 1px;padding:20px;background: #eee;">
+	<div data-behaviour='orbit-repeater' data-slug='<?php _e( $slug );?>' data-rows='<?php _e( json_encode( $f['val'] ) );?>' data-fields='<?php _e( json_encode( $f['items'] ) );?>' style="border: #ddd solid 1px;padding:20px;background: #eee;">
+		<?php /*
 		<div class='hidden-item' style="display:none;">
 		<?php 
 			foreach( $f['items'] as $item_slug => $item ){ 
@@ -58,6 +59,7 @@
 			<?php $i++;endif;endforeach;endif;?>
 		</div>
 		<button type='button' data-behaviour='clone' class='button'>Add Item</button>
+		*/ ?>
 	</div>	
 	<!-- REPEATER END -->
 	
