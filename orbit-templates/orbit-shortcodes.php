@@ -9,7 +9,7 @@
 			return $post->post_excerpt;
 		}
 		
-		return wp_trim_excerpt( $post->post_content );
+		return wp_trim_excerpt();
 		
 	} );
 	
