@@ -25,12 +25,12 @@
 .orbit-read-more:hover{
 	text-decoration: none;
 }
-.orbit-three-grid, .orbit-jumbo-grid{
+.orbit-three-grid, .orbit-two-grid, .orbit-jumbo-grid{
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-gap: 20px;
 }
-.orbit-jumbo-grid .orbit-article-db, .orbit-three-grid .orbit-article-db{
+.orbit-jumbo-grid .orbit-article-db, .orbit-three-grid .orbit-article-db, .orbit-two-grid .orbit-article-db{
 	border: #eee solid 1px;
 	list-style: none;
 }
@@ -42,6 +42,10 @@
 
 .orbit-jumbo-grid{
 	grid-template-columns: 1fr;
+}
+
+.orbit-two-grid{
+	grid-template-columns: 1fr 1fr;
 }
 
 .orbit-list-scroll{
@@ -141,7 +145,7 @@ li.orbit-article-db img{
 }
 
 @media( max-width: 768px ){
-	.orbit-three-grid, .orbit-jumbo-grid .orbit-article-db{
+	.orbit-three-grid, .orbit-jumbo-grid .orbit-article-db, .orbit-two-grid{
 		grid-template-columns: 1fr;	
 	}
 	.orbit-list .orbit-thumbnail-bg{
