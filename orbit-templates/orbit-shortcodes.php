@@ -28,6 +28,9 @@
 	/* SHORTCODE TO RETURN THE LINK OF THE POST */
 	add_shortcode( 'orbit_link', function(){ return get_permalink(); } );
 	
+	/* SHORTCODE TO RETURN THE POST TYPE */
+	add_shortcode( 'orbit_post_type', function(){ return get_post_type(); } );
+	
 	/* SHORTCODE TO RETURN THE AUTHOR OF THE POST */
 	add_shortcode( 'orbit_author', function(){ return get_the_author(); } );
 	
