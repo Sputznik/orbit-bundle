@@ -37,15 +37,15 @@ jQuery.fn.orbit_batch_process = function(){
 
 			// PREPARE THE DATA THAT NEEDS TO BE PASSES THROUGH THE AJAX CALL
 			var data = params;
-			data['space_batch_action'] 	= el.data('action');
-			data['space_batches']		= batches;
-			data['space_batch_step']	= batch_step;
+			data['orbit_batch_action'] 	= el.data('action');
+			data['orbit_batches']		= batches;
+			data['orbit_batch_step']	= batch_step;
 
 			// UPDATE THE PROGRESS IN THE BUTTON HTML
 			el.find('button').html( el.data('btn') + " " + ( batch_step - 1 ) + "/" + batches );
 
 			jQuery.ajax({
-				'url'		: el.data('url'),
+				'url'			: el.data('url'),
 				'error'		: function(){ alert( 'Error has occurred' ); },
 				'data'		: data,
 				'success'	: function( html ){

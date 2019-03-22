@@ -12,6 +12,7 @@
 		"lib/class-orbit-base.php",
 		"lib/class-orbit-shortcode.php",
 		"lib/class-orbit-batch-process.php",
+		"lib/class-orbit-csv.php",
 		"orbit-search/orbit-search.php",
 		"orbit-query/orbit-query.php",
 		"orbit-templates/orbit-templates.php",

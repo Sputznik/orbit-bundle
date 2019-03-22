@@ -64,14 +64,15 @@
   $batch_process = ORBIT_BATCH_PROCESS::getInstance();
 
   echo $batch_process->plain_shortcode( array(
-    'title'	       => '',
-    'desc'			   => '',
-    'batches'		   => 10,
-    'btn_text' 		 => 'Import CSV',
-    //'batch_action' => 'import_terms',
-    'params'		   => array(
-      'per_page'	 => 100,
-      'taxonomy'   => '', 
+    'title'	      => '',
+    'desc'			  => '',
+    'batches'		  => 10,
+    'btn_text' 		=> 'Import CSV',
+    'batch_action'=> 'import_terms',
+    'params'		  => array(
+      'per_page'	=> 100,
+      'taxonomy'  => 'locations',
+      'file'      => 'C:\wamp64\www\wordpress\wp-content\uploads\2019\03\locations.csv'
     )
   ) );
 ?>
