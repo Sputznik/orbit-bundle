@@ -37,17 +37,18 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE{
 
 		/* CREATE ATTS ARRAY FROM DEFAULT PARAMETERS IN THE SHORTCODE */
 		$atts = shortcode_atts( array(
-			'title'			=> 'Title of the process',
-			'desc'			=> 'Description of the process',
-			'batches' 		=> '10',
-			'btn_text' 		=> 'Process Request',
+			'title'					=> 'Title of the process',
+			'desc'					=> 'Description of the process',
+			'batches' 			=> '10',
+			'btn_text' 			=> 'Process Request',
 			'batch_action' 	=> 'default',
+			'auto'					=> '1',
 			'params'		=> array()
 		), $atts, $this->slug );
 
 		$url = admin_url( 'admin-ajax.php' ) . '?action=' . $this->shortcode;
 
-		include "templates/batch_process.php";
+		_e( "<div data-atts='".wp_json_encode( $atts )."' data-url='".$url."' data-behaviour='orbit-batch'></div>");
 
     return ob_get_clean();
 

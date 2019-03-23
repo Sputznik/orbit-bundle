@@ -2,79 +2,133 @@ jQuery.fn.orbit_batch_process = function(){
 
 	return this.each(function(){
 
-		var el 			  = jQuery(this),
-			batches 	  = el.data('batches'),
-			batch_step 	= 1,
-			params 		  = el.data('params');
+		var $el 			= jQuery(this),
+			atts 				= $el.data('atts'),
+			batch_step 	= 1;
 
-		/* HIDE ELEMENTS */
-		el.find('.space-progress-container').hide();
-		el.find('.logs-container').hide();
+		function startProgress(){
+			ajaxCall();
+			$el.find( 'button' ).attr( 'disabled', 'disabled' );
+
+			/* SHOW ELEMENTS */
+			$el.find( '.progress-container' ).show();
+			$el.find( '.logs-container' ).show();
+		};
+
+		function init(){
+
+			// ELEMENT: TITLE
+			if( atts.title ){
+				var $title = jQuery( document.createElement('div') );
+				$title.addClass( 'progress-title' );
+				$title.html( atts.title );
+				$title.appendTo( $el );
+			}
+
+			// ELEMENT: DESCRIPTION
+			if( atts.desc ){
+				var $desc = jQuery( document.createElement('div') );
+				$desc.addClass( 'progress-desc' );
+				$desc.html( atts.desc );
+				$desc.appendTo( $el );
+			}
+
+			var $progress_container = jQuery( document.createElement('div') );
+			$progress_container.addClass( 'progress-container' );
+			$progress_container.html( '<div class="progress"></div>' );
+			$progress_container.hide();
+
+			if( atts.btn_text ){
+				var $btn = jQuery( document.createElement('button') );
+				$btn.addClass( 'progress-btn' );
+				$btn.html( atts.btn_text );
+				$btn.appendTo( $el );
+
+				/* button click */
+				$btn.click( function( ev ){
+					ev.preventDefault();
+					startProgress();
+				});
+
+
+
+			}
+
+			var $result = jQuery( document.createElement('div') );
+			$result.addClass( 'result' );
+			$result.appendTo( $el );
+
+
+			var $logs_container = jQuery( document.createElement('div') );
+			$logs_container.addClass( 'logs-container' );
+			$logs_container.html( '<h5>Logs</h5><ul class="logs"></ul>' );
+			$logs_container.appendTo( $el );
+			$logs_container.hide();
+
+			// TRIGGER THE BUTTON
+			if( atts.auto ){
+				$btn.click();
+			}
+		}
 
 		/* ADD LOG */
-		el.addLog = function( log ){
+		function addLog( log ){
 			var li = jQuery( document.createElement('li') );
 			li.html( log );
-			li.appendTo( el.find('.logs') );
+			li.appendTo( $el.find('.logs') );
 		};
 
 		/* CSS PROGRESS */
-		el.updateProgress = function(){
-			var width = ( ( batch_step-1 ) / batches ) * 100;
+		function updateProgress(){
+			var width = ( ( batch_step-1 ) / atts.batches ) * 100;
 
 			if( width > 100 ){ width = 100;}
 			if( width < 0 ){ width = 0; }
 
 			if( width == 100 ){
-				el.find('.result').html('Entire process has been completed');
+				$el.find( '.result' ).html( 'Entire process has been completed' );
 			}
 
-			el.find('.space-progress').animate({ width: width + '%' });
+			$el.find( '.progress' ).animate({ width: width + '%' });
 		};
 
 		/* AJAX CALL */
-		el.ajaxCall = function(){
+		function ajaxCall(){
 
 			// PREPARE THE DATA THAT NEEDS TO BE PASSES THROUGH THE AJAX CALL
-			var data = params;
-			data['orbit_batch_action'] 	= el.data('action');
-			data['orbit_batches']		= batches;
-			data['orbit_batch_step']	= batch_step;
+			var data = atts.params;
+			data['orbit_batch_action'] 	= atts.action;
+			data['orbit_batches']				= atts.batches;
+			data['orbit_batch_step']		= batch_step;
 
 			// UPDATE THE PROGRESS IN THE BUTTON HTML
-			el.find('button').html( el.data('btn') + " " + ( batch_step - 1 ) + "/" + batches );
+			$el.find('button').html( atts.btn_text + " " + ( batch_step - 1 ) + "/" + atts.batches );
 
 			jQuery.ajax({
-				'url'			: el.data('url'),
+				'url'			: $el.data('url'),
 				'error'		: function(){ alert( 'Error has occurred' ); },
 				'data'		: data,
 				'success'	: function( html ){
 
 					/* CHECK IF BATCH STEP INCREMENT IS ITERATED */
-					if( batch_step <= batches ){
+					if( batch_step <= atts.batches ){
 
 						batch_step++;			// INCREMENT BATCH STEP
 
-						el.addLog( html );		// ADD TO THE LOG FROM THE AJAX HTML RESPONSE
+						addLog( html );		// ADD TO THE LOG FROM THE AJAX HTML RESPONSE
 
-						el.updateProgress();	// UPDATE PROGRESS BAR
+						updateProgress();	// UPDATE PROGRESS BAR
 
-						el.ajaxCall();			// EXECUTE THE NEXT BATCH CALL
+						ajaxCall();				// EXECUTE THE NEXT BATCH CALL
 
 					}
 				}
 			});
 		};
 
-		/* button click */
-		el.find('button').click( function(){
-			el.ajaxCall();
-			el.find('button').attr('disabled', 'disabled');
+		console.log( atts );
 
-			/* SHOW ELEMENTS */
-			el.find('.space-progress-container').show();
-			el.find('.logs-container').show();
-		});
+		init();
 
 	});
 };
