@@ -49,15 +49,13 @@ class ORBIT_CSV extends ORBIT_BASE{
 		if( isset( $term['term_id'] ) ){ return $term['term_id']; }
 		return 0;
 	}
-	/*
-	function reset_locations(){
-		$terms = get_terms( 'locations', array( 'fields' => 'ids', 'hide_empty' => false ) );
+
+	function resetTerms( $taxonomy ){
+		$terms = get_terms( $taxonomy, array( 'fields' => 'ids', 'hide_empty' => false ) );
 		foreach ( $terms as $value ) {
-			wp_delete_term( $value, 'locations' );
+			wp_delete_term( $value, $taxonomy );
 		}
 	}
-	*/
-
 
 
 	function syncTerms( $arrayCsv, $taxonomy ){
