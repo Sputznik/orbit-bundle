@@ -97,7 +97,7 @@ jQuery.fn.orbit_batch_process = function(){
 
 			// PREPARE THE DATA THAT NEEDS TO BE PASSES THROUGH THE AJAX CALL
 			var data = atts.params;
-			data['orbit_batch_action'] 	= atts.action;
+			data['orbit_batch_action'] 	= atts.batch_action;
 			data['orbit_batches']				= atts.batches;
 			data['orbit_batch_step']		= batch_step;
 

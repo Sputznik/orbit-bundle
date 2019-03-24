@@ -165,7 +165,7 @@
 
 			wp_enqueue_script( 'orbit-cf', plugins_url( 'orbit-bundle/dist/js/orbit_cf.js' ), array( 'jquery', 'orbit-repeater' ), '1.0.3', true );
 
-			wp_enqueue_script( 'orbit-bp', plugins_url( 'orbit-bundle/dist/js/batch-process.js' ), array( 'jquery' ), '1.0.4', true );
+			wp_enqueue_script( 'orbit-bp', plugins_url( 'orbit-bundle/dist/js/batch-process.js' ), array( 'jquery' ), '1.0.5', true );
 		}
 
 
