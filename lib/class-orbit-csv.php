@@ -10,9 +10,15 @@ class ORBIT_CSV extends ORBIT_BASE{
       $path = stripslashes( $_GET['file'] );
 			$arrayCsv = $this->toArray( $path );
 
-			$offset = ( $_GET['orbit_batch_step'] - 1 ) * $_GET['orbit_batches'];
+			echo $_GET['per_page'];
+
+			$offset = ( $_GET['orbit_batch_step'] - 1 ) * $_GET['per_page'];
 			if( ! $offset ){ $offset = 1; }
-			$selected_array_csv = array_slice( $arrayCsv, $offset, $_GET['orbit_batches'] );
+			$selected_array_csv = array_slice( $arrayCsv, $offset, $_GET['per_page'] );
+
+			echo "<pre>";
+			print_r( $selected_array_csv );
+			echo "</pre>";
 
 			$this->syncTerms( $selected_array_csv, $_GET['taxonomy'] );
 
