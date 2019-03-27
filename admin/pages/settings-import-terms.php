@@ -34,16 +34,26 @@
     if ( $movefile && ! isset( $movefile['error'] ) ) {
       echo "File is valid, and was successfully uploaded.\n";
 
+      $orbit_csv = ORBIT_CSV::getInstance();
+      $num_rows = $orbit_csv->numRows( $movefile['file'] );
+
+      $per_page = 100;
+
+      $batches = round( $num_rows / $per_page );
+      if( !$batches ){
+        $batches = 1;
+      }
+
       $batch_process = ORBIT_BATCH_PROCESS::getInstance();
 
       echo $batch_process->plain_shortcode( array(
         'title'	      => '',
         'desc'			  => '',
-        'batches'		  => 10,
+        'batches'		  => $batches,
         'btn_text' 		=> 'Import CSV',
         'batch_action'=> 'import_terms',
         'params'		  => array(
-          'per_page'	=> 100,
+          'per_page'	=> $per_page,
           'taxonomy'  => $_POST['taxonomy'],
           'file'      => $movefile['file']
         )

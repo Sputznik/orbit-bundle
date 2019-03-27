@@ -22,6 +22,8 @@ class ORBIT_CSV extends ORBIT_BASE{
 
 			$this->syncTerms( $selected_array_csv, $_GET['taxonomy'] );
 
+			//echo "done";
+
 		});
 
 	}
@@ -43,13 +45,13 @@ class ORBIT_CSV extends ORBIT_BASE{
 	}
 
 	// CHECK IF THE TERM EXISTS, IF NOT CREATE A NEW TERM
-	function syncTerm( $text, $taxonomy, $parent = 0 ){
+	function syncTerm( $text, $taxonomy, $parent, $description ){
 		$term = term_exists( $text, $taxonomy, $parent );
 
 		if( !$term ){
 
 			// TERM DOES NOT EXIST, SO CREATE NEW TERM
-			$term = wp_insert_term( $text, $taxonomy, array( 'parent' => $parent ) );
+			$term = wp_insert_term( $text, $taxonomy, array( 'parent' => $parent, 'description'	=> $description ) );
 		}
 
 		if( isset( $term['term_id'] ) ){ return $term['term_id']; }
@@ -68,10 +70,27 @@ class ORBIT_CSV extends ORBIT_BASE{
 
 		foreach( $arrayCsv as $rowCsv ){
 
-			$parent_id = $this->syncTerm( $rowCsv[0], $taxonomy );
+			$parent_id = 0;
 
-			if( $parent_id && count( $rowCsv ) > 1 ){ $this->syncTerm( $rowCsv[1], $taxonomy, $parent_id ); }
+			$desc = "";
 
+			// FIRST ADD THE PARENT OR GET THE ID IF IT ALREADY EXISTS
+			if( is_array( $rowCsv ) && count( $rowCsv ) > 1 && $rowCsv[1] ){
+				$parent_id = $this->syncTerm( $rowCsv[1], $taxonomy, 0, '' );
+			}
+
+			// ADD DESCRIPTION
+			if( is_array( $rowCsv ) && count( $rowCsv ) > 2 && $rowCsv[2] ){
+				$desc = $rowCsv[2];
+			}
+
+			if( $rowCsv[0] ){
+				$term_id = $this->syncTerm( $rowCsv[0], $taxonomy, $parent_id, $desc );
+			}
+
+
+			//print_r( $term_id );
+			//echo "<br>";
 
 		}
 
