@@ -23,17 +23,17 @@
 	margin:0 0 20px;
 	border:#EEE solid 1px;
 }
-	
+
 .orbit-search-form input[type=text]{
 	border:#ccc solid 1px;
 	width:100%;
 }
-	
+
 .orbit-search-form .twitter-typeahead{
 	display:block !important;
 }
-	
-	
+
+
 .orbit-search-form .typeahead, .orbit-search-form .tt-query,.orbit-search-form .tt-hint {
 	border: 2px solid #CCCCCC;
 	font-size: 16px;
@@ -42,12 +42,12 @@
 	outline: medium none;
 	padding: 8px 12px;
 }
-	
+
 .orbit-search-form .tt-query {
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
 }
 .orbit-search-form .tt-hint {
-	color: #999 !important;	
+	color: #999 !important;
 }
 .orbit-search-form .tt-dropdown-menu {
 	background-color: #FFFFFF;
@@ -73,4 +73,15 @@
 
 .orbit-form-group{
 	margin-bottom: 20px;
+}
+
+/* FANCY BOOTSTRAP DROPDOWN TO ACCOMODATE MULTIPLE CHECKBOXES */
+[data-behaviour~=bt-dropdown-checkboxes] ul.dropdown-menu{
+	max-height: 250px;
+	overflow-y: scroll;
+}
+
+[data-behaviour~=bt-dropdown-checkboxes] ul.dropdown-menu li.checkbox{
+	padding:0 10px;
+	color: #333;
 }

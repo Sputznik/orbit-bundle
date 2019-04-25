@@ -8,6 +8,8 @@
     Author URI: http://sputznik.com
     */
 
+	define( 'ORBIT_BUNDLE_VERSION', '1.0.8' );
+
 	$inc_files = array(
 		"lib/class-orbit-base.php",
 		"lib/class-orbit-shortcode.php",
