@@ -9,6 +9,11 @@
 			'label'		=> 'Import Terms',
 			'tab'			=> plugin_dir_path(__FILE__).'settings-import-terms.php',
 			'action'	=> 'import-terms'
+		),
+		'import-posts'	=> array(
+			'label'		=> 'Import Posts',
+			'tab'			=> plugin_dir_path(__FILE__).'settings-import-posts.php',
+			'action'	=> 'import-posts'
 		)
 	);
 
