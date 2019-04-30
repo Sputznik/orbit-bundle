@@ -20,6 +20,12 @@
 
 		var $el = jQuery(this);
 
+		jQuery( document ).on("click", function( event ){
+    	if( $el !== event.target && !$el.has( event.target ).length ){
+        $el.removeClass('open');
+      }
+    });
+
 		$el.find('button').click( function(){
 
 			if( !$el.hasClass('open') ){
