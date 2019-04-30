@@ -132,9 +132,8 @@
 			$tax_query_str = '';
 
 
-
-			if( is_array ( $_GET ) && count( $_GET > 1 ) ){
-
+			if( is_array ( $_GET ) && ( count( $_GET ) > 1 ) ){
+				
 				$tax_params = array();
 
 				/* USER VALUES FROM GET PARAMETERS */
