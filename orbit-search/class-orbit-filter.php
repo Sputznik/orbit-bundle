@@ -62,18 +62,19 @@
 
 				case 'tax':
 
-					if( $atts['tax_hide_empty'] == 'true' ){
-						$atts['tax_hide_empty'] = true;
-					}
-					else{
-						$atts['tax_hide_empty'] = false;
-					}
+					if( $atts['tax_hide_empty'] == 'true' ){ $atts['tax_hide_empty'] = true; }
+					else{ $atts['tax_hide_empty'] = false; }
 
 					$atts['items'] = $this->get_terms_arr( $atts['typeval'], $atts['tax_parent'], $atts['tax_hide_empty'] );
 
 					break;
 
+				case 'postdate':
+					$atts['items'] = $this->get_post_options( $atts['typeval'] );
+					break;
+
 				case 'cf':
+
 					$atts['items'] = isset( $atts['options'] ) ? explode( ',', $atts['options'] ) : array();
 					break;
 
@@ -82,6 +83,28 @@
 			$this->display( $atts );
 
 			return ob_get_clean();
+		}
+
+		function get_post_options( $field ){
+			$options = array();
+			global $wpdb;
+
+			switch ( $field ) {
+				case 'year':
+					$years = $wpdb->get_results( "SELECT YEAR(post_date) FROM
+						{$wpdb->posts} WHERE post_status = 'publish' GROUP BY YEAR(post_date) DESC", ARRAY_N );
+					if ( is_array( $years ) && count( $years ) > 0 ) {
+		        foreach ( $years as $year ) {
+							$options[] = $year[0];
+		      	}
+		    	}
+					break;
+
+				default:
+
+					break;
+			}
+			return $options;
 		}
 
 		function get_terms( $args ){

@@ -132,13 +132,15 @@
 			$tax_query_str = '';
 
 
-			if( is_array ( $_GET ) && ( count( $_GET ) > 1 ) ){
-				
+			if( is_array ( $_GET ) && ( count( $_GET ) >= 1 ) ){
+
 				$tax_params = array();
+
+				$date_params = array();
 
 				/* USER VALUES FROM GET PARAMETERS */
 				foreach( $_GET as $slug => $value ){
-
+					
 					/* DIFFERENTIATING FIELD TYPE AND VALUE */
 					$slug_arr = explode( '_', $slug );
 
@@ -153,6 +155,10 @@
 								array_push( $tax_params, $slug_arr[1].":".$value );
 								break;
 
+							case 'postdate':
+								array_push( $date_params, $slug_arr[1].":".$value );
+								break;
+
 						}
 
 					}
@@ -160,9 +166,12 @@
 
 				$shortcode_str .= "tax_query='".implode('#', $tax_params )."'";
 
+				$shortcode_str .= " date_query='".implode('#', $date_params )."'";
 			}
 
 			$shortcode_str .= "]";
+
+			//echo $shortcode_str;
 
 			echo do_shortcode( $shortcode_str );
 
