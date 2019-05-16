@@ -102,6 +102,7 @@
 
 			_e("<div class='orbit-search-form'>");
 			_e("<form method='GET'>");
+			do_action( 'orbit_filter_form_header', $form );
 			_e( do_shortcode( $form->post_content ) );
 			_e("<p><button type='submit'>Submit</button></p>");
 			_e("</form>");
@@ -140,7 +141,7 @@
 
 				/* USER VALUES FROM GET PARAMETERS */
 				foreach( $_GET as $slug => $value ){
-					
+
 					/* DIFFERENTIATING FIELD TYPE AND VALUE */
 					$slug_arr = explode( '_', $slug );
 
