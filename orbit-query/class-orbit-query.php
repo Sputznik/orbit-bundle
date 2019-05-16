@@ -48,6 +48,12 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 	}
 
 	function get_offset($atts){
+
+		// IF PAGED ATTRIBUTE IS PASSED AS A GET PARAM
+		if( get_query_var('paged') ){
+			$atts['paged'] = max( 1, get_query_var('paged') );
+		}
+
 		return (((int)$atts['paged'] - 1) * (int)$atts['posts_per_page']) + (int)$atts['offset'];
 	}
 
