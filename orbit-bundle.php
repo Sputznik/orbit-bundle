@@ -8,7 +8,7 @@
     Author URI: http://sputznik.com
     */
 
-	define( 'ORBIT_BUNDLE_VERSION', '1.1.1' );
+	define( 'ORBIT_BUNDLE_VERSION', '1.1.2' );
 
 	$inc_files = array(
 		"lib/class-orbit-base.php",
