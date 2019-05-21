@@ -148,24 +148,24 @@
 
 
 			if( ( $hook == 'post.php' ) && ( $post_type == 'orbit-form' || $post_type == 'page' ) ){
-				wp_enqueue_script('orbit-form-default', plugins_url( 'orbit-bundle/dist/js/of.default.js' ), array( 'jquery'), '1.0.9', true );
+				wp_enqueue_script('orbit-form-default', plugins_url( 'orbit-bundle/dist/js/of.default.js' ), array( 'jquery'), ORBIT_BUNDLE_VERSION, true );
 			}
 
 			if( $hook == 'post.php' && $post_type == 'orbit-form' ) {
-				wp_enqueue_script('orbit-form', plugins_url( 'orbit-bundle/dist/js/orbit_form_tinymce_btn.js' ), array( 'jquery', 'orbit-form-default' ), '2.0.1', true );
+				wp_enqueue_script('orbit-form', plugins_url( 'orbit-bundle/dist/js/orbit_form_tinymce_btn.js' ), array( 'jquery', 'orbit-form-default' ), ORBIT_BUNDLE_VERSION, true );
 			}
 
 			if( $hook == 'post.php' && $post_type == 'page' ) {
-				wp_enqueue_script('orbit-query', plugins_url( 'orbit-bundle/dist/js/orbit_query_tinymce_btn.js' ), array( 'jquery', 'orbit-form-default' ), '1.0.0', true );
+				wp_enqueue_script('orbit-query', plugins_url( 'orbit-bundle/dist/js/orbit_query_tinymce_btn.js' ), array( 'jquery', 'orbit-form-default' ), ORBIT_BUNDLE_VERSION, true );
 			}
 
-			wp_enqueue_style( 'orbit-form', plugins_url( 'orbit-bundle/dist/css/admin-style.css' ), array(), "1.0.9" );
+			wp_enqueue_style( 'orbit-form', plugins_url( 'orbit-bundle/dist/css/admin-style.css' ), array(), ORBIT_BUNDLE_VERSION );
 
-			wp_enqueue_script( 'orbit-repeater', plugins_url( 'orbit-bundle/dist/js/repeater.js' ), array( 'jquery' ), '1.0.0', true );
+			wp_enqueue_script( 'orbit-repeater', plugins_url( 'orbit-bundle/dist/js/repeater.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
 
-			wp_enqueue_script( 'orbit-cf', plugins_url( 'orbit-bundle/dist/js/orbit_cf.js' ), array( 'jquery', 'orbit-repeater' ), '1.0.3', true );
+			wp_enqueue_script( 'orbit-cf', plugins_url( 'orbit-bundle/dist/js/orbit_cf.js' ), array( 'jquery', 'orbit-repeater' ), ORBIT_BUNDLE_VERSION, true );
 
-			wp_enqueue_script( 'orbit-bp', plugins_url( 'orbit-bundle/dist/js/batch-process.js' ), array( 'jquery' ), '1.0.5', true );
+			wp_enqueue_script( 'orbit-bp', plugins_url( 'orbit-bundle/dist/js/batch-process.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
 		}
 
 

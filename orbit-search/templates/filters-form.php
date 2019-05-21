@@ -1,7 +1,7 @@
 <div class='orbit-search-form'>
 	<div class="orbit-search-form-box">
 		<div class="orbit-search-form-title">
-			<span>Filter this data</span>
+			<span><?php _e( apply_filters( 'orbit-search-form-title', 'Filter this data' ) );?></span>
 			<span class="arrow-down"></span>
 		</div>
 		<form method='GET'>
