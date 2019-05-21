@@ -98,15 +98,9 @@
 			/* GET FORM DETAILS */
 			$form = get_post( $atts['id'] );
 
-			_e("<div class='orbit-search-container'>");
+			_e("<div class='orbit-search-container' data-behaviour='orbit-search'>");
 
-			_e("<div class='orbit-search-form'>");
-			_e("<form method='GET'>");
-			do_action( 'orbit_filter_form_header', $form );
-			_e( do_shortcode( $form->post_content ) );
-			_e("<p><button type='submit'>Submit</button></p>");
-			_e("</form>");
-			_e("</div>");
+			include( "templates/filters-form.php" );
 
 			_e("<div class='orbit-search-results'>");
 

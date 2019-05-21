@@ -9,8 +9,38 @@
 			local: JSON.parse(el.attr('data-arr'))
 		});
 
+	});
 
+	jQuery('[data-behaviour~=orbit-search]').each(function(){
 
+		var $el 				= jQuery(this),
+			$search_form 	= $el.find('.orbit-search-form');
+
+			function makeFormCollapsible(){
+				var $form 						= $search_form.find('form'),
+					window_width				= jQuery( window ).width();
+					$search_form_arrow 	= $search_form.find('.orbit-search-form-title .arrow-down');
+
+				// hide the form on mobile and make it collapsible
+				if( window_width < 768 ){
+
+					// hide the form
+					$form.hide();
+
+					// trigger collapsible
+					$search_form_arrow.click( function(){
+						$form.toggle('slide');
+					});
+				}
+			}
+
+			function init(){
+
+				makeFormCollapsible();
+
+			}
+
+		init();
 
 	});
 
