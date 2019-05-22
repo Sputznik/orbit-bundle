@@ -48,7 +48,7 @@ class ORBIT_CSV extends ORBIT_BASE{
 
 	}
 
-  function numRows( $path ){
+	function numRows( $path ){
     $arrayCsv = $this->toArray( $path );
     return count( $arrayCsv );
   }
@@ -204,6 +204,32 @@ class ORBIT_CSV extends ORBIT_BASE{
 
     }
 
+	}
+
+	// RETURNING THE FILE PATH WHICH EXISTS IN THE WP UPLOADS DIRECTORY
+	function getFilePath( $file_slug ){
+		$file = "$file_slug.csv";
+		$filePath = array();
+		$path = wp_upload_dir();
+		$filePath['path'] 	= $path['path'] . "/$file";
+		$filePath['url'] 	= $path['url'] . "/$file";
+		return $filePath;
+	}
+
+	// POSSIBLY A NEW FILE WHERE HEADER IS THE FIRST ROW OF DATA IN THE FILE
+	function addHeaderToCSV( $file_slug, $header ){
+		$path = $this->getFilePath( $file_slug );
+		$outstream = fopen( $path['path'], "w" );
+		fputcsv( $outstream, $header );
+		fclose( $outstream );
+	}
+
+	// APPENDS THE ROW OF DATA TO AN ALREADY EXISTING FILE
+	function addRowToCSV( $file_slug, $row ){
+		$path = $this->getFilePath( $file_slug );
+		$outstream = fopen( $path['path'], "a");
+		fputcsv($outstream, $row );
+		fclose($outstream);
 	}
 
 }

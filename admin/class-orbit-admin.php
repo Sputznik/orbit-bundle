@@ -165,7 +165,10 @@
 
 			wp_enqueue_script( 'orbit-cf', plugins_url( 'orbit-bundle/dist/js/orbit_cf.js' ), array( 'jquery', 'orbit-repeater' ), ORBIT_BUNDLE_VERSION, true );
 
-			wp_enqueue_script( 'orbit-bp', plugins_url( 'orbit-bundle/dist/js/batch-process.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
+			// BATCH PROCESS ENQUEUE ASSETS
+			$batch_process = ORBIT_BATCH_PROCESS::getInstance();
+			$batch_process->enqueue_assets();
+
 		}
 
 
