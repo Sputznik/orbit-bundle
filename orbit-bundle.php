@@ -16,6 +16,7 @@
 		"lib/class-orbit-batch-process.php",
 		"lib/class-orbit-csv.php",
 		"lib/class-orbit-translations.php",
+		"lib/class-orbit-util.php",
 		"orbit-search/orbit-search.php",
 		"orbit-query/orbit-query.php",
 		"orbit-templates/orbit-templates.php",

@@ -61,11 +61,12 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 		return get_option( 'sticky_posts' );
 	}
 
-	function explode_to_arr( $str, $seperator = ',' ){
-		return ! empty( $str ) ? explode( $seperator, $str ) : '';
-	}
+
 
 	function plain_shortcode( $atts, $content = false ){
+
+		$orbit_util = ORBIT_UTIL::getInstance();
+
 		ob_start();
 
 		/* GET ATTRIBUTES FROM THE SHORTCODE */
@@ -85,17 +86,17 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 
 		/* CREATE QUERY ATTRIBUTES WITH DEFAULT VALUES FROM THE SHORTCODE ATTRIBUTES */
 		$query_atts = array(
-			'post_type'				=> $this->explode_to_arr( $atts['post_type'] ),
+			'post_type'				=> $orbit_util->explode_to_arr( $atts['post_type'] ),
 			'post_status'			=> $atts['post_status'],
-			'posts_per_page'		=> $atts['posts_per_page'],
-			'cat' 					=> $atts['cat'],
-			'author'				=> $atts['author'],
-			'category_name' 		=> $atts['category_name'],
-			'tag' 					=> $atts['tag'],
-			's' 					=> $atts['s'],
-			'post__not_in' 			=> $this->explode_to_arr( $atts['post__not_in'] ),
-			'post__in'				=> $this->explode_to_arr( $atts['post__in'] ),
-			'offset'				=> self::get_offset($atts)
+			'posts_per_page'	=> $atts['posts_per_page'],
+			'cat' 						=> $atts['cat'],
+			'author'					=> $atts['author'],
+			'category_name' 	=> $atts['category_name'],
+			'tag' 						=> $atts['tag'],
+			's' 							=> $atts['s'],
+			'post__not_in' 		=> $orbit_util->explode_to_arr( $atts['post__not_in'] ),
+			'post__in'				=> $orbit_util->explode_to_arr( $atts['post__in'] ),
+			'offset'					=> self::get_offset($atts)
 		);
 
 		/* DONT FETCH SQL_CALC_FOUND_ROWS */
@@ -105,42 +106,12 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 
 		/* SET TAXONOMY QUERY IF ANY */
 		if( isset( $atts['tax_query'] ) && !empty( $atts['tax_query'] ) ){
-			$tax_arr = $this->explode_to_arr( $atts['tax_query'], "#" );
-
-			$query_atts['tax_query'] = array();
-
-			foreach( $tax_arr as $tax ){
-
-				$temp = $this->explode_to_arr( $tax, ':' );
-
-				if( count( $temp ) > 1 ){
-					array_push( $query_atts['tax_query'],
-						array(
-							'taxonomy'	=> $temp[0],
-							'field'		=> 'slug',
-							'terms'		=> $this->explode_to_arr( $temp[1] )
-						)
-					);
-				}
-			}
+			$query_atts['tax_query'] = $orbit_util->getTaxQueryParams( $atts['tax_query'] );
 		}
 
 		/* SET DATE QUERY IF ANY */
 		if( isset( $atts['date_query'] ) && !empty( $atts['date_query'] ) ){
-			$date_arr = $this->explode_to_arr( $atts['date_query'], "#" );
-
-			$query_atts['date_query'] = array();
-
-			foreach( $date_arr as $tax ){
-
-				$temp = $this->explode_to_arr( $tax, ':' );
-
-				if( count( $temp ) > 1 ){
-
-					$query_atts['date_query'][ $temp[0] ] = $temp[1];
-
-				}
-			}
+			$query_atts['date_query'] = $orbit_util->getDateQueryParams( $atts['date_query'] );
 		}
 
 		/*
@@ -158,6 +129,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			}
 			wp_reset_postdata();
 		}
+
 
 		return ob_get_clean();
 	}

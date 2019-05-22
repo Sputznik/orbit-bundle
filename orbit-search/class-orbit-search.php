@@ -100,6 +100,7 @@
 
 			_e("<div class='orbit-search-container' data-behaviour='orbit-search'>");
 
+			// TEMPLATE FOR FILTER FORM
 			include( "templates/filters-form.php" );
 
 			_e("<div class='orbit-search-results'>");
@@ -124,44 +125,16 @@
 			if( !$posts_per_page ){ $posts_per_page = 10; }
 			$shortcode_str .= "posts_per_page='".$posts_per_page."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
 
-			$tax_query_str = '';
+			// ADD TAXONOMY AND DATE QUERY PARAMETERS TO THE SHORTCODE
+			$orbit_util = ORBIT_UTIL::getInstance();
+			$extra_params = $orbit_util->paramsToString( $_GET );
 
+			if( isset( $extra_params['tax'] ) && $extra_params['tax'] ){
+				$shortcode_str .= "tax_query='".$extra_params['tax']."'";
+			}
 
-			if( is_array ( $_GET ) && ( count( $_GET ) >= 1 ) ){
-
-				$tax_params = array();
-
-				$date_params = array();
-
-				/* USER VALUES FROM GET PARAMETERS */
-				foreach( $_GET as $slug => $value ){
-
-					/* DIFFERENTIATING FIELD TYPE AND VALUE */
-					$slug_arr = explode( '_', $slug );
-
-					/* FOR CHECKBOX */
-					if( is_array( $value ) ){ $value = implode( ',', $value ); }
-
-					if( count( $slug_arr ) > 1 && $value ){
-						/* LOOK FOR FIELD TYPE */
-						switch( $slug_arr[0] ){
-
-							case 'tax':
-								array_push( $tax_params, $slug_arr[1].":".$value );
-								break;
-
-							case 'postdate':
-								array_push( $date_params, $slug_arr[1].":".$value );
-								break;
-
-						}
-
-					}
-				}
-
-				$shortcode_str .= "tax_query='".implode('#', $tax_params )."'";
-
-				$shortcode_str .= " date_query='".implode('#', $date_params )."'";
+			if( isset( $extra_params['date'] ) && $extra_params['date'] ){
+				$shortcode_str .= " date_query='".$extra_params['date']."'";
 			}
 
 			$shortcode_str .= "]";
@@ -173,7 +146,6 @@
 			_e("</div>");
 
 			_e("</div>");
-
 
 			return ob_get_clean();
 		}
