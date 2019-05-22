@@ -116,7 +116,7 @@ jQuery.fn.orbit_batch_process = function(){
 			var url = $el.data('url') + '&' + getURLParams( data );
 
 			// UPDATE THE PROGRESS IN THE BUTTON HTML
-			$el.find('button').html( atts.btn_text + " " + ( batch_step - 1 ) + "/" + atts.batches );
+			$el.find('button').html( atts.btn_text + " " + ( batch_step ) + "/" + atts.batches );
 
 			jQuery.ajax({
 				'method'	: 'GET',
@@ -132,8 +132,6 @@ jQuery.fn.orbit_batch_process = function(){
 
 					/* CHECK IF BATCH STEP INCREMENT IS ITERATED */
 					if( batch_step <= atts.batches ){
-
-
 
 						ajaxCall();				// EXECUTE THE NEXT BATCH CALL
 

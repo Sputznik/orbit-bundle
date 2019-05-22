@@ -147,6 +147,51 @@ class ORBIT_CSV extends ORBIT_BASE{
 		return $headerInfo;
 	}
 
+	function exportPosts( $file_slug, $headerInfo, $query_args ){
+
+		$the_query = new WP_Query( $query_args );
+
+		if ( $the_query->have_posts() ) {
+			// ITERATING THROUGH THE QUERY POSTS
+			while ( $the_query->have_posts() ) {
+				$the_query->the_post();
+
+				$row = array();
+
+				global $post;
+
+				// ACCUMULATING ALL POST INFORMATION
+				foreach( $headerInfo['post_info'] as $slug => $value ){
+					// UNIQUE CASE FOR ID
+					if( $slug == 'post_id' ){ $slug = 'ID'; }
+
+					if( isset( $post->$slug ) ){ $row[ $value ] = $post->$slug; }
+				}
+
+				// ACCUMULATING ALL TAXONOMY RELATED INFORMATION
+				foreach( $headerInfo['tax_info'] as $taxonomy => $value ){
+					$terms = wp_get_post_terms( get_the_ID(), $taxonomy );
+					$term_names_arr = array();
+					if( is_array( $terms ) && count( $terms ) ){
+						foreach ( $terms as $term ){
+	            array_push( $term_names_arr, $term->name );
+	          }
+					}
+					$row[ $value ] = implode( ',', $term_names_arr );
+	      }
+
+				echo "<pre>";
+				print_r( $row );
+				echo "</pre>";
+
+				$this->addRowToCSV( $file_slug, $row );
+
+			}
+			wp_reset_postdata();
+		}
+	}
+
+	// IMPORT POSTS FROM A CSV DATA
 	function importPosts( $selectedCsv, $headerInfo, $defaults = array( 'post_status' => 'publish' ) ){
 
 		foreach( $selectedCsv as $rowCsv ){
