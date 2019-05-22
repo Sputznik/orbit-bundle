@@ -26,6 +26,53 @@
 			/* ENQUEUE ASSETS */
 			add_action( 'wp_enqueue_scripts', array( $this, 'assets' ) );
 
+			/*Create metabox*/
+			add_action( 'add_meta_boxes', array( $this, 'createMetaBox' ));
+
+			/* ENQUEUE ADMIN ASSETS */
+			add_action('admin_enqueue_scripts', array( $this, 'admin_assets' ) );
+		}
+
+		function admin_assets(){
+				wp_enqueue_script( 'orbit-repeater', plugin_dir_url( __FILE__ ).'js/repeater.js', array('jquery'), ORBIT_BUNDLE_VERSION, true );
+				wp_enqueue_script( 'orbit-search-admin', plugin_dir_url( __FILE__ ).'js/admin.js', array('jquery', 'orbit-repeater'), time(), true );
+
+		}
+
+
+		function createMetaBox(){
+
+
+			add_meta_box('form-attributes','Add Form Attributes', function(){
+
+
+				$form_atts = array(
+					'types'	=> array(
+						'tax'				=> 'Taxonomy',
+						'postdate'	=> 'Date'
+					),
+					'form'	=> array(
+						'checkbox' 								=> 'Checkbox (multiple)',
+						'dropdown' 								=> 'Dropdown (single)',
+						'typeahead'								=> 'Typeahead (input field)',
+						'bt_dropdown_checkboxes'  => 'Single Dropdown (with checkboxes)'
+					),
+					'tax_options' => get_taxonomies(),
+
+					'postdate_options'	=>	array(
+						'year'	=>	'Year',
+					)
+				);
+
+				echo '<pre>';
+				// print_r( $tax_options );
+				echo '</pre>';
+
+
+				_e( "<div data-behaviour='orbit-admin-filters' data-atts='".wp_json_encode( $form_atts )."'></div>");
+
+			});
+
 		}
 
 		/* ENQUEUE STYLESHEETS AND SCRIPTS */
@@ -73,7 +120,7 @@
 					'name' 			=> 'Orbit Searchforms',
 					'singular_name' => 'Orbit Searchform',
 				),
-				'supports'	=> array('title', 'editor'),
+				'supports'	=> array('title'),
 				'public'	=> false,
 				'menu_icon'	=> 'dashicons-media-document'
 			);
