@@ -124,14 +124,16 @@ jQuery.fn.orbit_batch_process = function(){
 				'error'		: function(){ alert( 'Error has occurred' ); },
 				'success'	: function( html ){
 
+					batch_step++;			// INCREMENT BATCH STEP
+
+					addLog( html );		// ADD TO THE LOG FROM THE AJAX HTML RESPONSE
+
+					updateProgress();	// UPDATE PROGRESS BAR
+
 					/* CHECK IF BATCH STEP INCREMENT IS ITERATED */
 					if( batch_step <= atts.batches ){
 
-						batch_step++;			// INCREMENT BATCH STEP
 
-						addLog( html );		// ADD TO THE LOG FROM THE AJAX HTML RESPONSE
-
-						updateProgress();	// UPDATE PROGRESS BAR
 
 						ajaxCall();				// EXECUTE THE NEXT BATCH CALL
 
