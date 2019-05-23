@@ -87,6 +87,7 @@ jQuery.fn.orbit_batch_process = function(){
 			if( width < 0 ){ width = 0; }
 
 			if( width == 100 ){
+				$el.trigger("orbit_batch_process:complete");
 				$el.find( '.result' ).html( atts['result'] );
 			}
 
