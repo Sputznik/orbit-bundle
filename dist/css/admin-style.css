@@ -123,7 +123,7 @@ i.mce-i-icon {
 	border-radius: 3px;
 }
 
-.filters, .orbit-admin-dropdown label{
+.filters, .filter-label, .orbit-admin-dropdown label{
 	display: block;
 	margin: 5px 0 8px 0;
 }
@@ -131,6 +131,10 @@ i.mce-i-icon {
 .filters.label, .orbit-admin-dropdown select{
 	width: 35%;
 	height: 30px;
+}
+
+.orbit-admin-dropdown{
+	margin: 12px 0;
 }
 
 .filter-label, .orbit-admin-dropdown label{

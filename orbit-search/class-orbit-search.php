@@ -12,6 +12,9 @@
 			/* ADD THE RELEVANT META BOXES TO THE FORM */
 			add_filter( 'orbit_meta_box_vars', array( $this, 'create_meta_box' ) );
 
+			// THIS IS WHERE THE FILTERS THAT ARE ADDED BY THE USER FROM THE ADMIN PANEL IS SAVED IN THE DB
+			add_action( 'save_post', array( $this, 'saveFiltersFromAdmin' ), 10, 2 );
+
 			/* ADD REGISTERED POST TYPES TO THE CUSTOM FIELDS */
 			add_filter( 'orbit_custom_field_posttypes_options', function( $opt ){
 				$post_types = get_post_types( array( 'public' => true ), 'objects' );
@@ -39,6 +42,18 @@
 
 		}
 
+		// THIS IS WHERE THE FILTERS THAT ARE ADDED BY THE USER FROM THE ADMIN PANEL IS SAVED IN THE DB
+		function saveFiltersFromAdmin( $post_id, $post ){
+			$post_type = get_post_type($post_id);
+
+			 if ( "orbit-form" != $post_type ) return;
+
+			 echo "<pre>";
+			 print_r( $_POST['orbit_filter'] );
+			 echo "</pre>";
+
+			 wp_die();
+		}
 
 		function createMetaBox(){
 

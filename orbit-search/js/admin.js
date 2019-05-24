@@ -6,7 +6,7 @@ jQuery(document).ready(function(){
 
     console.log( atts );
 
-    var repeater = SPACE_REPEATER( {
+    var repeater = ORBIT_REPEATER( {
 			$el				      : $el,
 			btn_text		    : '+ Add Filter',
 			close_btn_text	: 'Delete Filter',
@@ -37,14 +37,14 @@ jQuery(document).ready(function(){
 				var $header = $list_item.find( '.list-header' );
 				var $content = $list_item.find( '.list-content' );
 
-				// PAGE TITLE
+				// LABEL
 				var $textarea = repeater.createField({
 					element	: 'textarea',
 					attr	: {
 						'data-behaviour': 'space-autoresize',
-						'placeholder'	: 'Type Page Title Here',
-						'name'			: 'pages[' + repeater.count + '][title]',
-						'value'			: 'Page ' + ( repeater.count + 1 )
+						'placeholder'	: 'Type Label Here',
+						'name'			: 'orbit_filter[' + repeater.count + '][label]',
+						'value'			: 'Label ' + ( repeater.count + 1 )
 					},
 					append	: $header
 				});
@@ -53,31 +53,31 @@ jQuery(document).ready(function(){
 
 //////////////create filter fields////////////////////
 
-        //Label
-        var $label_text = repeater.createField({
-          element : 'label',
-          attr    : {
-            'class' : 'filter-label'
-          },
-          html    : 'Filter Label',
-          append  : $content
-        });
-
-        //Label field
-        var $filter_text = repeater.createField({
-          element	: 'input',
-          attr	: {
-            'type'  : 'text',
-            'placeholder' : 'Filter Label',
-            'class' : 'filters label'
-          },
-          append	: $content
-        });
+        // //Label
+        // var $label_text = repeater.createField({
+        //   element : 'label',
+        //   attr    : {
+        //     'class' : 'filter-label'
+        //   },
+        //   html    : 'Filter Label',
+        //   append  : $content
+        // });
+        //
+        // //Label field
+        // var $filter_text = repeater.createField({
+        //   element	: 'input',
+        //   attr	: {
+        //     'type'  : 'text',
+        //     'placeholder' : 'Filter Label',
+        //     'class' : 'filters label'
+        //   },
+        //   append	: $content
+        // });
 
         //Filter form style
         var $form_field = repeater.createDropdownField({
           attr    : {
-
+            'name'			: 'orbit_filter[' + repeater.count + '][form]'
           },
           options : atts['form'],
           append	: $content,
@@ -86,7 +86,7 @@ jQuery(document).ready(function(){
 
         var $filter_type = repeater.createDropdownField({
 					attr	:  {
-					//	name	: parent_name + '[rules]['+ repeater.count +'][action]',
+					'name'			: 'orbit_filter[' + repeater.count + '][type]'
 					},
           options : atts['types'],
 					//value	: rule['action'],
@@ -96,10 +96,20 @@ jQuery(document).ready(function(){
 
         //Filter typeVAL
         var $filter_typeval = repeater.createDropdownField({
-          attr	: {},
+          attr	: {
+            'name'			: 'orbit_filter[' + repeater.count + '][typeval]'
+          },
           options : {},
           append	: $content,
           label   : 'Filter Value'
+        });
+
+        var hide_label = repeater.createBooleanField({
+          attr   :  {
+            'name'			: 'orbit_filter[' + repeater.count + '][hide_label]'
+          },
+          label  :  'Hide Label',
+          append :  $content
         });
 
         // OPTIONS OF FILTER TYPE BY VALUE ARE RESET BASED ON THE VALUE SELECTED IN FILTER TYPE
