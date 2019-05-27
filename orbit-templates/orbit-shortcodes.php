@@ -18,7 +18,7 @@
 
 		global $post;
 
-		return $post->post_content;
+		return do_shortcode( $post->post_content );
 
 	} );
 
