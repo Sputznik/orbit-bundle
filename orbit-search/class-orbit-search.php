@@ -44,50 +44,100 @@
 
 		// THIS IS WHERE THE FILTERS THAT ARE ADDED BY THE USER FROM THE ADMIN PANEL IS SAVED IN THE DB
 		function saveFiltersFromAdmin( $post_id, $post ){
-			$post_type = get_post_type($post_id);
 
-			 if ( "orbit-form" != $post_type ) return;
+			$post_type = get_post_type( $post_id );
+			if ( "orbit-form" != $post_type ) return;
 
-			 echo "<pre>";
-			 print_r( $_POST['orbit_filter'] );
-			 echo "</pre>";
+			$byOrder = array_column( $_POST['orbit_filter'], 'order');
+ 			array_multisort( $byOrder, SORT_ASC, $_POST['orbit_filter'] );
 
-			 wp_die();
+			/*
+			echo "<pre>";
+			print_r( $_POST['orbit_filter'] );
+			echo "</pre>";
+			*/
+
+			 /*
+			 if( isset( $_POST['orbit_filter'] ) && is_array( $_POST['orbit_filter'] ) ){
+				foreach( $_POST['orbit_filter'] as $orbit_filter ){
+					print_r( $this->getFilterShortcode( $orbit_filter ) );
+				}
+			 }
+			 */
+
+			 if( isset( $_POST['orbit_filter'] ) && is_array( $_POST['orbit_filter'] ) ){
+				 update_post_meta( $post_id, 'orbit_filters', $_POST['orbit_filter'] );
+			 }
+
+			 //wp_die();
+		}
+
+		function getFilterShortcode( $filter ){
+
+			$shortcode_str = "[orbit_filter";
+
+			foreach( $filter as $slug => $value ){
+				if( in_array( $slug, array( 'label', 'form', 'type', 'typeval' ) ) ){
+					$shortcode_str .= " ".$slug."='".$value."'";
+				}
+			}
+
+			$shortcode_str .= "]";
+
+			return $shortcode_str;
+
+
 		}
 
 		function createMetaBox(){
 
+			global $post;
+			$type = get_post_type( $post );
 
-			add_meta_box('form-attributes','Add Form Attributes', function(){
+			if( $type=='orbit-form' ){
 
-
-				$form_atts = array(
-					'types'	=> array(
-						'tax'				=> 'Taxonomy',
-						'postdate'	=> 'Date'
-					),
-					'form'	=> array(
-						'checkbox' 								=> 'Checkbox (multiple)',
-						'dropdown' 								=> 'Dropdown (single)',
-						'typeahead'								=> 'Typeahead (input field)',
-						'bt_dropdown_checkboxes'  => 'Single Dropdown (with checkboxes)'
-					),
-					'tax_options' => get_taxonomies(),
-
-					'postdate_options'	=>	array(
-						'year'	=>	'Year',
-					)
-				);
-
-				echo '<pre>';
-				// print_r( $tax_options );
-				echo '</pre>';
+					add_meta_box('form-attributes','Add Form Attributes', function(){
 
 
-				_e( "<div data-behaviour='orbit-admin-filters' data-atts='".wp_json_encode( $form_atts )."'></div>");
+						$form_atts = array(
+							'types'	=> array(
+								'tax'				=> 'Taxonomy',
+								'postdate'	=> 'Date'
+							),
+							'form'	=> array(
+								'checkbox' 								=> 'Checkbox (multiple)',
+								'dropdown' 								=> 'Dropdown (single)',
+								'typeahead'								=> 'Typeahead (input field)',
+								'bt_dropdown_checkboxes'  => 'Single Dropdown (with checkboxes)'
+							),
+							'tax_options' => get_taxonomies(),
 
-			});
+							'postdate_options'	=>	array(
+								'year'	=>	'Year',
+							)
+						);
 
+						echo '<pre>';
+						// print_r( $tax_options );
+
+						global $post;
+
+
+						$filtersFromDB = get_post_meta( $post->ID, 'orbit_filters', true );
+
+						if( $filtersFromDB ){
+							$form_atts['db'] = $filtersFromDB;
+						}
+
+
+
+						echo '</pre>';
+
+
+						_e( "<div data-behaviour='orbit-admin-filters' data-atts='".wp_json_encode( $form_atts )."'></div>");
+
+					});
+			}
 		}
 
 		/* ENQUEUE STYLESHEETS AND SCRIPTS */

@@ -123,6 +123,20 @@ i.mce-i-icon {
 	border-radius: 3px;
 }
 
+#form-attributes{
+	border: none;
+	box-shadow: none;
+	background-color: transparent;
+}
+
+#form-attributes .hndle{
+	display: none;
+}
+
+#form-attributes .inside{
+	padding: 0;
+}
+
 .filters, .filter-label, .orbit-admin-dropdown label{
 	display: block;
 	margin: 5px 0 8px 0;

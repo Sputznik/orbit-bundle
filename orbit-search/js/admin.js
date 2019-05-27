@@ -14,11 +14,19 @@ jQuery(document).ready(function(){
       list_item_id	  : 'orbit-repeater-filter',
 			init	: function( repeater ){
 
+        // ITERATE THROUGH EACH PAGES IN THE DB
+        jQuery.each( atts.db, function( i, filter ){
+
+          if( filter['label']){
+            repeater.addItem( filter );
+
+          }
+        });
 
 
 
 			},
-			addItem	: function( repeater, $list_item, $closeButton, page ){
+			addItem	: function( repeater, $list_item, $closeButton, filter ){
 
 				/*
 				* ADD LIST ITEM TO THE UNLISTED LIST
@@ -27,8 +35,10 @@ jQuery(document).ready(function(){
 				* HIDDEN: page COUNT
 				*/
 
-				if( page == undefined || page['ID'] == undefined ){
-					page = { ID : 0 };
+        console.log(filter);
+
+				if( filter == undefined ){
+					filter = { label : '' };
 				}
 
 				// CREATE COLLAPSIBLE ITEM - HEADER AND CONTENT
@@ -49,49 +59,37 @@ jQuery(document).ready(function(){
 					append	: $header
 				});
 				//$textarea.space_autoresize();
-				if( page['title'] ){ $textarea.val( page['title'] ); }
+				if( filter['label'] ){ $textarea.val( filter['label'] ); }
 
-//////////////create filter fields////////////////////
-
-        // //Label
-        // var $label_text = repeater.createField({
-        //   element : 'label',
-        //   attr    : {
-        //     'class' : 'filter-label'
-        //   },
-        //   html    : 'Filter Label',
-        //   append  : $content
-        // });
-        //
-        // //Label field
-        // var $filter_text = repeater.createField({
-        //   element	: 'input',
-        //   attr	: {
-        //     'type'  : 'text',
-        //     'placeholder' : 'Filter Label',
-        //     'class' : 'filters label'
-        //   },
-        //   append	: $content
-        // });
+        //ORBIT FILTER FIELDS
+        var hide_label = repeater.createBooleanField({
+          attr   :  {
+            'name'			: 'orbit_filter[' + repeater.count + '][hide_label]'
+          },
+          label  :  'Hide Label',
+          append :  $content
+        });
 
         //Filter form style
         var $form_field = repeater.createDropdownField({
           attr    : {
-            'name'			: 'orbit_filter[' + repeater.count + '][form]'
+            'name'			: 'orbit_filter[' + repeater.count + '][form]',
           },
+          value   : filter['form'] ? filter['form'] : '',
           options : atts['form'],
           append	: $content,
           label   : 'Form Field'
         });
+        //if( filter['form'] ){ $form_field.selectOption( filter['form'] ); }
 
         var $filter_type = repeater.createDropdownField({
 					attr	:  {
 					'name'			: 'orbit_filter[' + repeater.count + '][type]'
 					},
+          value   : filter['type'] ? filter['type'] : '',
           options : atts['types'],
-					//value	: rule['action'],
 					append	: $content,
-					label	: 'Filter by'
+					label	  : 'Filter by'
 				});
 
         //Filter typeVAL
@@ -102,14 +100,6 @@ jQuery(document).ready(function(){
           options : {},
           append	: $content,
           label   : 'Filter Value'
-        });
-
-        var hide_label = repeater.createBooleanField({
-          attr   :  {
-            'name'			: 'orbit_filter[' + repeater.count + '][hide_label]'
-          },
-          label  :  'Hide Label',
-          append :  $content
         });
 
         // OPTIONS OF FILTER TYPE BY VALUE ARE RESET BASED ON THE VALUE SELECTED IN FILTER TYPE
@@ -124,6 +114,23 @@ jQuery(document).ready(function(){
           updateOptionsForFilterTypeValue();
         });
         updateOptionsForFilterTypeValue();  // SET OPTIONS FOR THE FIRST LOAD
+
+        // DEFAULT VALUE COMING FROM THE DB
+        if( filter['typeval'] ){ $filter_typeval.selectOption( filter['typeval'] ); }
+
+        //CREATE A HIDDEN FIELD
+        var hidden = repeater.createField({
+          element	: 'input',
+          attr	: {
+            'type'	          : 'hidden',
+            'value'				    : repeater.count,
+            'data-behaviour' 	: 'orbit-rank',
+            'name'				    : 'orbit_filter[' + repeater.count + '][order]'
+          },
+          append	: $list_item
+        });
+
+
 
 				$closeButton.click( function( ev ){
 					ev.preventDefault();
@@ -140,7 +147,7 @@ jQuery(document).ready(function(){
 				* REORDER LIST
 				*/
 				var rank = 0;
-				repeater.$list.find( '[data-behaviour~=space-rank]' ).each( function(){
+				repeater.$list.find( '[data-behaviour~=orbit-rank]' ).each( function(){
 					var $hiddenRank = jQuery( this );
 					$hiddenRank.val( rank );
 					rank++;

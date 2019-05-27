@@ -46,6 +46,8 @@
 			wp_die();
 		}
 
+		
+
 
 		/* MAIN SHORTCODE FUNCTION */
 		function shortcode( $atts ){
