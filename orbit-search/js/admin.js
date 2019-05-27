@@ -62,9 +62,14 @@ jQuery(document).ready(function(){
 				if( filter['label'] ){ $textarea.val( filter['label'] ); }
 
         //ORBIT FILTER FIELDS
+        var hide_label_flag = false;
+				if( filter && filter['hide_label'] && filter['hide_label'] > 0 ){
+					hide_label_flag = true;
+				}
         var hide_label = repeater.createBooleanField({
           attr   :  {
-            'name'			: 'orbit_filter[' + repeater.count + '][hide_label]'
+            name		: 'orbit_filter[' + repeater.count + '][hide_label]',
+            checked : hide_label_flag
           },
           label  :  'Hide Label',
           append :  $content
@@ -102,16 +107,41 @@ jQuery(document).ready(function(){
           label   : 'Filter Value'
         });
 
+        //ORBIT FILTER FIELDS
+        var tax_hide_empty_flag = false;
+				if( filter && filter['tax_show_empty'] && filter['tax_show_empty'] > 0 ){
+					tax_hide_empty_flag = true;
+				}
+
+        var $tax_hide_empty = repeater.createBooleanField({
+          attr   :  {
+            name		: 'orbit_filter[' + repeater.count + '][tax_show_empty]',
+            checked	: tax_hide_empty_flag,
+          },
+          label  :  'Show empty terms',
+          append :  $content
+        });
+
+
+
         // OPTIONS OF FILTER TYPE BY VALUE ARE RESET BASED ON THE VALUE SELECTED IN FILTER TYPE
         function updateOptionsForFilterTypeValue(){
           var type = $filter_type.find('select').val(),
             options = atts[ type + '_options' ];
           $filter_typeval.setOptions( options );
+
+          if( type=='tax' ){
+            $tax_hide_empty.show();
+          }
+          else{
+            $tax_hide_empty.hide();
+          }
         }
 
         // ON CHANGE OF FILTER TYPE TRIGGER AN UPDATE IN OPTIONS OF FILTER TYPE BY VALUE
         $filter_type.find('select').change(function(){
           updateOptionsForFilterTypeValue();
+          // hide_empty.show();
         });
         updateOptionsForFilterTypeValue();  // SET OPTIONS FOR THE FIRST LOAD
 

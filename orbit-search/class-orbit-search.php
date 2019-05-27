@@ -48,26 +48,18 @@
 			$post_type = get_post_type( $post_id );
 			if ( "orbit-form" != $post_type ) return;
 
+			// SORT ARRAY BY THE VALUE ORDER
 			$byOrder = array_column( $_POST['orbit_filter'], 'order');
  			array_multisort( $byOrder, SORT_ASC, $_POST['orbit_filter'] );
 
-			/*
+			// TESTING PURPOSES
 			echo "<pre>";
 			print_r( $_POST['orbit_filter'] );
 			echo "</pre>";
-			*/
 
-			 /*
-			 if( isset( $_POST['orbit_filter'] ) && is_array( $_POST['orbit_filter'] ) ){
-				foreach( $_POST['orbit_filter'] as $orbit_filter ){
-					print_r( $this->getFilterShortcode( $orbit_filter ) );
-				}
-			 }
-			 */
-
-			 if( isset( $_POST['orbit_filter'] ) && is_array( $_POST['orbit_filter'] ) ){
-				 update_post_meta( $post_id, 'orbit_filters', $_POST['orbit_filter'] );
-			 }
+			if( isset( $_POST['orbit_filter'] ) && is_array( $_POST['orbit_filter'] ) ){
+				update_post_meta( $post_id, 'orbit_filters', $_POST['orbit_filter'] );
+			}
 
 			 //wp_die();
 		}
@@ -77,7 +69,7 @@
 			$shortcode_str = "[orbit_filter";
 
 			foreach( $filter as $slug => $value ){
-				if( in_array( $slug, array( 'label', 'form', 'type', 'typeval' ) ) ){
+				if( in_array( $slug, array( 'label', 'form', 'type', 'typeval', 'tax_hide_empty' ) ) ){
 					$shortcode_str .= " ".$slug."='".$value."'";
 				}
 			}
@@ -117,22 +109,11 @@
 							)
 						);
 
-						echo '<pre>';
-						// print_r( $tax_options );
-
 						global $post;
-
-
 						$filtersFromDB = get_post_meta( $post->ID, 'orbit_filters', true );
-
 						if( $filtersFromDB ){
 							$form_atts['db'] = $filtersFromDB;
 						}
-
-
-
-						echo '</pre>';
-
 
 						_e( "<div data-behaviour='orbit-admin-filters' data-atts='".wp_json_encode( $form_atts )."'></div>");
 
@@ -218,14 +199,23 @@
 
 			// CHECK IF THE ORBIT FILTERS EXISTS INSIDE THE POST META
 			$orbit_filters = get_post_meta( $form->ID, 'orbit_filters', true );
+
 			if( is_array( $orbit_filters ) && count( $orbit_filters ) ){
 				foreach ($orbit_filters as $orbit_filter) {
+					// IF CHECKBOX OF HIDE LABEL IS ENABLED THEN EMPTY THE LABEL
+					if( isset( $orbit_filter['hide_label'] ) && $orbit_filter['hide_label'] ){
+						$orbit_filter['label'] = '';
+					}
+					if( isset( $orbit_filter['tax_show_empty'] ) && $orbit_filter['tax_show_empty'] ){
+						$orbit_filter['tax_hide_empty'] = false;
+					}
 					$filter_shortcode = $this->getFilterShortcode( $orbit_filter );
+					//echo $filter_shortcode;
 					echo do_shortcode( $filter_shortcode );
 				}
 			}
 			else{
-				// DEFAULT FUNCTIONALITY
+				// FALLBACK TO DEFAULT FUNCTIONALITY
 				_e( do_shortcode( $form->post_content ) );
 			}
 
