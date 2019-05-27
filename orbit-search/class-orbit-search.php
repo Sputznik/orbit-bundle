@@ -185,7 +185,7 @@
 					'name' 			=> 'Orbit Searchforms',
 					'singular_name' => 'Orbit Searchform',
 				),
-				'supports'	=> array('title'),
+				'supports'	=> array('title', 'editor'),
 				'public'	=> false,
 				'menu_icon'	=> 'dashicons-media-document'
 			);
@@ -215,7 +215,20 @@
 			_e("<div class='orbit-search-form'>");
 			_e("<form method='GET'>");
 			do_action( 'orbit_filter_form_header', $form );
-			_e( do_shortcode( $form->post_content ) );
+
+			// CHECK IF THE ORBIT FILTERS EXISTS INSIDE THE POST META
+			$orbit_filters = get_post_meta( $form->ID, 'orbit_filters', true );
+			if( is_array( $orbit_filters ) && count( $orbit_filters ) ){
+				foreach ($orbit_filters as $orbit_filter) {
+					$filter_shortcode = $this->getFilterShortcode( $orbit_filter );
+					echo do_shortcode( $filter_shortcode );
+				}
+			}
+			else{
+				// DEFAULT FUNCTIONALITY
+				_e( do_shortcode( $form->post_content ) );
+			}
+
 			_e("<p><button type='submit'>Submit</button></p>");
 			_e("</form>");
 			_e("</div>");
