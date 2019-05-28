@@ -128,3 +128,6 @@
 		wp_enqueue_style( 'orbit-query', plugins_url( 'dist/css/orbit-query.css', __FILE__ ), array() );
 
 	} );
+
+
+	do_action('orbit-bundle-loaded');
