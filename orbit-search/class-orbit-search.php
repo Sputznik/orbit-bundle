@@ -3,7 +3,7 @@
 	class ORBIT_SEARCH{
 
 		function __construct(){
-
+			
 			add_shortcode( 'orbit_search', array( $this, 'form' ) );
 
 			/* ADD FORMS THROUGH THE BACKEND */
@@ -13,7 +13,7 @@
 			add_filter( 'orbit_meta_box_vars', array( $this, 'create_meta_box' ) );
 
 			// THIS IS WHERE THE FILTERS THAT ARE ADDED BY THE USER FROM THE ADMIN PANEL IS SAVED IN THE DB
-			add_action( 'save_post', array( $this, 'saveFiltersFromAdmin' ), 10, 2 );
+			add_action( 'save_post', array( $this, 'save_post' ), 10, 2 );
 
 			/* ADD REGISTERED POST TYPES TO THE CUSTOM FIELDS */
 			add_filter( 'orbit_custom_field_posttypes_options', function( $opt ){
@@ -29,83 +29,64 @@
 			/* ENQUEUE ASSETS */
 			add_action( 'wp_enqueue_scripts', array( $this, 'assets' ) );
 
-			/*Create metabox*/
-			add_action( 'add_meta_boxes', array( $this, 'createMetaBox' ));
+			// SEPERATE METABOX FOR FILTERS ONLY
+			add_action( 'orbit_meta_box_html', function( $post, $box ){
 
+				if( isset( $box['id'] ) && 'orbit-form-filters' == $box['id'] ){
+
+					$orbit_filter = ORBIT_FILTER::getInstance();
+
+					// FORM ATTRIBUTES THAT IS NEEDED BY THE REPEATER FILTERS
+					$form_atts = $orbit_filter->vars();
+					if( !$form_atts || !is_array( $form_atts ) ){ $form_atts = array(); }
+					$form_atts['tax_options'] = get_taxonomies();
+					$form_atts['postdate_options'] = array(
+						'year'	=>	'Year',
+					);
+					$form_atts['db'] = $this->getFiltersFromDB( $post->ID );
+
+					// TRIGGER THE REPEATER FILTER BY DATA BEHAVIOUR ATTRIBUTE
+					_e( "<div data-behaviour='orbit-admin-filters' data-atts='".wp_json_encode( $form_atts )."'></div>");
+				}
+			}, 1, 2 );
 		}
 
-		// THIS IS WHERE THE FILTERS THAT ARE ADDED BY THE USER FROM THE ADMIN PANEL IS SAVED IN THE DB
-		function saveFiltersFromAdmin( $post_id, $post ){
+		// GET THE FILTERS STORED AS ARRAY IN POST META
+		function getFiltersFromDB( $post_id ){
+			$filtersFromDB = get_post_meta( $post_id, 'orbit_filters', true );
+			if( $filtersFromDB && is_array( $filtersFromDB ) ){
+				return $filtersFromDB;
+			}
+			return array();
+		}
 
+		/*
+		* TRIGGERED WHEN THE PUBLISH/UPDATE BUTTON IS CLICKED IN THE ADMIN PANEL
+		* THIS IS WHERE THE FILTERS THAT ARE ADDED BY THE USER FROM THE ADMIN PANEL IS SAVED IN THE DB
+		*/
+		function save_post( $post_id ){
 			$post_type = get_post_type( $post_id );
 			if ( "orbit-form" != $post_type ) return;
 
-			// SORT ARRAY BY THE VALUE ORDER
+			// SAVE FILTERS IN POST META
 			if( isset( $_POST['orbit_filter'] ) && is_array( $_POST['orbit_filter'] ) ){
+
+				// SORT ARRAY BY THE VALUE ORDER
 				$byOrder = array_column( $_POST['orbit_filter'], 'order');
 	 			array_multisort( $byOrder, SORT_ASC, $_POST['orbit_filter'] );
 
-				// TESTING PURPOSES
-				echo "<pre>";
-				print_r( $_POST['orbit_filter'] );
-				echo "</pre>";
-
+				// SAVE
 				update_post_meta( $post_id, 'orbit_filters', $_POST['orbit_filter'] );
 			}
-
-			 //wp_die();
+			//wp_die();
 		}
 
-
-
-		function createMetaBox(){
-
-			global $post;
-			$type = get_post_type( $post );
-
-			if( $type=='orbit-form' ){
-
-					add_meta_box('form-attributes','Add Form Attributes', function(){
-
-
-						$form_atts = array(
-							'types'	=> array(
-								'tax'				=> 'Taxonomy',
-								'postdate'	=> 'Date'
-							),
-							'form'	=> array(
-								'checkbox' 								=> 'Checkbox (multiple)',
-								'dropdown' 								=> 'Dropdown (single)',
-								'typeahead'								=> 'Typeahead (input field)',
-								'bt_dropdown_checkboxes'  => 'Single Dropdown (with checkboxes)'
-							),
-							'tax_options' => get_taxonomies(),
-
-							'postdate_options'	=>	array(
-								'year'	=>	'Year',
-							)
-						);
-
-						global $post;
-						$filtersFromDB = get_post_meta( $post->ID, 'orbit_filters', true );
-						if( $filtersFromDB ){
-							$form_atts['db'] = $filtersFromDB;
-						}
-
-						_e( "<div data-behaviour='orbit-admin-filters' data-atts='".wp_json_encode( $form_atts )."'></div>");
-
-					});
-			}
-		}
 
 		/* ENQUEUE STYLESHEETS AND SCRIPTS */
 		function assets() {
-
 			wp_enqueue_style( 'orbit-search', plugin_dir_url( __FILE__ ).'css/style.css', array(), ORBIT_BUNDLE_VERSION );
-
 			wp_enqueue_script('typeahead', plugin_dir_url( __FILE__ ).'js/typeahead.min.js', array('jquery'), ORBIT_BUNDLE_VERSION, true );
 			wp_enqueue_script('orbit-search-script', plugin_dir_url( __FILE__ ).'js/main.js', array( 'jquery', 'typeahead' ), ORBIT_BUNDLE_VERSION, true );
-
 		}
 
 		function create_meta_box( $meta_box ){
@@ -130,6 +111,11 @@
 							'default'	=> 10
 						)
 					)
+				),
+				array(
+					'id'		=> 'orbit-form-filters',
+					'title'		=> 'Orbit Filters',
+					'fields'	=> array()
 				),
 			);
 			return $meta_box;

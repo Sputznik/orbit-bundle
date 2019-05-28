@@ -72,7 +72,7 @@ jQuery.fn.repeater_filters = function(){
             'name'			: 'orbit_filter[' + repeater.count + '][form]',
           },
           value   : filter['form'] ? filter['form'] : '',
-          options : atts['form'],
+          options : atts['forms'],
           append	: $content,
           label   : 'Form Field'
         });

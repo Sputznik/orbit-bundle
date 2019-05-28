@@ -16,13 +16,15 @@
 		function vars(){
 			return array(
 				'types'	=> array(
-					'tax'	=> 'Taxonomy',
-					'cf'	=> 'Custom Field'
+					'tax'				=> 'Taxonomy',
+					//'cf'				=> 'Custom Field',
+					'postdate'	=> 'Date'
 				),
 				'forms'	=> array(
-					'checkbox'	=> 'Checkbox',
-					'dropdown'	=> 'Dropdown',
-					'typeahead'	=> 'Typeahead Input'
+					'checkbox' 								=> 'Checkbox (multiple)',
+					'dropdown' 								=> 'Dropdown (single)',
+					'typeahead'								=> 'Typeahead (input field)',
+					'bt_dropdown_checkboxes'  => 'Single Dropdown (with checkboxes)'
 				),
 				'shortcode'	=> array(
 					'type'						=> 'customfield',

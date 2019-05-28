@@ -7,7 +7,7 @@
 		<form method='GET'>
 		<?php
 			// CHECK IF THE ORBIT FILTERS EXISTS INSIDE THE POST META
-			$db_filters = get_post_meta( $form->ID, 'orbit_filters', true );
+			$db_filters = $this->getFiltersFromDB( $form->ID );
 
 			if( is_array( $db_filters ) && count( $db_filters ) ){
 				foreach ( $db_filters as $db_filter ) {
