@@ -91,38 +91,7 @@ i.mce-i-icon {
 	height: 100px;
 }
 
-/* ORBIT BATCH PROCESS */
-[data-behaviour~=orbit-batch]{ margin: 20px auto; }
-[data-behaviour~=orbit-batch] .space-progress-container{ border: #333 solid 1px; }
-[data-behaviour~=orbit-batch] .space-progress{
-	height: 30px;
-	background: #555;
-	width: 0%;
-}
-[data-behaviour~=orbit-batch] button, [data-behaviour~=space-batch] .result{ margin-top: 20px;}
-[data-behaviour~=orbit-batch] .result{ font-weight: bold; }
-[data-behaviour~=orbit-batch] .logs-container{
-	border: #ccc solid 1px;
-	margin-top: 20px;
-	padding: 10px;
-}
-[data-behaviour~=orbit-batch] button{
-	background: #0085ba;
-	box-shadow: 0 1px 0 #006799;
-	color: #fff;
-	text-decoration: none;
-	text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
-	padding: 6px 14px;
-	line-height: normal;
-	font-size: 14px;
-	vertical-align: middle;
-	height: auto;
-	margin-bottom: 4px;
-	border: #006799 solid 1px;
-	cursor: pointer;
-	border-radius: 3px;
-}
-
+/* FILTERS FORM IN ORBIT SEARCH FORMS */
 #form-attributes{
 	border: none;
 	box-shadow: none;

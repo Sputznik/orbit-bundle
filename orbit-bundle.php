@@ -8,7 +8,7 @@
     Author URI: http://sputznik.com
     */
 
-	define( 'ORBIT_BUNDLE_VERSION', '1.0.9' );
+	define( 'ORBIT_BUNDLE_VERSION', '1.1.8' );
 
 	$inc_files = array(
 		"lib/class-orbit-base.php",
@@ -16,6 +16,7 @@
 		"lib/class-orbit-batch-process.php",
 		"lib/class-orbit-csv.php",
 		"lib/class-orbit-translations.php",
+		"lib/class-orbit-util.php",
 		"orbit-search/orbit-search.php",
 		"orbit-query/orbit-query.php",
 		"orbit-templates/orbit-templates.php",

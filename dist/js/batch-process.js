@@ -36,6 +36,7 @@ jQuery.fn.orbit_batch_process = function(){
 			var $progress_container = jQuery( document.createElement('div') );
 			$progress_container.addClass( 'progress-container' );
 			$progress_container.html( '<div class="progress"></div>' );
+			$progress_container.appendTo( $el );
 			$progress_container.hide();
 
 			if( atts.btn_text ){
@@ -86,11 +87,23 @@ jQuery.fn.orbit_batch_process = function(){
 			if( width < 0 ){ width = 0; }
 
 			if( width == 100 ){
-				$el.find( '.result' ).html( 'Entire process has been completed' );
+				$el.trigger("orbit_batch_process:complete");
+				$el.find( '.result' ).html( atts['result'] );
 			}
 
 			$el.find( '.progress' ).animate({ width: width + '%' });
 		};
+
+		function getURLParams( obj ){
+			var pairs = [];
+    	for ( var prop in obj ) {
+        if( !obj.hasOwnProperty( prop ) ) {
+          continue;
+        }
+        pairs.push(prop + '=' + obj[prop]);
+    	}
+    	return pairs.join('&');
+		}
 
 		/* AJAX CALL */
 		function ajaxCall(){
@@ -101,23 +114,25 @@ jQuery.fn.orbit_batch_process = function(){
 			data['orbit_batches']				= atts.batches;
 			data['orbit_batch_step']		= batch_step;
 
+			var url = $el.data('url') + '&' + getURLParams( data );
+
 			// UPDATE THE PROGRESS IN THE BUTTON HTML
-			$el.find('button').html( atts.btn_text + " " + ( batch_step - 1 ) + "/" + atts.batches );
+			$el.find('button').html( atts.btn_text + " " + ( batch_step ) + "/" + atts.batches );
 
 			jQuery.ajax({
-				'url'			: $el.data('url'),
+				'method'	: 'GET',
+				'url'			: url,
 				'error'		: function(){ alert( 'Error has occurred' ); },
-				'data'		: data,
 				'success'	: function( html ){
+
+					batch_step++;			// INCREMENT BATCH STEP
+
+					addLog( html );		// ADD TO THE LOG FROM THE AJAX HTML RESPONSE
+
+					updateProgress();	// UPDATE PROGRESS BAR
 
 					/* CHECK IF BATCH STEP INCREMENT IS ITERATED */
 					if( batch_step <= atts.batches ){
-
-						batch_step++;			// INCREMENT BATCH STEP
-
-						addLog( html );		// ADD TO THE LOG FROM THE AJAX HTML RESPONSE
-
-						updateProgress();	// UPDATE PROGRESS BAR
 
 						ajaxCall();				// EXECUTE THE NEXT BATCH CALL
 
@@ -135,7 +150,6 @@ jQuery.fn.orbit_batch_process = function(){
 
 
 
-jQuery( document ).on( 'ready', function(){
-
-  jQuery('[data-behaviour~=orbit-batch]').orbit_batch_process();
-} );
+jQuery( document ).ready( function(){
+	jQuery('[data-behaviour~=orbit-batch]').orbit_batch_process();
+});

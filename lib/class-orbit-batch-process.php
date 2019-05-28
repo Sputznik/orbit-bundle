@@ -37,6 +37,7 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE{
 
 		/* CREATE ATTS ARRAY FROM DEFAULT PARAMETERS IN THE SHORTCODE */
 		$atts = shortcode_atts( array(
+			'result'				=> 'Entire process is completed',
 			'title'					=> 'Title of the process',
 			'desc'					=> 'Description of the process',
 			'batches' 			=> '10',
@@ -52,6 +53,12 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE{
 
     return ob_get_clean();
 
+	}
+
+	function enqueue_assets(){
+
+		wp_enqueue_style( 'orbit-bp', plugins_url( 'orbit-bundle/dist/css/orbit-batch.css' ), array(), ORBIT_BUNDLE_VERSION );
+		wp_enqueue_script( 'orbit-bp', plugins_url( 'orbit-bundle/dist/js/batch-process.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
 	}
 
 	/* AJAX CALLBACK */
