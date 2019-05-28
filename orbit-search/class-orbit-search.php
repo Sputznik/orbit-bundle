@@ -49,15 +49,15 @@
 			if ( "orbit-form" != $post_type ) return;
 
 			// SORT ARRAY BY THE VALUE ORDER
-			$byOrder = array_column( $_POST['orbit_filter'], 'order');
- 			array_multisort( $byOrder, SORT_ASC, $_POST['orbit_filter'] );
-
-			// TESTING PURPOSES
-			echo "<pre>";
-			print_r( $_POST['orbit_filter'] );
-			echo "</pre>";
-
 			if( isset( $_POST['orbit_filter'] ) && is_array( $_POST['orbit_filter'] ) ){
+				$byOrder = array_column( $_POST['orbit_filter'], 'order');
+	 			array_multisort( $byOrder, SORT_ASC, $_POST['orbit_filter'] );
+
+				// TESTING PURPOSES
+				echo "<pre>";
+				print_r( $_POST['orbit_filter'] );
+				echo "</pre>";
+
 				update_post_meta( $post_id, 'orbit_filters', $_POST['orbit_filter'] );
 			}
 
