@@ -90,3 +90,103 @@ i.mce-i-icon {
 .orbit-field textarea{
 	height: 100px;
 }
+
+/* FILTERS FORM IN ORBIT SEARCH FORMS */
+#form-attributes{
+	border: none;
+	box-shadow: none;
+	background-color: transparent;
+}
+
+#form-attributes .hndle{
+	display: none;
+}
+
+#form-attributes .inside{
+	padding: 0;
+}
+
+.filters, .filter-label, .orbit-admin-dropdown label{
+	display: block;
+	margin: 5px 0 8px 0;
+}
+
+.filters.label, .orbit-admin-dropdown select{
+	width: 35%;
+	height: 30px;
+}
+
+.orbit-admin-dropdown{
+	margin: 12px 0;
+}
+
+.filter-label, .orbit-admin-dropdown label{
+	font-weight: 600;
+}
+
+.orbit-repeater-filter{
+	border: #ccc solid 1px;
+	background: #fff;
+	padding: 10px 10px 0 10px;
+	margin-bottom: 10px;
+	position: relative;
+}
+
+.orbit-repeater-filter .list-content{
+	margin: 10px 0;
+}
+
+.list-header{
+	border-bottom: #ddd solid 1px;
+  margin: -10px -10px 0px -10px;
+  padding: 10px;
+  padding-right: 40px;
+  min-height: 20px;
+}
+
+.list-header > textarea{
+	overflow: hidden;
+  overflow-wrap: break-word;
+  resize: none;
+  height: 19px;
+	border: none;
+  padding: 0;
+  outline: 0;
+  width: 100%;
+  box-shadow: none;
+}
+
+.list-header .space-collapse{
+    right: 10px;
+    position: absolute;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    border: none;
+    background: none;
+    outline: none;
+}
+
+.space-collapse::before {
+    content: "\f140";
+    font: 400 20px/1 dashicons;
+    speak: none;
+    display: block;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.space-close-btn{
+position: absolute;
+top: auto;
+right: 10px;
+bottom: 10px;
+color: red;
+padding: 0;
+line-height: 1;
+font-size: inherit;
+text-decoration: underline;
+cursor: pointer;
+border: none;
+background: none;
+outline: none;
+}

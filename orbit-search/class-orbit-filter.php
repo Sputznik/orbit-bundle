@@ -32,7 +32,8 @@
 					'options'					=> '',
 					'label'						=> '',
 					'tax_parent'			=> 0,
-					'tax_hide_empty'	=> true
+					'tax_hide_empty'	=> true,	// OVER TIME THIS WILL BE REMOVED AND ONLY tax_show_empty SHOULD BE USED
+					//'tax_show_empty'	=> false
 				)
 			);
 		}
@@ -45,6 +46,8 @@
 			echo do_shortcode( $shortcode );
 			wp_die();
 		}
+
+
 
 
 		/* MAIN SHORTCODE FUNCTION */
