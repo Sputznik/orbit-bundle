@@ -13,6 +13,27 @@
 			add_action( 'admin_menu', array( $this, 'admin_menu' ), 9999 );
 		}
 
+		function getMenus(){
+			$menus = array(
+				'orbit-types' => array(
+					'label'	=> 'Orbit Types',
+					'url'		=> admin_url().'edit.php?post_type=orbit-types'
+				),
+				'orbit_taxonomy' => array(
+					'label'	=> 'Orbit Taxonomies',
+					'url'		=> admin_url().'edit-tags.php?taxonomy=orbit_taxonomy&post_type=orbit-types'
+				),
+				'orbit-tmp' => array(
+					'label'	=> 'Orbit Templates',
+					'url'		=> admin_url().'edit.php?post_type=orbit-tmp'
+				),
+				'orbit-form' => array(
+					'label'	=> 'Orbit SearchForms',
+					'url'		=> admin_url().'edit.php?post_type=orbit-form'
+				),
+			);
+			return apply_filters( 'orbit_admin_menus', $menus );
+		}
 
 		function admin_menu(){
 
@@ -24,22 +45,15 @@
 			/* ADD MAIN MENU FOR THE PLUGIN */
 			add_menu_page( 'Orbit Bundle', 'Orbit Bundle', 'manage_options', 'orbit-types', array( $this, 'menu_page' ) );
 
-			/* ADD SUB MENU ITEMS FOR ORBIT TYPES */
-			add_submenu_page( 'orbit-types', 'Orbit Types', 'Orbit Types', 'manage_options', 'orbit-types', array( $this, 'menu_page' ) );
-			//add_submenu_page( 'orbit-types', 'New Orbit Type', 'New Orbit Type', 'manage_options', 'orbit-types-new', array( $this, 'menu_page' ) );
-			add_submenu_page( 'orbit-types', 'Orbit Taxonomies', 'Orbit Taxonomies', 'manage_options', 'orbit-taxonomies', array( $this, 'menu_page' ) );
-
-			/* ADD SUB MENU ITEMS FOR ORBIT TEMPLATES */
-			add_submenu_page( 'orbit-types', 'Templates', 'Orbit Templates', 'manage_options', 'orbit-templates', array( $this, 'menu_page' ) );
-
-			/* ADD SUB MENU ITEMS FOR ORBIT SEARCH FORMS */
-			add_submenu_page( 'orbit-types', 'SearchForms', 'Orbit SearchForms', 'manage_options', 'orbit-form', array( $this, 'menu_page' ) );
+			// SUB MENUS
+			$menus = $this->getMenus();
+			foreach( $menus as $menu_slug => $menu ){
+				add_submenu_page( 'orbit-types', $menu['label'], $menu['label'], 'manage_options', $menu_slug, array( $this, 'menu_page' ) );
+			}
 
 			// SETTINGS FOR THE ADMIN
 			add_submenu_page( 'orbit-types', 'Settings', 'Orbit Settings', 'manage_options', 'orbit-settings', array( $this, 'page' ) );
 		}
-
-
 
 		function page(){
 			$page = $_GET['page'];
@@ -58,48 +72,34 @@
 
 		}
 
+		/* COMMON MENU PAGE THAT REDIRECTS USING JS */
 		function menu_page(){
+			$menus = $this->getMenus();
+			if( isset( $menus[ $_GET['page'] ] ) && isset( $menus[ $_GET['page'] ]['url'] ) ){
+				$url = $menus[ $_GET['page'] ]['url'];
 
-			switch( $_GET['page'] ){
-
-				case 'orbit-types':
-					$url = admin_url().'edit.php?post_type=orbit-types';
-					break;
-
-				case 'orbit-types-new':
-					$url = admin_url().'post-new.php?post_type=orbit-types';
-					break;
-
-				case 'orbit-taxonomies':
-					$url = admin_url().'edit-tags.php?taxonomy=orbit_taxonomy&post_type=orbit-types';
-					break;
-
-				case 'orbit-templates':
-					$url = admin_url().'edit.php?post_type=orbit-tmp';
-					break;
-
-				case 'orbit-templates-new':
-					$url = admin_url().'post-new.php?post_type=orbit-tmp';
-					break;
-
-				case 'orbit-form':
-					$url = admin_url().'edit.php?post_type=orbit-form';
-					break;
-
-				case 'orbit-form-new':
-					$url = admin_url().'post-new.php?post_type=orbit-form';
-					break;
+				/* REDIRECT VIA JS */
+				_e("<script>location.href='".$url."';</script>");
 			}
-
-			/* REDIRECT VIA JS */
-			_e("<script>location.href='".$url."';</script>");
-
 		}
 
 		function admin_head(){
 			$screen = get_current_screen();
 
-			if( in_array( $screen->id, array('edit-orbit-types', 'orbit-types', 'edit-orbit_taxonomy', 'orbit-tmp', 'edit-orbit-tmp', 'orbit-form', 'edit-orbit-form') ) ):
+			$menus = $this->getMenus();
+
+			$anchors = array();
+
+			$orbit_screens = array();
+
+			foreach( $menus as $menu_slug => $menu ){
+				array_push( $anchors, array( 'admin.php?page='.$menu_slug, $menu['url'] ) );
+
+				array_push( $orbit_screens, $menu_slug );
+				array_push( $orbit_screens, 'edit-'.$menu_slug );
+			}
+
+			if( in_array( $screen->id,  $orbit_screens ) ):
 
 			/* HIGHLIGHT THE CURRENT MENU ITEM AFTER REDIRECT */
 			?>
@@ -116,14 +116,7 @@
 			?>
 			<script>
 				jQuery(document).ready(function($) {
-
-					var anchors = [
-						['admin.php?page=orbit-types', 'edit.php?post_type=orbit-types'],
-						['admin.php?page=orbit-taxonomies', 'edit-tags.php?taxonomy=orbit_taxonomy&post_type=orbit-types'],
-						['admin.php?page=orbit-templates', 'edit.php?post_type=orbit-tmp'],
-						['admin.php?page=orbit-form', 'edit.php?post_type=orbit-form'],
-					];
-
+					var anchors = <?php _e( wp_json_encode( $anchors ) )?>;
 					for( var i=0; i<anchors.length; i++ ){
 						$( "a[href='" + anchors[i][0] + "']" ).attr( 'href', anchors[i][1] );
 					}
