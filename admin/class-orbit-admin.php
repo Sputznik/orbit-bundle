@@ -17,19 +17,19 @@
 			$menus = array(
 				'orbit-types' => array(
 					'label'	=> 'Orbit Types',
-					'url'		=> admin_url().'edit.php?post_type=orbit-types'
+					'url'		=> 'edit.php?post_type=orbit-types'
 				),
 				'orbit_taxonomy' => array(
 					'label'	=> 'Orbit Taxonomies',
-					'url'		=> admin_url().'edit-tags.php?taxonomy=orbit_taxonomy&post_type=orbit-types'
+					'url'		=> 'edit-tags.php?taxonomy=orbit_taxonomy&post_type=orbit-types'
 				),
 				'orbit-tmp' => array(
 					'label'	=> 'Orbit Templates',
-					'url'		=> admin_url().'edit.php?post_type=orbit-tmp'
+					'url'		=> 'edit.php?post_type=orbit-tmp'
 				),
 				'orbit-form' => array(
 					'label'	=> 'Orbit SearchForms',
-					'url'		=> admin_url().'edit.php?post_type=orbit-form'
+					'url'		=> 'edit.php?post_type=orbit-form'
 				),
 			);
 			return apply_filters( 'orbit_admin_menus', $menus );
@@ -37,18 +37,16 @@
 
 		function admin_menu(){
 
-			/* REMOVE MENUS FROM CUSTOM POST TYPES */
-			remove_menu_page('edit.php?post_type=orbit-form');
-			remove_menu_page('edit.php?post_type=orbit-types');
-			remove_menu_page('edit.php?post_type=orbit-tmp');
-
 			/* ADD MAIN MENU FOR THE PLUGIN */
 			add_menu_page( 'Orbit Bundle', 'Orbit Bundle', 'manage_options', 'orbit-types', array( $this, 'menu_page' ) );
 
-			// SUB MENUS
 			$menus = $this->getMenus();
 			foreach( $menus as $menu_slug => $menu ){
+				// ADD SUBMENU ITEM
 				add_submenu_page( 'orbit-types', $menu['label'], $menu['label'], 'manage_options', $menu_slug, array( $this, 'menu_page' ) );
+
+				// 	REMOVE THE DUPLICATED MENU APPEARING ELSEWHERE
+				remove_menu_page( $menu['url'] );
 			}
 
 			// SETTINGS FOR THE ADMIN
@@ -79,17 +77,15 @@
 				$url = $menus[ $_GET['page'] ]['url'];
 
 				/* REDIRECT VIA JS */
-				_e("<script>location.href='".$url."';</script>");
+				_e("<script>location.href='".admin_url().$url."';</script>");
 			}
 		}
 
 		function admin_head(){
 			$screen = get_current_screen();
-
 			$menus = $this->getMenus();
 
 			$anchors = array();
-
 			$orbit_screens = array();
 
 			foreach( $menus as $menu_slug => $menu ){
@@ -99,28 +95,21 @@
 				array_push( $orbit_screens, 'edit-'.$menu_slug );
 			}
 
-			if( in_array( $screen->id,  $orbit_screens ) ):
-
 			/* HIGHLIGHT THE CURRENT MENU ITEM AFTER REDIRECT */
-			?>
+			if( in_array( $screen->id,  $orbit_screens ) ):?>
 			<script>
 				jQuery(document).ready(function($) {
 					$('#toplevel_page_orbit-types').addClass('wp-has-current-submenu wp-menu-open menu-top menu-top-first').removeClass('wp-not-current-submenu');
 					$('#toplevel_page_orbit-types > a').addClass('wp-has-current-submenu').removeClass('wp-not-current-submenu');
 				});
 			</script>
-			<?php
-
-			endif;
-
-			?>
+			<?php endif; ?>
 			<script>
 				jQuery(document).ready(function($) {
 					var anchors = <?php _e( wp_json_encode( $anchors ) )?>;
 					for( var i=0; i<anchors.length; i++ ){
 						$( "a[href='" + anchors[i][0] + "']" ).attr( 'href', anchors[i][1] );
 					}
-
 				});
 			</script>
 			<?php
