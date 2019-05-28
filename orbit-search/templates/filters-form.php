@@ -5,7 +5,29 @@
 			<span class="arrow-down"></span>
 		</div>
 		<form method='GET'>
-			<?php _e( do_shortcode( $form->post_content ) ); ?>
+		<?php
+			// CHECK IF THE ORBIT FILTERS EXISTS INSIDE THE POST META
+			$db_filters = get_post_meta( $form->ID, 'orbit_filters', true );
+
+			if( is_array( $db_filters ) && count( $db_filters ) ){
+				foreach ( $db_filters as $db_filter ) {
+					// IF CHECKBOX OF HIDE LABEL IS ENABLED THEN EMPTY THE LABEL
+					if( isset( $db_filter['hide_label'] ) && $db_filter['hide_label'] ){
+						$db_filter['label'] = '';
+					}
+					if( isset( $db_filter['tax_show_empty'] ) && $db_filter['tax_show_empty'] ){
+						$db_filter['tax_hide_empty'] = false;
+					}
+					$filter_shortcode = $orbit_filter->createShortcode( $db_filter );
+					//echo $filter_shortcode;
+					_e( do_shortcode( $filter_shortcode ) );
+				}
+			}
+			else{
+				// FALLBACK TO DEFAULT FUNCTIONALITY
+				_e( do_shortcode( $form->post_content ) );
+			}
+		?>
 			<p><button type='submit'>Submit</button></p>
 		</form>
 	</div>

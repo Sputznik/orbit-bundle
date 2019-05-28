@@ -32,14 +32,6 @@
 			/*Create metabox*/
 			add_action( 'add_meta_boxes', array( $this, 'createMetaBox' ));
 
-			/* ENQUEUE ADMIN ASSETS */
-			add_action('admin_enqueue_scripts', array( $this, 'admin_assets' ) );
-		}
-
-		function admin_assets(){
-				wp_enqueue_script( 'orbit-repeater', plugin_dir_url( __FILE__ ).'js/repeater.js', array('jquery'), ORBIT_BUNDLE_VERSION, true );
-				wp_enqueue_script( 'orbit-search-admin', plugin_dir_url( __FILE__ ).'js/admin.js', array('jquery', 'orbit-repeater'), time(), true );
-
 		}
 
 		// THIS IS WHERE THE FILTERS THAT ARE ADDED BY THE USER FROM THE ADMIN PANEL IS SAVED IN THE DB
@@ -64,22 +56,7 @@
 			 //wp_die();
 		}
 
-		function getFilterShortcode( $filter ){
 
-			$shortcode_str = "[orbit_filter";
-
-			foreach( $filter as $slug => $value ){
-				if( in_array( $slug, array( 'label', 'form', 'type', 'typeval', 'tax_hide_empty' ) ) ){
-					$shortcode_str .= " ".$slug."='".$value."'";
-				}
-			}
-
-			$shortcode_str .= "]";
-
-			return $shortcode_str;
-
-
-		}
 
 		function createMetaBox(){
 
@@ -183,6 +160,10 @@
 
 		function form( $atts ){
 
+			// CLASSES ORBIT
+			$orbit_util 	= ORBIT_UTIL::getInstance();
+			$orbit_filter = ORBIT_FILTER::getInstance();
+
 			ob_start();
 
 			/* CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE */
@@ -193,35 +174,7 @@
 
 			_e("<div class='orbit-search-container'>");
 
-			_e("<div class='orbit-search-form'>");
-			_e("<form method='GET'>");
-			do_action( 'orbit_filter_form_header', $form );
-
-			// CHECK IF THE ORBIT FILTERS EXISTS INSIDE THE POST META
-			$orbit_filters = get_post_meta( $form->ID, 'orbit_filters', true );
-
-			if( is_array( $orbit_filters ) && count( $orbit_filters ) ){
-				foreach ($orbit_filters as $orbit_filter) {
-					// IF CHECKBOX OF HIDE LABEL IS ENABLED THEN EMPTY THE LABEL
-					if( isset( $orbit_filter['hide_label'] ) && $orbit_filter['hide_label'] ){
-						$orbit_filter['label'] = '';
-					}
-					if( isset( $orbit_filter['tax_show_empty'] ) && $orbit_filter['tax_show_empty'] ){
-						$orbit_filter['tax_hide_empty'] = false;
-					}
-					$filter_shortcode = $this->getFilterShortcode( $orbit_filter );
-					//echo $filter_shortcode;
-					echo do_shortcode( $filter_shortcode );
-				}
-			}
-			else{
-				// FALLBACK TO DEFAULT FUNCTIONALITY
-				_e( do_shortcode( $form->post_content ) );
-			}
-
-			_e("<p><button type='submit'>Submit</button></p>");
-			_e("</form>");
-			_e("</div>");
+			include( 'templates/filters-form.php' );
 
 			_e("<div class='orbit-search-results'>");
 
@@ -246,17 +199,11 @@
 			$shortcode_str .= "posts_per_page='".$posts_per_page."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
 
 			// ADD TAXONOMY AND DATE QUERY PARAMETERS TO THE SHORTCODE
-			$orbit_util = ORBIT_UTIL::getInstance();
 			$extra_params = $orbit_util->paramsToString( $_GET );
+			if( isset( $extra_params['tax'] ) && $extra_params['tax'] ){ $shortcode_str .= "tax_query='".$extra_params['tax']."'"; }
+			if( isset( $extra_params['date'] ) && $extra_params['date'] ){ $shortcode_str .= " date_query='".$extra_params['date']."'"; }
 
-			if( isset( $extra_params['tax'] ) && $extra_params['tax'] ){
-				$shortcode_str .= "tax_query='".$extra_params['tax']."'";
-			}
-
-			if( isset( $extra_params['date'] ) && $extra_params['date'] ){
-				$shortcode_str .= " date_query='".$extra_params['date']."'";
-			}
-
+			// END OF SHORTCODE STRING
 			$shortcode_str .= "]";
 
 			//echo $shortcode_str;

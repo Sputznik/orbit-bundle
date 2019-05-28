@@ -1,6 +1,6 @@
 <?php
 
-	class ORBIT_FILTER{
+	class ORBIT_FILTER extends ORBIT_BASE{
 
 		function __construct(){
 
@@ -32,8 +32,7 @@
 					'options'					=> '',
 					'label'						=> '',
 					'tax_parent'			=> 0,
-					'tax_hide_empty'	=> true,	// OVER TIME THIS WILL BE REMOVED AND ONLY tax_show_empty SHOULD BE USED
-					//'tax_show_empty'	=> false
+					'tax_hide_empty'	=> true,
 				)
 			);
 		}
@@ -47,7 +46,11 @@
 			wp_die();
 		}
 
-
+		/* CREATE SHORTCODE FROM ARRAY OF ATTRTIBUTES */
+		function createShortcode( $params ){
+			$orbit_util = ORBIT_UTIL::getInstance();
+			return $orbit_util->createShortcode( 'orbit_filter', $params, array( 'label', 'form', 'type', 'typeval', 'tax_hide_empty' ) );
+		}
 
 
 		/* MAIN SHORTCODE FUNCTION */
@@ -178,5 +181,4 @@
 
 	}
 
-	global $orbit_filter_obj;
-	$orbit_filter_obj = new ORBIT_FILTER;
+	ORBIT_FILTER::getInstance();

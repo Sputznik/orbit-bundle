@@ -1,5 +1,6 @@
-jQuery(document).ready(function(){
-  jQuery('[data-behaviour="orbit-admin-filters"]').each(function(){
+jQuery.fn.repeater_filters = function(){
+
+	return this.each(function() {
 
     var $el = jQuery( this ),
       atts  = $el.data( 'atts' );
@@ -16,16 +17,10 @@ jQuery(document).ready(function(){
 
         // ITERATE THROUGH EACH PAGES IN THE DB
         jQuery.each( atts.db, function( i, filter ){
-
-          if( filter['label']){
-            repeater.addItem( filter );
-
-          }
+          if( filter['label']){ repeater.addItem( filter ); }
         });
 
-
-
-			},
+      },
 			addItem	: function( repeater, $list_item, $closeButton, filter ){
 
 				/*
@@ -35,11 +30,7 @@ jQuery(document).ready(function(){
 				* HIDDEN: page COUNT
 				*/
 
-        console.log(filter);
-
-				if( filter == undefined ){
-					filter = { label : '' };
-				}
+        if( filter == undefined ){ filter = { label : '' }; }
 
 				// CREATE COLLAPSIBLE ITEM - HEADER AND CONTENT
 				repeater.addCollapsibleItem( $list_item, $closeButton );
@@ -122,8 +113,6 @@ jQuery(document).ready(function(){
           append :  $content
         });
 
-
-
         // OPTIONS OF FILTER TYPE BY VALUE ARE RESET BASED ON THE VALUE SELECTED IN FILTER TYPE
         function updateOptionsForFilterTypeValue(){
           var type = $filter_type.find('select').val(),
@@ -160,9 +149,8 @@ jQuery(document).ready(function(){
           append	: $list_item
         });
 
-
-
-				$closeButton.click( function( ev ){
+        // CLOSE EVENT ON CLICK OF THE BUTTON
+        $closeButton.click( function( ev ){
 					ev.preventDefault();
 					if( confirm( 'Are you sure you want to remove this?' ) ){
 						// IF PAGE ID IS NOT EMPTY THAT MEANS IT IS ALREADY IN THE DB, SO THE ID HAS TO BE PUSHED INTO THE HIDDEN DELETED FIELD
@@ -170,8 +158,7 @@ jQuery(document).ready(function(){
 					}
 				});
 
-
-			},
+      },
 			reorder: function( repeater ){
 				/*
 				* REORDER LIST
@@ -185,6 +172,11 @@ jQuery(document).ready(function(){
 			},
 		} );
 
-
   });
+
+};
+
+
+jQuery(document).ready(function(){
+  jQuery('[data-behaviour="orbit-admin-filters"]').repeater_filters();
 });

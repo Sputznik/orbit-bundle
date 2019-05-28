@@ -9,13 +9,10 @@
 
 			add_action('admin_head', array( $this, 'admin_head' ), 50);
 
-			add_action('admin_footer', array( $this, 'wp_admin_footer' ) );
-
 			/* ADMIN MENU FOR THE ORBIT */
 			add_action( 'admin_menu', array( $this, 'admin_menu' ), 9999 );
-
-
 		}
+
 
 		function admin_menu(){
 
@@ -34,14 +31,11 @@
 
 			/* ADD SUB MENU ITEMS FOR ORBIT TEMPLATES */
 			add_submenu_page( 'orbit-types', 'Templates', 'Orbit Templates', 'manage_options', 'orbit-templates', array( $this, 'menu_page' ) );
-			//add_submenu_page( 'orbit-types', 'New Template', 'New Orbit Template', 'manage_options', 'orbit-templates-new', array( $this, 'menu_page' ) );
 
 			/* ADD SUB MENU ITEMS FOR ORBIT SEARCH FORMS */
 			add_submenu_page( 'orbit-types', 'SearchForms', 'Orbit SearchForms', 'manage_options', 'orbit-form', array( $this, 'menu_page' ) );
-			//add_submenu_page( 'orbit-types', 'New SearchForm', 'New SearchForm', 'manage_options', 'orbit-form-new', array( $this, 'menu_page' ) );
 
-			//add_submenu_page( 'orbit-types', 'Import', 'Orbit Import', 'manage_options', 'orbit-import', array( $this, 'page' ) );
-
+			// SETTINGS FOR THE ADMIN
 			add_submenu_page( 'orbit-types', 'Settings', 'Orbit Settings', 'manage_options', 'orbit-settings', array( $this, 'page' ) );
 		}
 
@@ -58,12 +52,9 @@
 				case 'orbit-settings':
 					$tmp = "settings.php";
 					break;
-
 			}
 
-			if( $tmp ){
-				include( "pages/".$tmp );
-			}
+			if( $tmp ){ include( "pages/".$tmp ); }
 
 		}
 
@@ -146,13 +137,16 @@
 
 			global $post_type;
 
+			wp_enqueue_script( 'orbit-repeater', plugins_url( 'orbit-bundle/dist/js/repeater.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
 
 			if( ( $hook == 'post.php' ) && ( $post_type == 'orbit-form' || $post_type == 'page' ) ){
 				wp_enqueue_script('orbit-form-default', plugins_url( 'orbit-bundle/dist/js/of.default.js' ), array( 'jquery'), ORBIT_BUNDLE_VERSION, true );
 			}
 
 			if( $hook == 'post.php' && $post_type == 'orbit-form' ) {
-				wp_enqueue_script('orbit-form', plugins_url( 'orbit-bundle/dist/js/orbit_form_tinymce_btn.js' ), array( 'jquery', 'orbit-form-default' ), ORBIT_BUNDLE_VERSION, true );
+				// NOT USING THIS AS WE HAVE MOVED FROM TINYMCE TO REPEATER FIELDS
+				//wp_enqueue_script('orbit-form', plugins_url( 'orbit-bundle/dist/js/orbit_form_tinymce_btn.js' ), array( 'jquery', 'orbit-form-default' ), ORBIT_BUNDLE_VERSION, true );
+				wp_enqueue_script( 'orbit-repeater-filters', plugins_url( 'orbit-bundle/dist/js/repeater-filters.js' ), array( 'jquery', 'orbit-repeater' ), ORBIT_BUNDLE_VERSION, true );
 			}
 
 			if( $hook == 'post.php' && $post_type == 'page' ) {
@@ -161,8 +155,6 @@
 
 			wp_enqueue_style( 'orbit-form', plugins_url( 'orbit-bundle/dist/css/admin-style.css' ), array(), ORBIT_BUNDLE_VERSION );
 
-			wp_enqueue_script( 'orbit-repeater', plugins_url( 'orbit-bundle/dist/js/repeater.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
-
 			wp_enqueue_script( 'orbit-cf', plugins_url( 'orbit-bundle/dist/js/orbit_cf.js' ), array( 'jquery', 'orbit-repeater' ), ORBIT_BUNDLE_VERSION, true );
 
 			// BATCH PROCESS ENQUEUE ASSETS
@@ -170,12 +162,6 @@
 			$batch_process->enqueue_assets();
 
 		}
+}
 
-
-		function wp_admin_footer(){
-			include("backbone-templates.php");
-		}
-
-	}
-
-	new ORBIT_ADMIN;
+new ORBIT_ADMIN;
