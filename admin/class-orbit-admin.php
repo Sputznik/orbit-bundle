@@ -6,7 +6,7 @@
 
 			/* ENQUEUE SCRIPTS ON ADMIN DASHBOARD */
 			add_action( 'admin_enqueue_scripts', array( $this, 'wp_admin_script') );
-
+			
 			add_action('admin_head', array( $this, 'admin_head' ), 50);
 
 			/* ADMIN MENU FOR THE ORBIT */
