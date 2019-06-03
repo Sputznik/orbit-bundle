@@ -17,6 +17,7 @@
 		"lib/class-orbit-csv.php",
 		"lib/class-orbit-translations.php",
 		"lib/class-orbit-util.php",
+		"lib/class-orbit-wp.php",
 		"orbit-search/orbit-search.php",
 		"orbit-query/orbit-query.php",
 		"orbit-templates/orbit-templates.php",

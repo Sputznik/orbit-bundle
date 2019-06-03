@@ -115,10 +115,12 @@
 			return $options;
 		}
 
+		/*
 		function get_terms( $args ){
 			$terms = get_terms( $args );
 			return $terms;
 		}
+		*/
 
 		function get_terms_arr( $term_type, $parent = -1, $hide_empty = true ){
 			$final_arr = array();
@@ -136,7 +138,9 @@
 				$args['child_of'] = $parent;
 			}
 
-			$terms = $this->get_terms( $args );
+			$orbit_wp = 	ORBIT_WP::getInstance();
+
+			$terms = $orbit_wp->get_terms( $args );
 			foreach($terms as $term){
 				array_push($final_arr, $term->name);
 			}

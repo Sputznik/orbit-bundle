@@ -118,28 +118,36 @@ class ORBIT_CSV extends ORBIT_BASE{
 
 	function getHeaderInfo( $arrayCsv ){
 
+		$headerCsv = $arrayCsv[0];
+
 		$headerInfo = array(
 			'post_info' => array(),
 			'tax_info'	=> array(),
 			'cf_info'		=> array()
 		);
 
-		$headerCsv = $arrayCsv[0];
-
 		$i = 0;
     foreach( $headerCsv as $col ){
 
       if ( strpos( $col, 'post_' ) !== false ) {
+				// POST INFORMATION
         $headerInfo['post_info'][ $col ] = $i;
       }
       elseif ( strpos( $col, 'tax_' ) !== false ) {
+				// TAXONOMY INFORMATION
         $temp_col = explode( 'tax_', $col );
         $headerInfo['tax_info'][ $temp_col[1] ] = $i;
       }
       elseif( strpos( $col, 'cf_' ) !== false ){
+				// CUSTOM FIELDS INFORMATION
         $temp_col = explode( 'cf_', $col );
         $headerInfo['cf_info'][ $temp_col[1] ] = $i;
       }
+			elseif ( strpos( $col, '|' ) !== false ) {
+				// TERMS INFORMATION
+				$temp_col = explode( '|', $col );
+				$headerInfo[ $temp_col[0] ][ $temp_col[1] ] = $i;
+			}
 
       $i++;
     }
@@ -148,6 +156,12 @@ class ORBIT_CSV extends ORBIT_BASE{
 	}
 
 	function exportPosts( $file_slug, $headerInfo, $query_args ){
+
+		echo "<pre>";
+		print_r( $headerInfo );
+		echo "</pre>";
+
+		$orbit_wp = ORBIT_WP::getInstance();
 
 		$the_query = new WP_Query( $query_args );
 
@@ -160,29 +174,62 @@ class ORBIT_CSV extends ORBIT_BASE{
 
 				global $post;
 
-				// ACCUMULATING ALL POST INFORMATION
-				foreach( $headerInfo['post_info'] as $slug => $value ){
-					// UNIQUE CASE FOR ID
-					if( $slug == 'post_id' ){ $slug = 'ID'; }
+				foreach( $headerInfo as $type => $valueArray ){
 
-					if( isset( $post->$slug ) ){ $row[ $value ] = $post->$slug; }
+					if( $type == 'post_info' ){
+						// ACCUMULATING ALL POST INFORMATION
+
+						foreach( $valueArray as $slug => $value ){
+							// UNIQUE CASE FOR ID
+							if( $slug == 'post_id' ){ $slug = 'ID'; }
+
+							if( isset( $post->$slug ) ){ $row[ $value ] = $post->$slug; }
+						}
+					}
+					else if( $type == 'tax_info' ){
+						// ACCUMULATING ALL TAXONOMY RELATED INFORMATION
+
+						foreach( $valueArray as $taxonomy => $value ){
+							$terms = $orbit_wp->get_post_terms( get_the_ID(), $taxonomy ); //wp_get_post_terms( get_the_ID(), $taxonomy );
+							$term_names_arr = array();
+							if( is_array( $terms ) && count( $terms ) ){
+								foreach ( $terms as $term ){
+			            array_push( $term_names_arr, $term->name );
+			          }
+							}
+							$row[ $value ] = implode( ',', $term_names_arr );
+			      }
+					}
+					else{
+
+						// CHECK IF THE NEXT HEADER INFORMATION IS A TAXONOMY
+						if( taxonomy_exists( $type ) ){
+
+							$post_terms = $orbit_wp->get_post_terms( get_the_ID(), $type );
+							$post_terms_slugs = array();
+							foreach( $post_terms as $post_term ){
+								array_push( $post_terms_slugs, $post_term->slug );
+							}
+
+							// BOOLEAN ASSIGNMENT
+							foreach( $valueArray as $term_slug => $value ){
+								if( in_array( $term_slug, $post_terms_slugs ) ){ $row[ $value ] = 1; }
+								else{ $row[ $value ] = 0; }
+							}
+						}
+
+
+					}
+
 				}
 
-				// ACCUMULATING ALL TAXONOMY RELATED INFORMATION
-				foreach( $headerInfo['tax_info'] as $taxonomy => $value ){
-					$terms = wp_get_post_terms( get_the_ID(), $taxonomy );
-					$term_names_arr = array();
-					if( is_array( $terms ) && count( $terms ) ){
-						foreach ( $terms as $term ){
-	            array_push( $term_names_arr, $term->name );
-	          }
-					}
-					$row[ $value ] = implode( ',', $term_names_arr );
-	      }
-
+				// SORT ARRAY BY KEYS IN ASCENDING
+				ksort( $row );
+				/*
 				echo "<pre>";
 				print_r( $row );
 				echo "</pre>";
+				*/
 
 				$this->addRowToCSV( $file_slug, $row );
 
@@ -275,6 +322,43 @@ class ORBIT_CSV extends ORBIT_BASE{
 		$outstream = fopen( $path['path'], "a");
 		fputcsv($outstream, $row );
 		fclose($outstream);
+	}
+
+	/*
+	* PREPARE HEADER ROW
+	* CHECK IF THE TAXONOMY HAS TO BE FIRTHER BROKEN DOWN INTO ITS INDIVIDUAL TERM COLUMNS
+	* REPORT-TYPE IS A TAXONOMY. IF tax_report-type[] IS FOUND AS ONE OF THE HEADER ITEMS THEN BREAK IT DOWN
+	*/
+	function prepareHeaderForExport( $header ){
+		$data = array();
+		foreach( $header as $headerItem ){
+
+			// CHECK IF TAXONOMY NEEDS TO BROKEN DOWN INTO ITS RESPECTIVE TERMS AS COLUMNS
+			if ( ( strpos( $headerItem, 'tax_' ) !== false ) && ( strpos( $headerItem, '[]' ) !== false ) ){
+				$headerItem = str_replace( '[]', '', $headerItem );
+				// ADD THE MAIN TAXONOMY TO THE HEADER COLUMN FIRST BEFORE ADDING THE TERMS
+				array_push( $data, $headerItem );
+
+				$taxonomy = str_replace( 'tax_', '', $headerItem );
+
+				$orbit_wp = ORBIT_WP::getInstance();
+
+				$terms = $orbit_wp->get_terms( array(
+					'taxonomy'		=> $taxonomy,
+					'hide_empty'	=> false
+				) );
+				foreach ( $terms as $term ) {
+					$newHeaderItem = $taxonomy . "|" . $term->slug;
+					// ADD TERM INTO THE HEADER COLUMN
+					array_push( $data, $newHeaderItem );
+				}
+
+			}
+			else{
+				array_push( $data, $headerItem );
+			}
+		}
+		return $data;
 	}
 
 }
