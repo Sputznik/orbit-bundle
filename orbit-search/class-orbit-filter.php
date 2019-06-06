@@ -20,11 +20,17 @@
 					//'cf'				=> 'Custom Field',
 					'postdate'	=> 'Date'
 				),
+				'postdate_options'	=> array(
+					'year'		=> 'Year',
+					'after'		=> 'From (After Date Query)',
+					'before' 	=> 'To (Before Date Query)'
+				),
 				'forms'	=> array(
 					'checkbox' 								=> 'Checkbox (multiple)',
 					'dropdown' 								=> 'Dropdown (single)',
 					'typeahead'								=> 'Typeahead (input field)',
-					'bt_dropdown_checkboxes'  => 'Single Dropdown (with checkboxes)'
+					'bt_dropdown_checkboxes'  => 'Single Dropdown (with checkboxes)',
+					'date'										=> 'Date (input field)'
 				),
 				'shortcode'	=> array(
 					'type'						=> 'customfield',
@@ -87,6 +93,8 @@
 					break;
 
 			}
+
+
 
 			$this->display( $atts );
 

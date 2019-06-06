@@ -3,7 +3,7 @@
 	class ORBIT_SEARCH{
 
 		function __construct(){
-			
+
 			add_shortcode( 'orbit_search', array( $this, 'form' ) );
 
 			/* ADD FORMS THROUGH THE BACKEND */
@@ -40,9 +40,8 @@
 					$form_atts = $orbit_filter->vars();
 					if( !$form_atts || !is_array( $form_atts ) ){ $form_atts = array(); }
 					$form_atts['tax_options'] = get_taxonomies();
-					$form_atts['postdate_options'] = array(
-						'year'	=>	'Year',
-					);
+
+					// GET VALUE FROM THE DATABASE
 					$form_atts['db'] = $this->getFiltersFromDB( $post->ID );
 
 					// TRIGGER THE REPEATER FILTER BY DATA BEHAVIOUR ATTRIBUTE
