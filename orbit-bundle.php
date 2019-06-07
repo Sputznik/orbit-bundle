@@ -32,6 +32,7 @@
 		require_once( $inc_file );
 	}
 
+	/*
 	// GUTENBERG BLOCK
 	add_action( 'init', function(){
 
@@ -49,7 +50,7 @@
 			filemtime( plugin_dir_path( __FILE__ ) . 'dist/css/orbit-query.css' )
 		);
 
-		/* LOCALIZE ORBIT SETTINGS */
+		// LOCALIZE ORBIT SETTINGS
 		$orbit_settings = array( 'post_types' => array(), 'styles' => array(), 'taxonomies' => array() );
 
 		// POST TYPES
@@ -98,15 +99,8 @@
 			),
 		);
 
-		/*
-		echo "<pre>";
-		print_r( $orbit_settings );
-		echo "</pre>";
-		wp_die();
-		*/
-
 		wp_localize_script( 'orbit-query-block', 'orbit_settings', $orbit_settings );
-		/* LOCALIZE ORBIT SETTINGS */
+		// END OF LOCALIZE ORBIT SETTINGS
 
 
 		if( function_exists('register_block_type') ){
@@ -123,15 +117,12 @@
 	} );
 
 
-	/* ENQUEUE ASSETS */
+	// ENQUEUE ASSETS
 	add_action( 'wp_enqueue_scripts', function(){
 
 		wp_enqueue_style( 'orbit-blocks' );
 
-		// ENQUEUE ORBIT QUERY CSS
-		wp_enqueue_style( 'orbit-query', plugins_url( 'dist/css/orbit-query.css', __FILE__ ), array() );
-
 	} );
-
+	*/
 
 	do_action('orbit-bundle-loaded');
