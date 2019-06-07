@@ -165,6 +165,22 @@
 
 			if( isset( $atts['form'] ) ){
 
+				$orbit_form_field = ORBIT_FORM_FIELD::getInstance();
+
+				$new_items = array();
+				foreach( $atts['items'] as $item ){
+					array_push( $new_items, array( 'slug' => $item, 'name'	=> $item ) );
+				}
+
+				$orbit_form_field->display( array(
+					'name'	=> $atts['form_name'],
+					'value'	=> $atts['form_value'],
+					'label'	=> $atts['label'],
+					'type'	=> $atts['form'],
+					'items'	=> $new_items
+				) );
+				
+				/*
 				_e("<div class='orbit-form-group'>");
 
 				if( isset( $atts['label'] ) && $atts['label'] && $atts['form'] != 'bt_dropdown_checkboxes' ){
@@ -175,20 +191,20 @@
 					case 'bt_dropdown_checkboxes':
 
 					case 'checkbox':
-						/* CHECK IF FORM VALUE IS NOT SET */
+						// CHECK IF FORM VALUE IS NOT SET
 						if( !isset( $atts['form_value'] ) ){ $atts['form_value'] = array();}
 						break;
 				}
 
 				$filter_form_dir = plugin_dir_path(__FILE__) . "templates/filters/" . $atts['form'] . ".php";
 
-				/* INCLUDE THE FILTER FORM */
+				// INCLUDE THE FILTER FORM
 				if( file_exists( $filter_form_dir ) ){
 					include( $filter_form_dir );
 				}
 
 				_e("</div>");
-
+				*/
 			}
 
 		}

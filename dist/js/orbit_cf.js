@@ -1,53 +1,66 @@
-jQuery.fn.orbit_repeater = function(){
-	
+jQuery.fn.orbit_repeater_cf = function(){
+
 	return this.each(function() {
-		
+
 		var $el 	= jQuery(this),
 			slug	= $el.data('slug'),
 			rows	= $el.data('rows'),
 			fields	= $el.data('fields');
-		
+
+			console.log( fields );
+
 		var repeater = ORBIT_REPEATER( {
 			$el		: $el,
 			btn_text: '+ Add Custom Field',
 			init	: function( repeater ){
-				
+
 				/*
 				* INITIALIZE: CREATES THE UNLISTED LIST WHICH WILL TAKE CARE OF THE CHOICE, HIDDEN FIELD AND THE ADD BUTTON
 				*/
-				
-				// ITERATE THROUGH EACH CHOICES IN THE DB
-				jQuery.each( rows, function( i, row ){
-					
-					repeater.addItem( row );
-					
-				});
-				
+
+				// ITERATE THROUGH EACH VALUES IN THE DB
+				if( rows != undefined ){
+
+					jQuery.each( rows, function( i, row ){
+						repeater.addItem( row );
+					});
+
+				}
+
+
+
+
 			},
 			addItem	: function( repeater, $list_item, $closeButton, row ){
-				
+
 				/*
-				* ADD LIST ITEM TO THE UNLISTED LIST 
+				* ADD LIST ITEM TO THE UNLISTED LIST
 				* TEXTAREA: CHOICE TITLE
 				* HIDDEN: CHOICE ID
 				* HIDDEN: CHOICE COUNT
 				*/
-				
-				
+
+
 				if( row == undefined ){
 					row = {};
 				}
-				
+
 				jQuery.each( fields, function( field_slug, field ){
-					
+
+					field.label = field.text;
+
 					field.slug = slug + "[" + repeater.count + "]" + "[" + field_slug + "]";
-					
+
 					field.value = undefined;
-					
+
 					if( row[ field_slug ] != undefined ){
 						field.value = row[ field_slug ];
 					}
-					
+
+					field.attr = {
+						name: field.slug
+					};
+
 					var $containerField = repeater.createField({
 						element	: 'div',
 						attr	: {
@@ -55,41 +68,44 @@ jQuery.fn.orbit_repeater = function(){
 						},
 						append	: $list_item
 					});
-						
-					
+
+					field.append = $containerField;
+
 					if( field.type == 'dropdown' ){
-						repeater.createDropdown( field, $containerField );
+						var $dropdown = repeater.createDropdownField( field );
+
 					}
 					else if( field.type == 'text' ){
-						repeater.createInputTextfield( field, $containerField );
+						repeater.createInputTextField( field );
 					}
 					else if( field.type == 'textarea' ){
-						repeater.createTextarea( field, $containerField );
+						repeater.createTextareaField( field );
 					}
-					
-					
+
+
 				});
-				
+
+
 				$closeButton.click( function( ev ){
 					ev.preventDefault();
-					
+
 					$list_item.remove();
 				});
-				
+
+
 			},
-			
+
 		} );
-		
-		
-		
-		
+
+
+
+
 	});
-	
+
 };
 
 
 
 jQuery( document ).on( 'ready', function(){
-	
-	jQuery('[data-behaviour~=orbit-repeater]').orbit_repeater();
+	jQuery('[data-behaviour~=orbit-repeater-cf]').orbit_repeater_cf();
 } );

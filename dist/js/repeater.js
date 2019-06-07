@@ -205,6 +205,73 @@ var ORBIT_REPEATER = function( options ){
 	};
 
 	/*
+	* INPUT TEXT FIELD
+	*/
+	self.createInputTextField = function( field ){
+
+		var $wrapper = self.createField({
+			element	: 'div',
+			attr	: {
+				class : 'orbit-admin-text'
+			},
+			append	: field['append']
+		});
+
+		var $label = self.createField({
+			element	: 'label',
+			append	: $wrapper,
+			html		: field['label']
+		});
+
+		var $inputField = self.createField({
+			element	: 'input',
+			attr	: {
+				type		: 'text',
+				name		: field['attr']['name'],
+				value		: field['value']
+			},
+			append	: $wrapper
+		});
+
+		return $wrapper;
+
+	};
+
+	/*
+	* TEXTAREA FIELD
+	*/
+	self.createTextareaField = function( field ){
+
+		var $wrapper = self.createField({
+			element	: 'div',
+			attr	: {
+				class : 'orbit-admin-text'
+			},
+			append	: field['append']
+		});
+
+		var $label = self.createField({
+			element	: 'label',
+			append	: $wrapper,
+			html		: field['label']
+		});
+
+		var $textarea = self.createField({
+			element	: 'textarea',
+			attr	: {
+				name		: field['attr']['name'],
+			},
+			html	: field['value'],
+			append	: $wrapper
+		});
+
+		console.log( field );
+
+		return $wrapper;
+
+	};
+
+	/*
 	* DROPDOWN FIELD
 	*/
 	self.createDropdownField = function( field ){

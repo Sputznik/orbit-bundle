@@ -6,7 +6,7 @@
 
 			/* ENQUEUE SCRIPTS ON ADMIN DASHBOARD */
 			add_action( 'admin_enqueue_scripts', array( $this, 'wp_admin_script') );
-			
+
 			add_action('admin_head', array( $this, 'admin_head' ), 50);
 
 			/* ADMIN MENU FOR THE ORBIT */
@@ -121,21 +121,27 @@
 
 			wp_enqueue_script( 'orbit-repeater', plugins_url( 'orbit-bundle/dist/js/repeater.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
 
-			if( ( $hook == 'post.php' ) && ( $post_type == 'orbit-form' || $post_type == 'page' ) ){
-				wp_enqueue_script('orbit-form-default', plugins_url( 'orbit-bundle/dist/js/of.default.js' ), array( 'jquery'), ORBIT_BUNDLE_VERSION, true );
-			}
-
 			if( $hook == 'post.php' && $post_type == 'orbit-form' ) {
-				// NOT USING THIS AS WE HAVE MOVED FROM TINYMCE TO REPEATER FIELDS
-				//wp_enqueue_script('orbit-form', plugins_url( 'orbit-bundle/dist/js/orbit_form_tinymce_btn.js' ), array( 'jquery', 'orbit-form-default' ), ORBIT_BUNDLE_VERSION, true );
 				wp_enqueue_script( 'orbit-repeater-filters', plugins_url( 'orbit-bundle/dist/js/repeater-filters.js' ), array( 'jquery', 'orbit-repeater' ), ORBIT_BUNDLE_VERSION, true );
 			}
+
+			/*
+
+
+
+
+			if( ( $hook == 'post.php' ) && ( $post_type == 'orbit-form' || $post_type == 'page' ) ){
+				//wp_enqueue_script('orbit-form-default', plugins_url( 'orbit-bundle/dist/js/of.default.js' ), array( 'jquery'), ORBIT_BUNDLE_VERSION, true );
+			}
+
+
 
 			if( $hook == 'post.php' && $post_type == 'page' ) {
 				wp_enqueue_script('orbit-query', plugins_url( 'orbit-bundle/dist/js/orbit_query_tinymce_btn.js' ), array( 'jquery', 'orbit-form-default' ), ORBIT_BUNDLE_VERSION, true );
 			}
 
-			wp_enqueue_style( 'orbit-form', plugins_url( 'orbit-bundle/dist/css/admin-style.css' ), array(), ORBIT_BUNDLE_VERSION );
+
+			*/
 
 			wp_enqueue_script( 'orbit-cf', plugins_url( 'orbit-bundle/dist/js/orbit_cf.js' ), array( 'jquery', 'orbit-repeater' ), ORBIT_BUNDLE_VERSION, true );
 
@@ -143,6 +149,7 @@
 			$batch_process = ORBIT_BATCH_PROCESS::getInstance();
 			$batch_process->enqueue_assets();
 
+			wp_enqueue_style( 'orbit-admin', plugins_url( 'orbit-bundle/dist/css/admin-style.css' ), array(), ORBIT_BUNDLE_VERSION );
 		}
 }
 

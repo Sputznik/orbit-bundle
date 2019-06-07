@@ -1,3 +1,30 @@
+.orbit-form-group{
+	padding-top: 10px;
+	margin-bottom: 10px;
+}
+.orbit-form-group label{
+	margin-bottom: 10px;
+}
+
+.orbit-form-group li.checkbox label{
+	margin-bottom: 0;
+}
+
+.orbit-form-group textarea,
+.orbit-form-group input[type=text],
+.orbit-form-group input[type=number],
+.orbit-form-group input[type=date]{
+	width: 100%;
+	max-width: 400px;
+}
+
+.orbit-form-group textarea{
+	height: 100px;
+}
+
+/* no idea where the rest is being used */
+
+
 #orbit_filter_view{
 	position: fixed;
 	top: 0;
