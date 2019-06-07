@@ -180,31 +180,6 @@
 					'items'	=> $new_items
 				) );
 				
-				/*
-				_e("<div class='orbit-form-group'>");
-
-				if( isset( $atts['label'] ) && $atts['label'] && $atts['form'] != 'bt_dropdown_checkboxes' ){
-					_e("<label>". $atts['label'] ."</label>");
-				}
-
-				switch( $atts['form'] ){
-					case 'bt_dropdown_checkboxes':
-
-					case 'checkbox':
-						// CHECK IF FORM VALUE IS NOT SET
-						if( !isset( $atts['form_value'] ) ){ $atts['form_value'] = array();}
-						break;
-				}
-
-				$filter_form_dir = plugin_dir_path(__FILE__) . "templates/filters/" . $atts['form'] . ".php";
-
-				// INCLUDE THE FILTER FORM
-				if( file_exists( $filter_form_dir ) ){
-					include( $filter_form_dir );
-				}
-
-				_e("</div>");
-				*/
 			}
 
 		}
