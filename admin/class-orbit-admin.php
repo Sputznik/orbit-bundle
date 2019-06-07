@@ -126,21 +126,12 @@
 			}
 
 			/*
-
-
-
-
 			if( ( $hook == 'post.php' ) && ( $post_type == 'orbit-form' || $post_type == 'page' ) ){
 				//wp_enqueue_script('orbit-form-default', plugins_url( 'orbit-bundle/dist/js/of.default.js' ), array( 'jquery'), ORBIT_BUNDLE_VERSION, true );
 			}
-
-
-
 			if( $hook == 'post.php' && $post_type == 'page' ) {
 				wp_enqueue_script('orbit-query', plugins_url( 'orbit-bundle/dist/js/orbit_query_tinymce_btn.js' ), array( 'jquery', 'orbit-form-default' ), ORBIT_BUNDLE_VERSION, true );
 			}
-
-
 			*/
 
 			wp_enqueue_script( 'orbit-cf', plugins_url( 'orbit-bundle/dist/js/orbit_cf.js' ), array( 'jquery', 'orbit-repeater' ), ORBIT_BUNDLE_VERSION, true );
