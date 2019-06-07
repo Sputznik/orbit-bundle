@@ -10,6 +10,8 @@
 
 	define( 'ORBIT_BUNDLE_VERSION', '1.2.4' );
 
+	wp_register_style( 'orbit-main', plugins_url( 'orbit-bundle/dist/css/main.css' ), array(), ORBIT_BUNDLE_VERSION );
+
 	$inc_files = array(
 		"lib/class-orbit-base.php",
 		"lib/class-orbit-shortcode.php",

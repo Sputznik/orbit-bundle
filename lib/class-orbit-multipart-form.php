@@ -4,9 +4,14 @@
 */
 class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
 
+  function __construct(){
+    wp_register_script( 'orbit-slides', plugins_url( 'orbit-bundle/dist/js/orbit-slides.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
+  }
+
   function enqueue_assets(){
-    wp_enqueue_style( 'orbit-mf', plugins_url( 'orbit-bundle/dist/css/orbit-slides.css' ), array(), ORBIT_BUNDLE_VERSION );
-		wp_enqueue_script( 'orbit-mf', plugins_url( 'orbit-bundle/dist/js/orbit-slides.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
+    // LOAD THE MAIN STYLE IF IT HAS NOT BEEN LOADED YET
+    wp_enqueue_style( 'orbit-main' );
+		wp_enqueue_script( 'orbit-slides' );
 	}
 
   function create( $no_sections, $callback_func, $buttons = array( 'prev_text' => "Previous", 'next_text'	=> "Next", 'submit_text'	=> "Submit" ) ){
