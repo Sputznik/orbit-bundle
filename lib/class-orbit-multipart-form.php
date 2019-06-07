@@ -14,7 +14,7 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
 		wp_enqueue_script( 'orbit-slides' );
 	}
 
-  function create( $no_sections, $callback_func, $buttons = array( 'prev_text' => "Previous", 'next_text'	=> "Next", 'submit_text'	=> "Submit" ) ){
+  function create( $no_sections, $callback_func, $callback_func_args = array(), $buttons = array( 'prev_text' => "Previous", 'next_text'	=> "Next", 'submit_text'	=> "Submit" ) ){
 
     echo "<div class='orbit-slides' data-behaviour='orbit-slides'>";
 
@@ -23,7 +23,7 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
       echo "<section class='orbit-slide'>";
 
       // CALLBACK FUCNTION TO EXECUTE MORE DETAILED WITHIN THE SLIDE
-      call_user_func( $callback_func, $i );
+      call_user_func( $callback_func, $i, $callback_func_args );
 
       // CREATE NAVIGATION BUTTONS WITHIN THE SLIDE
       _e( "<ul class='orbit-list-inline'>" );
