@@ -13,7 +13,7 @@
 				/* CUSTOM FIELDS FOR ORBIT-TYPES */
 				if( isset( $meta_box['orbit-types'] ) && count( $meta_box['orbit-types'] ) && isset( $meta_box['orbit-types'][0]['fields'] ) ){
 					$meta_box['orbit-types'][0]['fields']['custom_fields'] = array(
-						'type'	=> 'repeater',
+						'type'	=> 'repeater_cf',
 						'text'	=> 'Custom Fields',
 						'items'	=> array(
 							'type' => array(
@@ -172,7 +172,32 @@
 		}
 
 		function field_html( $slug, $f ){
-			include	"admin_templates/custom_field.php";
+
+			$orbit_form_field = ORBIT_FORM_FIELD::getInstance();
+
+			$form_field_atts = array(
+				'name'	=> $slug,
+				'value'	=> $f['val'],
+				'label'	=> $f['text'],
+				'type'	=> $f['type'],
+				'items'	=> array(),
+				'help'	=> isset( $f['help'] ) ? $f['help'] : ""
+			);
+
+			// CONFORM THE OPTIONS TO THE ITEMS ARRAY THAT IS NEEDED IN ORBIT_FORM_FIELD
+			if( isset( $f['options'] ) && is_array( $f['options'] ) ){
+				foreach( $f['options'] as $opt_id => $opt_val ){
+					array_push( $form_field_atts['items'], array( 'slug' => $opt_id, 'name' => $opt_val ) );
+				}
+			}
+
+			if( $f['type'] == 'repeater_cf' && isset( $f['items'] ) ){
+				$form_field_atts['items'] = $f['items'];
+			}
+
+			$orbit_form_field->display( $form_field_atts );
+
+
 		}
 
 		function save( $post_id ){

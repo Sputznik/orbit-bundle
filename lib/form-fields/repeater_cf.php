@@ -1,0 +1,1 @@
+<div data-behaviour='orbit-repeater-cf' data-slug='<?php _e( $atts['name'] );?>' data-rows='<?php _e( json_encode( $atts['value'] ? $atts['value'] : array() ) );?>' data-fields='<?php _e( json_encode( $atts['items'] ) );?>' style="border: #ddd solid 1px;padding:20px;background: #eee;"></div>
