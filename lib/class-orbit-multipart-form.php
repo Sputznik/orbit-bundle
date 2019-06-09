@@ -14,16 +14,38 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
 		wp_enqueue_script( 'orbit-slides' );
 	}
 
-  function create( $no_sections, $callback_func, $callback_func_args = array(), $buttons = array( 'prev_text' => "Previous", 'next_text'	=> "Next", 'submit_text'	=> "Submit" ) ){
+  // DISPLAY INLINE SECTION THAT COMPRISES OF MULTIPLE FIELDS
+  function display_inline_section( $section ){
+    $section['class'] = isset( $section['class'] ) ? $section['class']." " : "";
+    $section['class'] .= "inline-section";
+
+    echo "<div class='" . $section['class'] . "'>";
+
+    // IF THERE IS ANY DESCRIPTIVE TEXT
+    if( isset( $section['html'] ) ){ _e( "<div>".$section['html']."</div>" ); }
+
+    // NESTED FIELDS WITHIN THE SECTION
+    echo "<div class='section-fields'>";
+    foreach( $section['fields'] as $field ){
+      $this->display_field( $field );
+    }
+    echo "</div></div>";
+  }
+
+  // MAIN FUNCTION - CREATES ORBIT SLIDES WHICH FURTHER DISPLAYS INLINE SECTIONS AND FIELDS
+  function create( $pages, $buttons = array( 'prev_text' => "Previous", 'next_text'	=> "Next", 'submit_text'	=> "Submit" ) ){
+
+    // TOTAL NUMBER OF MULTI PARTS FORMS - SECTIONS
+    $no_sections = count( $pages );
 
     echo "<div class='orbit-slides' data-behaviour='orbit-slides'>";
 
     // CREATE N NUMBER OF SLIDES BASED ON THE TOTAL SLIDES PASSED AS ARGUMENT
-    for( $i = 0; $i < $no_sections; $i++ ){
+    foreach( $pages as $page ){
       echo "<section class='orbit-slide'>";
 
-      // CALLBACK FUCNTION TO EXECUTE MORE DETAILED WITHIN THE SLIDE
-      call_user_func( $callback_func, $i, $callback_func_args );
+      // DISPLAY INLINE SECTION
+      $this->display_inline_section( $page );
 
       // CREATE NAVIGATION BUTTONS WITHIN THE SLIDE
       _e( "<ul class='orbit-list-inline'>" );
@@ -48,7 +70,74 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
 
   }
 
+  // DISPLAYING A FIELD WITHIN AN INLINE SECTION
+  function display_field( $field ){
 
+    $options = array();
+
+    switch( $field['type'] ){
+      // FOR NESTED FIELDS
+      case 'section':
+        $this->display_inline_section( $field );
+        break;
+
+      // FOR CUSTOM FIELDS
+      case 'cf':
+        // ITERATE THE USER DEFINED OPTIONS INTO THE COMPATIBLE FORM OF OPTIONS
+        if( isset( $field['options'] ) && is_array( $field['options'] ) && count( $field['options'] ) ){
+          foreach( $field['options'] as $option ){
+            array_push( $options, array( 'slug' => $option, 'name' => $option['value'] ) );
+          }
+        }
+
+        // UPDATE TYPEVAL FOR CUSTOM FIELDS WITH THE POST META NAME
+        $field['typeval'] = $field['name'];
+
+        break;
+      // FOR POST INFORMATION
+      case 'post':
+
+        switch( $field['typeval'] ){
+          case 'content':
+            $field['form'] = 'textarea';
+            break;
+
+          case 'date':
+            $field['form'] = 'date';
+            break;
+
+          default:
+            $field['form'] = 'text';
+        }
+        break;
+
+      // FOR TAXONOMY TERMS
+      case 'tax':
+        // GET ALL THE TAXONOMY TERMS INCLUDING THE EMPTY ONES
+        $tax_terms = get_terms( array(
+          'taxonomy'    => $field['typeval'],
+          'hide_empty'  => false
+        ) );
+
+        // ITERATE AND ADD TO OPTIONS ARRAY
+        foreach( $tax_terms as $term ){
+          array_push( $options, array( 'slug' => $term->term_id, 'name' => $term->name, ) );
+        }
+        break;
+      default:
+
+    }
+
+    // USING THE HELPER CLASS PROVIDED BY ORBIT BUNDLE
+    $orbit_form_field = new ORBIT_FORM_FIELD;
+    $orbit_form_field->display( array(
+      'name'  => $field['type'].'_'.$field['typeval'],  // NAME ATTRIBUTE FOR THE INPUT FIELD - this clearly identifies if the field is postfield, taxonomy or custom field
+      'type'  => $field['form'],
+      'label' => $field['label'],
+      'items' => $options
+    ) );
+
+  }
 
 }
 
