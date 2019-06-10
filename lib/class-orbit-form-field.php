@@ -17,7 +17,14 @@ class ORBIT_FORM_FIELD extends ORBIT_BASE{
 
       // DISPLAY LABEL IF THERE IS ANY
       if( isset( $atts['label'] ) && $atts['label'] && $atts['type'] != 'bt_dropdown_checkboxes' ){
-        _e("<label>". $atts['label'] ."</label>");
+        
+        $atts['new_label'] = $atts['label'];
+
+        if( isset( $atts['required'] ) && $atts['required'] ){
+          $atts['new_label'] .= " <span>*</span>";
+        }
+
+        _e("<label>". $atts['new_label'] ."</label>");
       }
 
       // CHECK IF FORM VALUE IS NOT SET FOR CHECKBOXES THEN SET DEFAULT VALUE TO ARRAY
