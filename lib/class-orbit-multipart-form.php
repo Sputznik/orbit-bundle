@@ -27,7 +27,19 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
     // NESTED FIELDS WITHIN THE SECTION
     echo "<div class='section-fields'>";
     foreach( $section['fields'] as $field ){
-      $this->display_field( $field );
+
+      // SETTING UP ABILITY TO OVERRIDE THE DEFAULT WAY TO DISPLAY THE FIELD
+      $custom_function = 'default';
+      $custom_function = apply_filters( 'orbit-mf-field', $custom_function, $field );
+
+      if( $custom_function == 'default' ){
+        $this->display_field( $field );
+      }
+      else{
+        call_user_func( $custom_function, $field );
+      }
+
+
     }
     echo "</div></div>";
   }
@@ -92,7 +104,7 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
 
         // UPDATE TYPEVAL FOR CUSTOM FIELDS WITH THE POST META NAME
         $field['typeval'] = $field['name'];
-
+        
         break;
       // FOR POST INFORMATION
       case 'post':
