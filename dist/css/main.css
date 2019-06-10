@@ -132,6 +132,12 @@ li.orbit-article-db img{
 /* ORBIT SLIDES */
 [data-behaviour~=orbit-slides] .orbit-slide{ display: none; }
 [data-behaviour~=orbit-slides] .orbit-slide.active{ display: block; }
+[data-behaviour~=orbit-slides] .orbit-form-alert{
+	margin-top: 30px;
+	padding: 15px;
+	border: #b43636 solid 1px;
+	border-left: 10px solid #b43636;
+}
 /* ORBIT SLIDES */
 
 /* ORBIT BATCH PROCESS */
@@ -191,4 +197,5 @@ li.orbit-article-db img{
 	background: #036493;
 	width: 0%;
 }
+
 /* COMMON */

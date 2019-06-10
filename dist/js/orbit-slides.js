@@ -7,14 +7,10 @@
 			var $el 		= jQuery( this );
 
       // GET THE TOTAL NUMBER OF SLIDES
-			function totalSlides(){
-				return parseInt( $el.find('.orbit-slide').length );
-			}
+			function totalSlides(){ return parseInt( $el.find('.orbit-slide').length ); }
 
 			// GET CURRENT SLIDE IN THE LIST OF SLIDES THAT IS ACTIVE
-			function getCurrentSlide(){
-				return $el.find('.orbit-slide.active');
-			}
+			function getCurrentSlide(){ return $el.find('.orbit-slide.active'); }
 
 			function getCurrentSlideValue(){
 	      var $currentSlide = getCurrentSlide();
@@ -61,39 +57,26 @@
 	      $bar.appendTo( $progressBar );
 			}
 
+			/*
+			* SHOW THE OVERALL PROGRESS
+			* UPDATES WHENEVER THE NAVIGATION BUTTONS OF THE FORM ARE CLICKED
+			*/
 			function updateProgress(){
-				var $progress = $el.find('.orbit-form-progress');
-
-	      var $progressText = $progress.find( "h5" ),
+				var $progress 		= $el.find('.orbit-form-progress'),
+					$progressText 	= $progress.find( "h5" ),
 	        $bar            = $progress.find( ".bar" );
 	        totalSlidesNum  = totalSlides(),
 	        currentSlideNum = getCurrentSlideValue(),
 	        progress        = currentSlideNum * 100 / totalSlidesNum;
 
+				// UPDATE PROGRESS TEXT
 	      $progressText.html( "Step " + currentSlideNum + " of " + totalSlidesNum );
 
-	      $bar.css({
-	        width: progress + "%"
-	      });
-
-	      console.log( 'update progress' );
-
-	    }
-
-			// INITIALIZE
-			function init(){
-
-				// ASSIGN SLIDE ID TO EACH SLIDE
-				$el.find('.orbit-slide').each( function( i, slide ){
-          jQuery( slide ).attr( 'data-slide', i );
-          if( i == 0 ){ jQuery( slide ).addClass('active'); }
-        });
-
-				// CREATE PROGRESS BAR FOR THE MULTIPART FORM
-				createProgressBar();
-
-				updateProgress();
+				// UPDATE PROGRESS BAR - ANIMATION
+	      $bar.css({ width: progress + "%" });
 			}
+
+
 
 			/*
 			*	TRANSITION OF SLIDE FROM CURRENT TO NEXT
@@ -114,6 +97,9 @@
 
 			}
 
+			/*
+			* EVENT TRIGGERED WHEN THE NEXT NAVIGATION BUTTON IS CLICKED
+			*/
 			$el.find('[data-behaviour~=orbit-slide-next]').click( function( ev ){
 
 				ev.preventDefault();
@@ -123,12 +109,15 @@
 
 				$slide.trigger('orbit:beforeNextTransition');
 
-				if( $slide.data( 'slide-disable' ) != '1' ){
-					slideTransition( $slide, $nextSlide );
-				}
+				// BEFORE GOING TO THE NEXT SLIDE CHECK IF THE NEXT SLIDE CAN BE ACCESSIBLE
+				// EVENTS SUCH AS VALIDATION CAN BE HANDLED IN THIS PERIOD
+				if( $slide.data( 'slide-disable' ) != '1' ){ slideTransition( $slide, $nextSlide ); }
 
 			});
 
+			/*
+			* EVENT TRIGGERED WHEN THE PREVIOUS NAVIGATION BUTTON IS CLICKED
+			*/
 			$el.find('[data-behaviour~=orbit-slide-prev]').click( function( ev ){
 
 				ev.preventDefault();
@@ -139,6 +128,73 @@
 				slideTransition( $slide, $prevSlide );
 
 			});
+
+			// SHOW ERROR MESSAGE
+			function errorMessage( message ){
+				$el.find('.orbit-form-alert').html( message );
+		    $el.find('.orbit-form-alert').show();
+		  }
+
+			// VALIDATE PARTIAL FORM WITHIN THE ACTIVE SLIDE
+			function validatePartialForm( $slide ){
+
+				var flag 	    = true,
+		      errorText   = "Required fields should be filled.",
+					fields 	    = $slide.find(".orbit-field-required:not(.hide) input, .orbit-field-required select").serializeArray();
+
+		    $.each( fields, function( i, field ){
+					if( !field.value || field.value == "0" ){
+		        errorMessage( errorText );
+						flag = false;
+		      }
+		    });
+
+		    // SEPERATE CASE FOR CHECKBOXES
+		    $slide.find( '.orbit-field-required input[type=checkbox]' ).each( function( i, el ){
+		      var $el       = jQuery( el ),
+		        $parent     = $el.closest('.orbit-field-required'),
+		        num_checked = $parent.find('input[type="checkbox"]:checked').length;
+
+		      if( num_checked <= 0 ){
+		        errorMessage( errorText );
+		        flag = false;
+		      }
+
+		    });
+
+		    return flag;
+			}
+
+			// PARTIAL FORM VALIDATION EACH TIME THE NEXT BUTTON IS CLICKED
+		  $el.on('orbit:beforeNextTransition', function( ev ){
+
+		    $el.find('.orbit-form-alert').hide();
+
+		    var $slide = getCurrentSlide(),
+							flag = validatePartialForm( $slide );
+
+		    $slide.data('slide-disable', '1');
+
+				if( flag ){ $slide.data('slide-disable', '0'); }
+
+		  });
+
+			// INITIALIZE
+			function init(){
+
+				// ASSIGN SLIDE ID TO EACH SLIDE
+				$el.find('.orbit-slide').each( function( i, slide ){
+          jQuery( slide ).attr( 'data-slide', i );
+          if( i == 0 ){ jQuery( slide ).addClass('active'); }
+        });
+
+				// CREATE PROGRESS BAR FOR THE MULTIPART FORM
+				createProgressBar();
+				updateProgress();
+
+				// HIDE FORM ALERT ON LOAD 
+				$el.find('.orbit-form-alert').hide();
+			}
 
 			init();
 

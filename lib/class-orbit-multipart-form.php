@@ -84,6 +84,8 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
       $i++;
     }
 
+    echo "<div class='orbit-form-alert'></div>";
+
     echo "</div>";
 
   }
@@ -149,10 +151,11 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
     // USING THE HELPER CLASS PROVIDED BY ORBIT BUNDLE
     $orbit_form_field = new ORBIT_FORM_FIELD;
     $orbit_form_field->display( array(
-      'name'  => $field['type'].'_'.$field['typeval'],  // NAME ATTRIBUTE FOR THE INPUT FIELD - this clearly identifies if the field is postfield, taxonomy or custom field
-      'type'  => $field['form'],
-      'label' => $field['label'],
-      'items' => $options
+      'name'      => $field['type'].'_'.$field['typeval'],  // NAME ATTRIBUTE FOR THE INPUT FIELD - this clearly identifies if the field is postfield, taxonomy or custom field
+      'type'      => $field['form'],
+      'label'     => $field['label'],
+      'required'  => isset( $field['required'] ) ? $field['required'] : false,
+      'items'     => $options
     ) );
 
   }

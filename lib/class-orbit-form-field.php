@@ -9,6 +9,9 @@ class ORBIT_FORM_FIELD extends ORBIT_BASE{
       // SETTING CLASS TO THE FIELD CONTAINER
       $default_class = "orbit-form-group field-".$atts['type'];
       $atts['class'] = isset( $atts['class'] ) ? $atts['class']." ".$default_class : $default_class;
+      if( isset( $atts['required'] ) && $atts['required'] ){
+        $atts['class'] .= ' orbit-field-required';
+      }
 
       _e( "<div class='" . $atts['class'] . "'>" );
 
