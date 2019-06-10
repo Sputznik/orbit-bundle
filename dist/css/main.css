@@ -138,6 +138,20 @@ li.orbit-article-db img{
 	border: #b43636 solid 1px;
 	border-left: 10px solid #b43636;
 }
+
+[data-behaviour~=orbit-slides] .orbit-images-preview{
+	margin-top: 20px;
+}
+[data-behaviour~=orbit-slides] .orbit-images-preview li{
+	max-width: 100px;
+	max-height: 100px;
+	overflow: hidden;
+	border: #999 solid 1px;
+}
+[data-behaviour~=orbit-slides] .orbit-images-preview li img{
+	max-width: 100%;
+	height: auto;
+}
 /* ORBIT SLIDES */
 
 /* ORBIT BATCH PROCESS */

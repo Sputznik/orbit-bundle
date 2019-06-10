@@ -126,6 +126,10 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
             $field['form'] = 'date';
             break;
 
+          case 'files':
+            $field['form'] = 'images';
+            break;
+
           default:
             $field['form'] = 'text';
         }

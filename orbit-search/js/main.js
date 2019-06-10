@@ -1,3 +1,46 @@
+	jQuery('[data-behaviour~=orbit-field-files]').each(function(){
+
+		var $el = jQuery( this );
+
+		var $images_list = jQuery( document.createElement('ul') );
+		$images_list.addClass( 'orbit-images-preview orbit-list-inline' );
+		$images_list.appendTo( $el.parent() );
+
+		function addImage( src ){
+
+			var $item = jQuery( document.createElement( 'li' ) );
+			$item.appendTo( $images_list );
+
+			var $img = jQuery( document.createElement( 'img' ) );
+			$img.attr( 'src', src );
+			$img.appendTo( $item );
+
+		}
+
+		function readURL(input) {
+      if( input.files ){
+
+				$images_list.html('');
+
+				jQuery.each( input.files, function( j, single_file ){
+
+					var reader = new FileReader();
+
+	        reader.onload = function (e) {
+						addImage( e.target.result );
+					}
+
+					if( single_file.type.indexOf( 'image' ) !== -1 ){
+						reader.readAsDataURL( single_file );
+					}
+				});
+			}
+    }
+
+		$el.change( function(){
+			readURL( this );
+		});
+	});
 
 	jQuery('[data-behaviour~=typeahead]').each(function(){
 
