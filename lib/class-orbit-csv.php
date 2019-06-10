@@ -157,9 +157,11 @@ class ORBIT_CSV extends ORBIT_BASE{
 
 	function exportPosts( $file_slug, $headerInfo, $query_args ){
 
+		/*
 		echo "<pre>";
 		print_r( $headerInfo );
 		echo "</pre>";
+		*/
 
 		$orbit_wp = ORBIT_WP::getInstance();
 
