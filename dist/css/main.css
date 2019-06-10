@@ -152,6 +152,9 @@ li.orbit-article-db img{
 	max-width: 100%;
 	height: auto;
 }
+[data-behaviour~=orbit-slides] .multi-field-wrapper{
+	margin-bottom: 20px;
+}
 /* ORBIT SLIDES */
 
 /* ORBIT BATCH PROCESS */
