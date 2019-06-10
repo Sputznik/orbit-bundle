@@ -165,16 +165,30 @@ var ORBIT_REPEATER = function( options ){
 	*/
 	self.createRichText = function( field ){
 
-		field['element'] = 'textarea';
-		field['attr'] = field['attr'] ? field['attr'] : {};
-		field['attr']['id'] = field['attr']['id'] ? field['attr']['id'] : 'sample-id';
+		var $wrapper = self.createField({
+			element	: 'div',
+			attr	: {
+				class : 'orbit-admin-text'
+			},
+			append	: field['append']
+		});
 
-		var $textarea = self.createField( field );
+		var $textarea = self.createField( {
+			element	: 'textarea',
+			attr 		: {
+				id 		: field['attr']['id'] ? field['attr']['id'] : 'sample-id',
+				name	: field['attr']['name']
+			},
+			html		: field['html'] ? field['html'] : "",
+			append : $wrapper
+		} );
+
+		$textarea.css({width:'100%'});
 
 		// INITIALIZE WP EDITOR FOR THE TEXTAREA
 		wp.editor.initialize( field['attr']['id'], { tinymce: {height: 300}, quicktags: true } );
 
-		return $textarea;
+		return $wrapper;
 
 	};
 
