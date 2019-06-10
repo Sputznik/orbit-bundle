@@ -180,4 +180,15 @@ li.orbit-article-db img{
 	display: inline-block;
 	margin-right: 20px;
 }
+.orbit-progress-bar{
+	height: 30px;
+	border: #ddd solid 1px;
+	border-radius: 2px;
+	margin-bottom: 30px;
+}
+.orbit-progress-bar .bar{
+	height: 100%;
+	background: #036493;
+	width: 0%;
+}
 /* COMMON */

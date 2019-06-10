@@ -52,6 +52,10 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
 
     echo "<div class='orbit-slides' data-behaviour='orbit-slides'>";
 
+    echo "<div class='orbit-form-progress'></div>";
+
+    $i = 0;
+
     // CREATE N NUMBER OF SLIDES BASED ON THE TOTAL SLIDES PASSED AS ARGUMENT
     foreach( $pages as $page ){
       echo "<section class='orbit-slide'>";
@@ -76,6 +80,8 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
       _e( "</ul>" );
 
       echo "</section>";
+
+      $i++;
     }
 
     echo "</div>";
@@ -104,7 +110,7 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
 
         // UPDATE TYPEVAL FOR CUSTOM FIELDS WITH THE POST META NAME
         $field['typeval'] = $field['name'];
-        
+
         break;
       // FOR POST INFORMATION
       case 'post':
