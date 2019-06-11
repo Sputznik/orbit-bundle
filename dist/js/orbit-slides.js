@@ -140,16 +140,17 @@
 
 				var flag 	    = true,
 		      errorText   = "Required fields should be filled.",
-					fields 	    = $slide.find(".orbit-field-required:not(.hide) input, .orbit-field-required select").serializeArray();
+					fields 	    = $slide.find(".orbit-field-required:not(.hide) input, .orbit-field-required:not(.hide) select, .orbit-field-required:not(.hide) textarea").serializeArray();
 
-		    $.each( fields, function( i, field ){
+				// SINGULAR FIELDS
+				$.each( fields, function( i, field ){
 					if( !field.value || field.value == "0" ){
 		        errorMessage( errorText );
 						flag = false;
 		      }
 		    });
 
-		    // SEPERATE CASE FOR CHECKBOXES
+				// SEPERATE CASE FOR CHECKBOXES
 		    $slide.find( '.orbit-field-required input[type=checkbox]' ).each( function( i, el ){
 		      var $el       = jQuery( el ),
 		        $parent     = $el.closest('.orbit-field-required'),
@@ -179,6 +180,18 @@
 
 		  });
 
+			// FORM SUBMISSION
+			$el.closest( 'form' ).submit( function(event){
+
+		    $el.find('.orbit-form-alert').hide();
+
+		    var $slide = getCurrentSlide(),
+							flag = validatePartialForm( $slide );
+
+				if( !flag ){  event.preventDefault(); }
+
+			} );
+
 			// INITIALIZE
 			function init(){
 
@@ -192,7 +205,7 @@
 				createProgressBar();
 				updateProgress();
 
-				// HIDE FORM ALERT ON LOAD 
+				// HIDE FORM ALERT ON LOAD
 				$el.find('.orbit-form-alert').hide();
 			}
 
