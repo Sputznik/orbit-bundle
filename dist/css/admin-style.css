@@ -169,6 +169,7 @@ i.mce-i-icon {
   padding: 10px;
   padding-right: 40px;
   min-height: 20px;
+	position: relative;
 }
 
 .list-header > textarea{
@@ -216,4 +217,73 @@ i.mce-i-icon {
 	border: none;
 	background: none;
 	outline: none;
+}
+
+.orbit-sections-parent{
+	position: relative;
+	margin-bottom: 10px;
+}
+
+.orbit-sections-parent .btn-add{
+	border: #5b9dd9 solid 1px;
+}
+
+ul.orbit-sections-dropdown{
+	position: absolute;
+	background: #fff;
+	border: 2px solid #eee;
+	padding: 10px 5px;
+	top: 50%;
+	left: 100px;
+	transform: translateY(-50%);
+	box-shadow: #fafafa 5px 5px 3px;
+}
+
+ul.orbit-sections-dropdown:after,
+ul.orbit-sections-dropdown:before{
+	right: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+
+}
+
+ul.orbit-sections-dropdown:after{
+	border-color: rgba(255, 255, 255, 0);
+	border-right-color: #fff;
+	border-width: 5px;
+	margin-top: -5px;
+}
+
+
+ul.orbit-sections-dropdown:before {
+	border-color: rgba(238, 238, 238, 0);
+	border-right-color: #eee;
+	border-width: 8px;
+	margin-top: -8px;
+}
+
+ul.orbit-sections-dropdown li{
+	display: inline-block;
+	padding: 5px 0px;
+	margin: 0 5px;
+}
+
+ul.orbit-sections-dropdown li button.button{
+	font-size: 12px;
+}
+
+.list-header .orbit-bubble{
+	background: #eee;
+	position: absolute;
+	padding: 5px 20px;
+	border-radius: 10px;
+	font-size: 12px;
+	text-align: center;
+	right: 30px;
+	top: 8px;
 }
