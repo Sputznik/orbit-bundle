@@ -183,7 +183,7 @@ i.mce-i-icon {
   box-shadow: none;
 }
 
-.list-header .space-collapse{
+.list-header .orbit-collapse{
     right: 10px;
     position: absolute;
     cursor: pointer;
@@ -194,7 +194,7 @@ i.mce-i-icon {
     outline: none;
 }
 
-.space-collapse::before {
+.orbit-collapse::before {
     content: "\f140";
     font: 400 20px/1 dashicons;
     speak: none;
@@ -202,18 +202,18 @@ i.mce-i-icon {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-.space-close-btn{
-position: absolute;
-top: auto;
-right: 10px;
-bottom: 10px;
-color: red;
-padding: 0;
-line-height: 1;
-font-size: inherit;
-text-decoration: underline;
-cursor: pointer;
-border: none;
-background: none;
-outline: none;
+.orbit-close-btn{
+	position: absolute;
+	top: auto;
+	right: 10px;
+	bottom: 10px;
+	color: red;
+	padding: 0;
+	line-height: 1;
+	font-size: inherit;
+	text-decoration: underline;
+	cursor: pointer;
+	border: none;
+	background: none;
+	outline: none;
 }
