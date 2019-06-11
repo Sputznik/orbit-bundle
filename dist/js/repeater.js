@@ -15,8 +15,8 @@ var ORBIT_REPEATER = function( options ){
 			$el				: null,
 			btn_text		: '+ Add Item',
 			close_btn_text	: '&times;',
-			list_id			: 'space-choices-list',
-			list_item_id	: 'space-choice-item',
+			list_id			: 'orbit-choices-list',
+			list_item_id	: 'orbit-choice-item',
 			init			: function(){},
 			addItem			: function(){},
 			reorder 		: function(){}
@@ -101,7 +101,7 @@ var ORBIT_REPEATER = function( options ){
 		var $button = self.createField({
 			element	: 'button',
 			attr	:{
-				'class'	: 'space-close-btn'
+				'class'	: 'orbit-close-btn'
 			},
 			html	: self.options.close_btn_text,
 			append	: $list_item
@@ -145,7 +145,7 @@ var ORBIT_REPEATER = function( options ){
 		var $collapseBtn = self.createField({
 			element	: 'button',
 			attr	: {
-				class : 'space-collapse'
+				class : 'orbit-collapse'
 			},
 			append 	: $header
 		});
