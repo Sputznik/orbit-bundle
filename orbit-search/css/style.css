@@ -90,6 +90,7 @@
 [data-behaviour~=bt-dropdown-checkboxes] ul.dropdown-menu{
 	max-height: 250px;
 	overflow-y: scroll;
+	width: 100%;
 }
 
 [data-behaviour~=bt-dropdown-checkboxes] ul.dropdown-menu li.checkbox{
