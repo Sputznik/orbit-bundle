@@ -125,7 +125,7 @@ i.mce-i-icon {
 	background-color: transparent;
 }
 
-#form-attributes .hndle{
+#form-attributes .hndle, #form-attributes .handlediv{
 	display: none;
 }
 
