@@ -240,9 +240,10 @@ var ORBIT_REPEATER = function( options ){
 		var $inputField = self.createField({
 			element	: 'input',
 			attr	: {
-				type		: 'text',
-				name		: field['attr']['name'],
-				value		: field['value']
+				type				: 'text',
+				name				: field['attr']['name'],
+				placeholder	: field['attr']['placeholder'],
+				value				: field['value']
 			},
 			append	: $wrapper
 		});
