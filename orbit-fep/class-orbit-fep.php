@@ -135,6 +135,11 @@ class ORBIT_FEP extends ORBIT_BASE{
             'text' 		=> 'Select Post Status',
             'options'	=> get_post_statuses()
           ),
+          'user_email' => array(
+            'type' 		=> 'text',
+            'text' 		=> 'Email',
+            'options'	=> array()
+          ),
         )
       ),
     );
@@ -242,7 +247,7 @@ class ORBIT_FEP extends ORBIT_BASE{
       // SAVE
       update_post_meta( $post_id, 'fep', $fep );
     }
-    //wp_die();
+    // wp_die();
   }
 
   function shortcode( $atts ){
@@ -261,15 +266,22 @@ class ORBIT_FEP extends ORBIT_BASE{
       'post_status' => get_post_meta( $atts['id'], 'poststatus', true )
     );
 
-    $this->create( $fep_pages, $new_post );
+    $this->create( $fep_pages, $new_post, $atts );
 
     return ob_get_clean();
   }
 
-  function create( $pages, $new_post = array() ){
-
+  function create( $pages, $new_post = array(), $atts ){
+    // echo '<pre>';
+    // print_r( $_POST );
+    // echo '</pre>';
     // INSERT POST ONCE THE FORM HAS BEEN SUBMITTED
-    if( $_POST ){ $this->insertPost( $new_post ); }
+    if( $_POST ){
+
+      $post_edit_id = $this->insertPost( $new_post );
+
+      $this->sendMail( $atts, $_POST, $post_edit_id );
+    }
 
     // STARTING OF FORM TAG
     echo "<form class='soah-fep' method='post' enctype='multipart/form-data'>";
@@ -321,9 +333,6 @@ class ORBIT_FEP extends ORBIT_BASE{
 
   function insertPost( $post_info ){
 
-
-
-
     // ADD POST RELATED INFORMATION TO AN ARRAY
     $post_fields_arr = array( 'post_title', 'post_content', 'post_date' );
     foreach( $post_fields_arr as $post_field ){
@@ -343,7 +352,8 @@ class ORBIT_FEP extends ORBIT_BASE{
     // ONLY IF POST ID IS VALID - ensures that the above insert was successfull
     foreach( $_POST as $slug => $value ){
       if( strpos( $slug, 'tax_') !== false ){
-        // ADDING TERMS TO THE NEW POST
+        // ADDING TERMS
+        // TO THE NEW POST
         $taxonomy = str_replace( "tax_", "", $slug );
         wp_set_post_terms( $post_id, $value, $taxonomy );
       }
@@ -359,7 +369,42 @@ class ORBIT_FEP extends ORBIT_BASE{
       $this->handleMediaUpload( $post_id, $_FILES );
     }
 
+    return $post_id;
+
   } // END OF FUNCTION
+
+
+  function sendMail( $atts, $form_info, $post_edit_id ){
+    // CONTAINS THE LINK TO EDIT THE POST
+    $edit_link = html_entity_decode( get_edit_post_link( $post_edit_id ), ENT_QUOTES, 'UTF-8' );
+
+    $message = '';
+    // FORM DETAILS
+    $mail_info = array( 'post_title', 'post_content' );
+    foreach( $form_info as $slug=>$field ){
+      if( in_array( $slug, $mail_info ) ){
+          $message .= $field."\r\n";
+      }
+    }
+    // SEND A MAIL ON FORM SUBMISSION
+    $to = get_post_meta( $atts['id'], 'user_email', true );
+    $subject = 'Fep Form';
+    $message .= "Click the link to edit the post $link ";
+    // print_r( $edit_link  );
+
+    // $headers = array('Content-Type: text/html; charset=UTF-8');
+    // $mail = wp_mail( $to, $subject, $message );
+    // if ( $mail  ) {
+    //   echo 'Email sent';
+    // }
+    //
+    // else{
+    //   echo 'Sorry email not sent';
+    // }
+    // print_r( $to );
+    // echo 'hello world';
+    // echo $to;
+  }
 
   function assets(){
     $orbit_multipart_form = ORBIT_MULTIPART_FORM::getInstance();
