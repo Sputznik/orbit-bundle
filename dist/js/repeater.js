@@ -12,15 +12,63 @@ var ORBIT_REPEATER = function( options ){
 		$list	: null,		// PARENT LIST THAT HOLDS THE CHOICES
 		$btn 	: null,		// BUTTON THAT ADDS MORE BLANK CHOICES TO THE LIST
 		options : jQuery.extend( {
-			$el				: null,
-			btn_text		: '+ Add Item',
+			$el							: null,
+			btn_text				: '+ Add Item',
 			close_btn_text	: '&times;',
-			list_id			: 'orbit-choices-list',
-			list_item_id	: 'orbit-choice-item',
-			init			: function(){},
-			addItem			: function(){},
-			reorder 		: function(){}
+			list_id					: 'orbit-choices-list',
+			list_item_types	: {},
+			list_item_id		: 'orbit-choice-item',
+			init						: function(){},
+			addItem					: function(){},
+			reorder 				: function(){}
 		}, options )
+	};
+
+	// CHECK IF NESTED TYPES ARE PRESENT
+	self.hasNestedTypes = function(){
+		return Object.keys( self.options.list_item_types ).length;
+	};
+
+	// CREATE A NESTED BUTTONS DROPDOWN
+	self.createNestedButtons = function(){
+		self.$list_types_wrapper = self.createField({
+			element	: 'div',
+			attr 		: {
+				class : 'orbit-sections-parent'
+			},
+			append 	: self.options.$el
+		});
+
+		// RECHANGE THE BUTTON PLACEMENT
+		self.$btn.appendTo( self.$list_types_wrapper );
+
+		self.$list_types = self.createField({
+			element	: 'ul',
+			attr 		: {
+				class : 'orbit-sections-dropdown'
+			},
+			append 	: self.$list_types_wrapper
+		});
+		// CREATE CHILD ITEM FOR THESE TYPES
+		for( type in self.options.list_item_types ){
+			var $item = self.createField({
+				element	: 'li',
+				html		: '<button data-type="' + type + '" class="button">' + self.options.list_item_types[ type ] + '</button>',
+				append 	: self.$list_types
+			});
+
+			$item.find('button').click( function( ev ){
+				ev.preventDefault();
+
+				var $btn 	= jQuery( ev.target ),
+					data 		= {
+						type: $btn.data('type')
+					};
+				self.addItem( data );
+			});
+		}
+
+		self.$list_types.hide();
 	};
 
 	self.init = function(){
@@ -33,6 +81,8 @@ var ORBIT_REPEATER = function( options ){
 			},
 			append	: self.options.$el
 		});
+
+		// TRIGGER: SO THAT THE ITEMS IN THE LIST CAN BE SORTABLE
 		self.$list.sortable({
 			stop: function( event, ui ){
 				self.reorder();
@@ -43,15 +93,26 @@ var ORBIT_REPEATER = function( options ){
 		self.$btn = self.createField({
 			element	: 'button',
 			attr: {
-				class: 'button'
+				class: 'button btn-add'
 			},
 			html	: self.options.btn_text,
 			append	: self.options.$el
 		});
 
+		// LIST TYPES - nestd buttons
+		if( self.hasNestedTypes() ){
+			self.createNestedButtons();
+		}
+
 		self.$btn.click( function( ev ){
 			ev.preventDefault();
-			self.addItem();
+			// SHOW THE INLINE BUTTONS IF THERE ARE ANY
+			if( self.hasNestedTypes() ){
+				self.$list_types.toggle('slide');
+			}
+			else{
+				self.addItem();
+			}
 		});
 
 		// FOR CUSTOM FUNCTIONALITY
