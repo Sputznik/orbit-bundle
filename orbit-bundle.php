@@ -8,8 +8,8 @@
     Author URI: http://sputznik.com
     */
 
-	// 1.4.2
-	define( 'ORBIT_BUNDLE_VERSION', time() );
+	define( 'ORBIT_BUNDLE_VERSION', '1.4.3' );
+
 
 	wp_register_style( 'orbit-main', plugins_url( 'orbit-bundle/dist/css/main.css' ), array(), ORBIT_BUNDLE_VERSION );
 
@@ -27,7 +27,8 @@
 		"orbit-query/orbit-query.php",
 		"orbit-templates/orbit-templates.php",
 		"orbit-cache/orbit-cache.php",
-		"admin/class-orbit-admin.php"
+		"admin/class-orbit-admin.php",
+		"orbit-fep/class-orbit-fep.php"
 	);
 
 	foreach( $inc_files as $inc_file ){
