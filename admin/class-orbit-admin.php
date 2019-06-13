@@ -51,6 +51,11 @@
 
 			// SETTINGS FOR THE ADMIN
 			add_submenu_page( 'orbit-types', 'Settings', 'Orbit Settings', 'manage_options', 'orbit-settings', array( $this, 'page' ) );
+			add_submenu_page( 'orbit-types', 'Orbit Quick Setup', 'Orbit Quick Setup', 'manage_options', 'orbit-quick-setup', array( $this, 'quick_setup' ) );
+		}
+
+		function quick_setup(){
+			echo "<h1>ORBIT QUICK SETUP</h1>";
 		}
 
 		function page(){
