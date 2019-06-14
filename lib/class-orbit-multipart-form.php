@@ -135,7 +135,7 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
             break;
 
           case 'featured':
-            $field['form'] = 'featured';
+            $field['form'] = 'images';
             break;
 
           default:

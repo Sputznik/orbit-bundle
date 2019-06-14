@@ -140,6 +140,11 @@ class ORBIT_FEP extends ORBIT_BASE{
             'text' 		=> 'Email',
             'options'	=> array()
           ),
+          'form_success_msg' => array(
+            'type' 		=> 'text',
+            'text' 		=> 'Enter the message to be shown when the form gets submitted.',
+            'options'	=> array()
+          ),
         )
       ),
     );
@@ -254,7 +259,7 @@ class ORBIT_FEP extends ORBIT_BASE{
   function shortcode( $atts ){
 
     $atts = shortcode_atts( array(
-      'id'      =>  '0'     // POST ID
+      'id'          =>  '0'     // POST ID
     ), $atts, 'fep-form' );
 
     ob_start();
@@ -276,16 +281,19 @@ class ORBIT_FEP extends ORBIT_BASE{
     // echo '<pre>';
     // print_r( $_POST );
     // echo '</pre>';
+
+    $form_success_flag = false;
+    $success_message = get_post_meta( $atts['id'], 'form_success_msg',true );
+
     // INSERT POST ONCE THE FORM HAS BEEN SUBMITTED
     if( $_POST ){
-
       $new_post_id = $this->insertPost( $new_post );
 
       // SEND EMAIL ON SUCCESSFUL FORM SUBMISSION
-      // if( $new_post_id ){
-      //   $this->sendMail( $atts['id'], $_POST, $new_post_id );
-      // }
-
+      if( $new_post_id ){
+        $form_success_flag = true;
+        $this->sendMail( $atts['id'], $_POST, $new_post_id );
+      }
     }
 
     // STARTING OF FORM TAG
@@ -296,6 +304,11 @@ class ORBIT_FEP extends ORBIT_BASE{
     $orbit_multipart_form->create( $pages );
 
     wp_nonce_field( 'orbit-fep' );
+
+    // DISPLAY MESSAGE ON FORM SUBMISSION
+    if( $form_success_flag ){
+      echo "<div style='margin-top:50px;' class='form-alert'>" . $success_message . "</div>";
+    }
 
     // END OF FORM TAG
     echo "</form>";
@@ -338,16 +351,6 @@ class ORBIT_FEP extends ORBIT_BASE{
     }
 	}
 
-  
-  function handleFeaturedImage( $post_id, $data = array() ){
-    if( is_array( $data ) ){
-      require_once( ABSPATH . 'wp-admin/includes/image.php' );
-      require_once( ABSPATH . 'wp-admin/includes/file.php' );
-      require_once( ABSPATH . 'wp-admin/includes/media.php' );
-
-      $attachment_id = media_handle_upload( $data['post_featured']['tmp_name'], $post_id, array( 'test_form'=> false ) );
-    }
-  }
 
   function insertPost( $post_info ){
 
@@ -387,7 +390,7 @@ class ORBIT_FEP extends ORBIT_BASE{
     if( $_FILES ){
       $this->validateFiles();
       $this->handleMediaUpload( $post_id, $_FILES );
-      $this->handleFeaturedImage( $post_id, $_FILES );
+      // $this->handleFeaturedImage( $post_id, $_FILES );
     }
 
     return $post_id;
@@ -417,13 +420,13 @@ class ORBIT_FEP extends ORBIT_BASE{
     // $headers = "Content-Type: text/html; charset=UTF-8\r\n";
     $mail = wp_mail( $to, $subject, $message );
 
-    if ( $mail  ) {
-      echo 'Email sent';
-    }
-
-    else{
-      echo 'Email not sent';
-    }
+    // if ( $mail  ) {
+    //   echo 'Email sent';
+    // }
+    //
+    // else{
+    //   echo 'Email not sent';
+    // }
   }
 
   function assets(){
