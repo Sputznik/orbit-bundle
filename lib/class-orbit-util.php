@@ -109,8 +109,31 @@ class ORBIT_UTIL extends ORBIT_BASE{
     $shortcode_str .= "]";
     return $shortcode_str;
   }
-
   
+  // CHECKS THE TYPE OF A VARIABLE
+  function getVariableType( $input ){
+    $type = "undefined";
+    if( !empty( $input ) ){
+
+      if( is_string( $input ) ){
+        // ctype_digit checks whether the string is a number or not
+        if( ctype_digit( $input ) ){
+          $type = "id";
+        }
+        else if( !( preg_match( '/\s/', $input ) ) ){
+          $type = "slug";
+        }
+        else{
+          $type = "name";
+        }
+      }
+      else if( is_int( $input ) ) {
+        $type = "id";
+      }
+    }
+    return $type;
+  }
+
 }
 
 ORBIT_UTIL::getInstance();
