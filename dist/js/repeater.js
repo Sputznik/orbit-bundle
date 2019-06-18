@@ -358,7 +358,18 @@ var ORBIT_REPEATER = function( options ){
 			append	: $wrapper
 		});
 
-		console.log( field );
+		if( field['help'] != undefined ){
+
+			var $help = self.createField({
+				element	: 'p',
+				attr		: {
+					class : 'help'
+				},
+				append	: $wrapper,
+				html		: field['help']
+			});
+
+		}
 
 		return $wrapper;
 
