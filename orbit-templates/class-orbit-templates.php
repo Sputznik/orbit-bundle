@@ -69,17 +69,17 @@ class ORBIT_TEMPLATES{
 
 			array_push( $fields, 'orbit-tmpl' );
 
-			array_push( $fields, 'override_content' );
-			array_push( $fields, 'override_excerpt' );
+			//array_push( $fields, 'override_content' );
+			//array_push( $fields, 'override_excerpt' );
 
 			return $fields;
 		});
 
-		/* OVERRIDE EXCERPT FOR ORBIT POST TYPES */
+		/* OVERRIDE EXCERPT FOR ORBIT POST TYPES
 		add_filter( 'the_excerpt', array( $this, 'override_excerpt' ) );
 		add_filter( 'get_the_excerpt', array( $this, 'override_excerpt' ) );
 
-		/* OVERRIDE CONTENT FOR ORBIT POST TYPES */
+		/* OVERRIDE CONTENT FOR ORBIT POST TYPES
 		add_filter( 'the_content', array( $this, 'override_content' ) );
 		add_filter( 'get_the_content', array( $this, 'override_content' ) );
 
@@ -98,16 +98,16 @@ class ORBIT_TEMPLATES{
 	}
 
 
-
+	/*
 	function override_post_text( $text, $meta_field ){
 		global $orbit_vars, $post;
 
 		if( $post && isset( $post->post_type ) ){
 
-			/* GET POST TYPE OF THE POST */
+			// GET POST TYPE OF THE POST
 			$post_type = $post->post_type;
 
-			/* CHECK IF THE POST TYPE IS ONE OF THE CUSTOM ORBIT TYPES */
+			// CHECK IF THE POST TYPE IS ONE OF THE CUSTOM ORBIT TYPES
 			if( isset( $orbit_vars['post_types'] ) ){
 
 				foreach( $orbit_vars['post_types'] as $new_post_type ){
@@ -133,25 +133,27 @@ class ORBIT_TEMPLATES{
 	function override_content( $excerpt ){
 		return $this->override_post_text( $excerpt, 'override_content' );
 	}
+	*/
 
 	function meta_box_fields( $meta_box ){
 
 		/* CUSTOM FIELDS FOR ORBIT-TYPES */
 		if( isset( $meta_box['orbit-types'] ) && count( $meta_box['orbit-types'] ) && isset( $meta_box['orbit-types'][0]['fields'] ) ){
 
-			/* OVERRIDE CONTENT */
+			/* OVERRIDE CONTENT
 			$meta_box['orbit-types'][0]['fields']['override_content'] = array(
 					'type'		=> 'textarea',
 					'text'		=> 'Override Content',
 					'help'		=> 'To override the default post content.',
 				);
 
-			/* OVERRIDE EXCERPT */
+			/* OVERRIDE EXCERPT
 			$meta_box['orbit-types'][0]['fields']['override_excerpt'] = array(
 					'type'		=> 'textarea',
 					'text'		=> 'Override Excerpt',
 					'help'		=> 'To override the default post excerpt.',
 				);
+			*/
 		}
 
 		/* CUSTOM FIELDS FOR ORBIT-FORM */
