@@ -135,6 +135,16 @@ class ORBIT_FEP extends ORBIT_BASE{
             'text' 		=> 'Select Post Status',
             'options'	=> get_post_statuses()
           ),
+          'user_email' => array(
+            'type' 		=> 'text',
+            'text' 		=> 'Email',
+            'options'	=> array()
+          ),
+          'form_success_msg' => array(
+            'type' 		=> 'text',
+            'text' 		=> 'Enter the message to be shown when the form gets submitted.',
+            'options'	=> array()
+          ),
         )
       ),
     );
@@ -166,7 +176,8 @@ class ORBIT_FEP extends ORBIT_BASE{
         'title'     =>  'Title',
         'content'   =>  'Description',
         'date'      =>  'Date',
-        'files'     =>  'Attachments'
+        'files'     =>  'Attachments',
+        'featured'  =>  'Featured Image'
       );
 
       //NEW FORM FIELDS
@@ -242,13 +253,13 @@ class ORBIT_FEP extends ORBIT_BASE{
       // SAVE
       update_post_meta( $post_id, 'fep', $fep );
     }
-    //wp_die();
+    // wp_die();
   }
 
   function shortcode( $atts ){
 
     $atts = shortcode_atts( array(
-      'id'      =>  '0'     // POST ID
+      'id'          =>  '0'     // POST ID
     ), $atts, 'fep-form' );
 
     ob_start();
@@ -261,15 +272,29 @@ class ORBIT_FEP extends ORBIT_BASE{
       'post_status' => get_post_meta( $atts['id'], 'poststatus', true )
     );
 
-    $this->create( $fep_pages, $new_post );
+    $this->create( $fep_pages, $new_post, $atts );
 
     return ob_get_clean();
   }
 
-  function create( $pages, $new_post = array() ){
+  function create( $pages, $new_post = array(), $atts ){
+    // echo '<pre>';
+    // print_r( $_POST );
+    // echo '</pre>';
+
+    $form_success_flag = false;
+    $success_message = get_post_meta( $atts['id'], 'form_success_msg',true );
 
     // INSERT POST ONCE THE FORM HAS BEEN SUBMITTED
-    if( $_POST ){ $this->insertPost( $new_post ); }
+    if( $_POST ){
+      $new_post_id = $this->insertPost( $new_post );
+
+      // SEND EMAIL ON SUCCESSFUL FORM SUBMISSION
+      if( $new_post_id ){
+        $form_success_flag = true;
+        $this->sendMail( $atts['id'], $_POST, $new_post_id );
+      }
+    }
 
     // STARTING OF FORM TAG
     echo "<form class='soah-fep' method='post' enctype='multipart/form-data'>";
@@ -277,6 +302,13 @@ class ORBIT_FEP extends ORBIT_BASE{
     // USING THE ORBIT MULTIPART FORM TO CREATE SLIDES
     $orbit_multipart_form = ORBIT_MULTIPART_FORM::getInstance();
     $orbit_multipart_form->create( $pages );
+
+    wp_nonce_field( 'orbit-fep' );
+
+    // DISPLAY MESSAGE ON FORM SUBMISSION
+    if( $form_success_flag ){
+      echo "<div style='margin-top:50px;' class='form-alert'>" . $success_message . "</div>";
+    }
 
     // END OF FORM TAG
     echo "</form>";
@@ -319,10 +351,10 @@ class ORBIT_FEP extends ORBIT_BASE{
     }
 	}
 
+
   function insertPost( $post_info ){
 
-
-
+    wp_verify_nonce( $_REQUEST['_wpnonce'], 'orbit-fep' );
 
     // ADD POST RELATED INFORMATION TO AN ARRAY
     $post_fields_arr = array( 'post_title', 'post_content', 'post_date' );
@@ -343,7 +375,8 @@ class ORBIT_FEP extends ORBIT_BASE{
     // ONLY IF POST ID IS VALID - ensures that the above insert was successfull
     foreach( $_POST as $slug => $value ){
       if( strpos( $slug, 'tax_') !== false ){
-        // ADDING TERMS TO THE NEW POST
+        // ADDING TERMS
+        // TO THE NEW POST
         $taxonomy = str_replace( "tax_", "", $slug );
         wp_set_post_terms( $post_id, $value, $taxonomy );
       }
@@ -357,9 +390,44 @@ class ORBIT_FEP extends ORBIT_BASE{
     if( $_FILES ){
       $this->validateFiles();
       $this->handleMediaUpload( $post_id, $_FILES );
+      // $this->handleFeaturedImage( $post_id, $_FILES );
     }
 
+    return $post_id;
+
   } // END OF FUNCTION
+
+
+  function sendMail( $fep_id, $form_info, $post_edit_id ){
+    // CONTAINS THE LINK TO EDIT THE POST
+    $edit_link = html_entity_decode( get_edit_post_link( $post_edit_id ), ENT_QUOTES, 'UTF-8' );
+    // GETS THE POST TYPE
+    $type = ucfirst( get_post_meta( $fep_id, 'posttypes', true ) );
+
+    //APPENDS POST TITLE AND POST DESCRIPTION TO THE EMAIL BODY
+    $message = '';
+    $mail_info = array( 'post_title', 'post_content' );
+    foreach( $form_info as $slug=>$field ){
+      if( in_array( $slug, $mail_info ) ){
+          $message .= ( $slug=='post_title' ) ? "Post Title: $field \r\n" : "Post Description: $field \r\n";
+      }
+    }
+
+    // SENDS AN E-MAIL TO THE ADMIN ON FORM SUBMISSION
+    $to = get_post_meta( $fep_id, 'user_email', true );
+    $subject = "New Post has been submitted: $type";
+    $message .= "Click the link to edit the post: $edit_link ";
+    // $headers = "Content-Type: text/html; charset=UTF-8\r\n";
+    $mail = wp_mail( $to, $subject, $message );
+
+    // if ( $mail  ) {
+    //   echo 'Email sent';
+    // }
+    //
+    // else{
+    //   echo 'Email not sent';
+    // }
+  }
 
   function assets(){
     $orbit_multipart_form = ORBIT_MULTIPART_FORM::getInstance();

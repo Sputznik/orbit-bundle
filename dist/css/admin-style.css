@@ -320,9 +320,6 @@ ul.orbit-sections-dropdown li button.button{
 .orbit-slide-repeater .list-content .field-name .name-attr{
   width: 35%;
 }
-.orbit-slide-repeater .list-content .space-close-btn{
-  bottom: 22px;
-}
 
 #orbit-page-repeater-list .orbit-page-repeater,
 #orbit-slide-repeater-list .orbit-slide-repeater{
@@ -372,18 +369,19 @@ ul.orbit-sections-dropdown li button.button{
   position: relative;
   box-shadow: 1px 1px 2px 1px #eee;
   margin-bottom: 14px;
+	width: 45%;
 }
 
-.orbit-options-repeater .space-close-btn{
+.orbit-options-repeater .orbit-close-btn{
   font-size: 20px;
   text-decoration: none;
-  bottom: 16px !important;
+  bottom: 16px;
 }
+
 .orbit-options-repeater textarea{
   width: 100%;
   resize: none;
   border: none;
-  width: 100%;
   padding-top: 10px;
   padding-bottom: 0;
   height: 44px;
