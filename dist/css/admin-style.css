@@ -387,3 +387,46 @@ ul.orbit-sections-dropdown li button.button{
   height: 44px;
 }
 /* ORBIT FEP STYLES ENDS */
+
+/* ORBIT CUSTOM FIELDS  */
+#orbit-custom{
+	border: none;
+	box-shadow: none;
+	background-color: transparent;
+}
+
+#orbit-custom .handlediv,
+#orbit-custom .hndle{
+	display: none;
+}
+
+#orbit-custom .inside{
+	padding: 0;
+	margin: 0;
+}
+
+#orbit-custom .inside .form-wrap .orbit-form-group{
+	padding: 0;
+}
+[data-slug="custom_fields"]{
+	border: 0 !important;
+	padding: 0 !important;
+	background-color: transparent !important;
+}
+#orbit-custom .inside .form-wrap .orbit-form-group > label{
+	display: none;
+}
+[data-slug = "custom_fields"] .ui-sortable .orbit-choice-item{
+	margin-bottom: 20px;
+	position: relative;
+	padding: 10px 20px;
+	background: #fff;
+	box-shadow: 1px 1px 4px 1px #ccc;
+}
+
+[data-slug = "custom_fields"] .ui-sortable .orbit-choice-item .orbit-close-btn{
+	top: 10px;
+  bottom: auto;
+  font-size: 20px;
+  text-decoration: none;
+}

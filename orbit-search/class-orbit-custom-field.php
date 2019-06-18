@@ -4,6 +4,7 @@
 
 		function __construct(){
 			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+			add_filter( 'orbit_meta_box_vars', array( $this, 'orbit_fields' ) );
 			add_action( 'save_post', array( $this, 'save' ) );
 
 			/* ADD THE RELEVANT META BOXES TO THE ORBIT TYPE */
@@ -11,8 +12,8 @@
 				global $post_type;
 
 				/* CUSTOM FIELDS FOR ORBIT-TYPES */
-				if( isset( $meta_box['orbit-types'] ) && count( $meta_box['orbit-types'] ) && isset( $meta_box['orbit-types'][0]['fields'] ) ){
-					$meta_box['orbit-types'][0]['fields']['custom_fields'] = array(
+				if( isset( $meta_box['orbit-types'] ) && count( $meta_box['orbit-types'] ) && isset( $meta_box['orbit-types'][1]['fields'] ) ){
+					$meta_box['orbit-types'][1]['fields']['custom_fields'] = array(
 						'type'	=> 'repeater_cf',
 						'text'	=> 'Custom Fields',
 						'items'	=> array(
@@ -37,6 +38,8 @@
 
 					);
 				}
+
+
 
 				global $orbit_vars;
 
@@ -83,16 +86,15 @@
 					}
 
 				}
-				/*
-				echo "<pre>";
-				print_r( $meta_box );
-				echo "</pre>";
-				wp_die();
-				*/
+
+				// echo "<pre>";
+				// print_r( $meta_box );
+				// echo "</pre>";
+				// wp_die();
+
 
 				return $meta_box;
 			});
-
 
 			add_filter( 'orbit_post_type_meta_fields_appended', function( $fields ){
 
@@ -101,6 +103,22 @@
 				return $fields;
 			});
 
+		}
+
+		function orbit_fields( $meta_box ){
+
+			global $post_type;
+
+			if( 'orbit-types' != $post_type ) return $meta_box;
+
+			$meta_box['orbit-types'] = array_merge( $meta_box['orbit-types'] , array(
+				array(
+					'id'		=> 'orbit-custom',
+					'title'		=> 'Orbit Custom Fields',
+					'fields'	=> array()
+				),
+			));
+			return $meta_box;
 		}
 
 		function get_meta_boxes( ){
