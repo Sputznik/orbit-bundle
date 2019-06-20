@@ -419,14 +419,13 @@ ul.orbit-sections-dropdown li button.button{
 [data-slug = "custom_fields"] .ui-sortable .orbit-choice-item{
 	margin-bottom: 20px;
 	position: relative;
-	padding: 10px 20px;
+	padding: 0 10px;
 	background: #fff;
 	box-shadow: 1px 1px 4px 1px #ccc;
 }
-
-[data-slug = "custom_fields"] .ui-sortable .orbit-choice-item .orbit-close-btn{
-	top: 10px;
-  bottom: auto;
-  font-size: 20px;
-  text-decoration: none;
+[data-slug = "custom_fields"] .list-header label{
+	margin: 0;
+}
+[data-slug = "custom_fields"] .list-content{
+	padding-bottom: 10px;
 }

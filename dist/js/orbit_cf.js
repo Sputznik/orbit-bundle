@@ -10,8 +10,9 @@ jQuery.fn.orbit_repeater_cf = function(){
 			console.log( fields );
 
 		var repeater = ORBIT_REPEATER( {
-			$el		: $el,
-			btn_text: '+ Add Custom Field',
+			$el							: $el,
+			btn_text				: '+ Add Custom Field',
+			close_btn_text	: 'Delete Field',
 			init	: function( repeater ){
 
 				/*
@@ -45,6 +46,20 @@ jQuery.fn.orbit_repeater_cf = function(){
 					row = {};
 				}
 
+				repeater.addCollapsibleItem( $list_item, $closeButton );
+
+				var $header = $list_item.find( '.list-header' );
+				var $content = $list_item.find( '.list-content' );
+
+				var $cf_name= repeater.createField({
+					element : 'label',
+					attr:{
+						'name' : 'customfield[' + repeater.count + ']'
+					},
+					html: 'Custom Field '+(repeater.count+1),
+					append: $header
+				});
+
 				jQuery.each( fields, function( field_slug, field ){
 
 					field.label = field.text;
@@ -66,7 +81,7 @@ jQuery.fn.orbit_repeater_cf = function(){
 						attr	: {
 							'class'	: 'orbit-field',
 						},
-						append	: $list_item
+						append	: $content
 					});
 
 					field.append = $containerField;
@@ -85,11 +100,13 @@ jQuery.fn.orbit_repeater_cf = function(){
 
 				});
 
-
 				$closeButton.click( function( ev ){
-					ev.preventDefault();
 
-					$list_item.remove();
+					ev.preventDefault();
+					if( confirm( 'Are you sure you want to remove this?' ) ){
+						// IF PAGE ID IS NOT EMPTY THAT MEANS IT IS ALREADY IN THE DB, SO THE ID HAS TO BE PUSHED INTO THE HIDDEN DELETED FIELD
+						$list_item.remove();
+					}
 				});
 
 
