@@ -109,18 +109,28 @@ jQuery.fn.orbit_batch_process = function(){
 		function ajaxCall(){
 
 			// PREPARE THE DATA THAT NEEDS TO BE PASSES THROUGH THE AJAX CALL
-			var data = atts.params;
+			var data 						= atts.params,
+				paramsToBePassed 	= {};
+
 			data['orbit_batch_action'] 	= atts.batch_action;
 			data['orbit_batches']				= atts.batches;
 			data['orbit_batch_step']		= batch_step;
 
-			var url = $el.data('url') + '&' + getURLParams( data );
+			var url = $el.data('url');
+			if( atts['ajax_method'] == 'GET' ){
+				url += '&' + getURLParams( data );
+			}
+			else{
+				paramsToBePassed = data;
+			}
+
 
 			// UPDATE THE PROGRESS IN THE BUTTON HTML
 			$el.find('button').html( atts.btn_text + " " + ( batch_step ) + "/" + atts.batches );
 
 			jQuery.ajax({
-				'method'	: 'GET',
+				'method'	: atts['ajax_method'],
+				'data'		: paramsToBePassed,
 				'url'			: url,
 				'error'		: function(){ alert( 'Error has occurred' ); },
 				'success'	: function( html ){
@@ -131,7 +141,7 @@ jQuery.fn.orbit_batch_process = function(){
 
 					updateProgress();	// UPDATE PROGRESS BAR
 
-					/* CHECK IF BATCH STEP INCREMENT IS ITERATED */
+					// CHECK IF BATCH STEP INCREMENT IS ITERATED
 					if( batch_step <= atts.batches ){
 
 						ajaxCall();				// EXECUTE THE NEXT BATCH CALL
@@ -139,9 +149,10 @@ jQuery.fn.orbit_batch_process = function(){
 					}
 				}
 			});
+			
 		};
 
-		console.log( atts );
+		//console.log( atts );
 
 		init();
 
