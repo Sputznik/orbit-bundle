@@ -14,6 +14,7 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE{
 
     /* AJAX CALLBACK */
 		add_action( 'wp_ajax_'.$this->shortcode, array( $this, 'ajax' ) );
+		add_action( 'wp_ajax_nopriv_'.$this->shortcode, array( $this, 'ajax' ) );
 
 		/* SAMPLE ACTION HOOK FOR AJAX CALL */
 		add_action('space_batch_action_default', function(){
