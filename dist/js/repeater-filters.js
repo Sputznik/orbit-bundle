@@ -13,11 +13,12 @@ jQuery.fn.repeater_filters = function(){
 			close_btn_text	: 'Delete Filter',
       list_id         : 'orbit-repeater-list',
       list_item_id	  : 'orbit-repeater-filter',
+			list_item_types : atts['sections'],
 			init	: function( repeater ){
 
         // ITERATE THROUGH EACH PAGES IN THE DB
         jQuery.each( atts.db, function( i, filter ){
-          if( filter['label']){ repeater.addItem( filter ); }
+          if( filter['label'] != undefined && filter['type'] != undefined ){ repeater.addItem( filter ); }
         });
 
       },
@@ -30,7 +31,7 @@ jQuery.fn.repeater_filters = function(){
 				* HIDDEN: page COUNT
 				*/
 
-        if( filter == undefined ){ filter = { label : '' }; }
+        if( filter == undefined ){ filter = { label : '', type : 'tax' }; }
 
 				// CREATE COLLAPSIBLE ITEM - HEADER AND CONTENT
 				repeater.addCollapsibleItem( $list_item, $closeButton );
@@ -44,7 +45,7 @@ jQuery.fn.repeater_filters = function(){
 					attr	: {
 						'data-behaviour': 'space-autoresize',
 						'placeholder'	: 'Type Label Here',
-						'name'			: 'orbit_filter[' + repeater.count + '][label]',
+						'name'			: getAttrName( 'label' ),
 						'value'			: 'Label ' + ( repeater.count + 1 )
 					},
 					append	: $header
@@ -52,93 +53,91 @@ jQuery.fn.repeater_filters = function(){
 				//$textarea.space_autoresize();
 				if( filter['label'] ){ $textarea.val( filter['label'] ); }
 
-        //ORBIT FILTER FIELDS
-        var hide_label_flag = false;
-				if( filter && filter['hide_label'] && filter['hide_label'] > 0 ){
-					hide_label_flag = true;
-				}
-        var hide_label = repeater.createBooleanField({
-          attr   :  {
-            name		: 'orbit_filter[' + repeater.count + '][hide_label]',
-            checked : hide_label_flag
-          },
-          label  :  'Hide Label',
-          append :  $content
+				// BUBBLE FIELD THAT IDENTIFIES THE REPEATER FIELD ITEM
+        var $bubble = repeater.createField({
+          element : 'div',
+          attr    : { class : 'orbit-bubble' },
+          html    : atts['sections'][ filter['type'] ],
+          append  : $header
         });
 
-        //Filter form style
+				// MAIN FILTER TYPE FIELD
+				var $filter_type = repeater.createField({
+					element	: 'input',
+					attr	:  {
+						type	: 'hidden',
+						name	: getAttrName( 'type' ),
+						value : filter['type'] ? filter['type'] : '',
+					},
+					append	: $content,
+				});
+
+				// HIDE LABEL HERE
+				var $hide_label = createBooleanField( {
+					label 	: 'Hide Label',
+					slug		: 'hide_label',
+					append	: $content
+				} );
+
+				// CHOOSE FORM FIELD - DROPDOWN, TEXT, RADIO, CHECKBOX ETC
         var $form_field = repeater.createDropdownField({
-          attr    : {
-            'name'			: 'orbit_filter[' + repeater.count + '][form]',
-          },
+          attr    : { name	: getAttrName( 'form' ) },
           value   : filter['form'] ? filter['form'] : '',
           options : atts['forms'],
           append	: $content,
           label   : 'Form Field'
         });
-        //if( filter['form'] ){ $form_field.selectOption( filter['form'] ); }
 
-        var $filter_type = repeater.createDropdownField({
-					attr	:  {
-					'name'			: 'orbit_filter[' + repeater.count + '][type]'
-					},
-          value   : filter['type'] ? filter['type'] : '',
-          options : atts['types'],
-					append	: $content,
-					label	  : 'Filter by'
-				});
-
-        //Filter typeVAL
+				//Filter typeVAL
         var $filter_typeval = repeater.createDropdownField({
-          attr	: {
-            'name'			: 'orbit_filter[' + repeater.count + '][typeval]'
-          },
-          options : {},
+          attr	: { name : getAttrName( 'typeval' ) },
+          options : atts[ filter['type'] + '_options' ],
           append	: $content,
           label   : 'Filter Value'
         });
-
-        //ORBIT FILTER FIELDS
-        var tax_hide_empty_flag = false;
-				if( filter && filter['tax_show_empty'] && filter['tax_show_empty'] > 0 ){
-					tax_hide_empty_flag = true;
-				}
-
-        var $tax_hide_empty = repeater.createBooleanField({
-          attr   :  {
-            name		: 'orbit_filter[' + repeater.count + '][tax_show_empty]',
-            checked	: tax_hide_empty_flag,
-          },
-          label  :  'Show empty terms',
-          append :  $content
-        });
-
-        // OPTIONS OF FILTER TYPE BY VALUE ARE RESET BASED ON THE VALUE SELECTED IN FILTER TYPE
-        function updateOptionsForFilterTypeValue(){
-          var type = $filter_type.find('select').val(),
-            options = atts[ type + '_options' ];
-          $filter_typeval.setOptions( options );
-
-          if( type=='tax' ){
-            $tax_hide_empty.show();
-          }
-          else{
-            $tax_hide_empty.hide();
-          }
-        }
-
-        // ON CHANGE OF FILTER TYPE TRIGGER AN UPDATE IN OPTIONS OF FILTER TYPE BY VALUE
-        $filter_type.find('select').change(function(){
-          updateOptionsForFilterTypeValue();
-          // hide_empty.show();
-        });
-        updateOptionsForFilterTypeValue();  // SET OPTIONS FOR THE FIRST LOAD
-
-        // DEFAULT VALUE COMING FROM THE DB
+				// DEFAULT VALUE COMING FROM THE DB
         if( filter['typeval'] ){ $filter_typeval.selectOption( filter['typeval'] ); }
 
+
+				// COMMON FIELDS END HERE
+				switch( filter['type'] ){
+					case 'tax':
+						// 	BOOLEAN FIELD - IF CHECKED WILL SHOW ALL THE EMPTY TERMS
+						var $tax_hide_empty = createBooleanField( {
+							label 	: 'Show empty terms',
+							slug		: 'tax_show_empty',
+							append	: $content
+						} );
+
+
+						break;
+
+					case 'postdate':
+						break;
+				}
+
+				// 	HELPER FUNCTION TO CREATE BOOLEAN FIELDS
+				function createBooleanField( field ){
+					var flag = false;
+					if( filter && filter[ field.slug ] && filter[ field.slug ] > 0 ){ flag = true; }
+
+	        var $boolean_field = repeater.createBooleanField({
+	          attr   :  {
+	            name		: getAttrName( field.slug ),
+	            checked	: flag,
+	          },
+	          label  :  field.label,
+	          append :  field.append
+	        });
+					return $boolean_field;
+				}
+
+				function getAttrName( slug ){
+					return 'orbit_filter[' + repeater.count + '][' + slug + ']'
+				}
+
         //CREATE A HIDDEN FIELD
-        var hidden = repeater.createField({
+        var $hidden = repeater.createField({
           element	: 'input',
           attr	: {
             'type'	          : 'hidden',

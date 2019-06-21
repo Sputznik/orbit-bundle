@@ -44,6 +44,11 @@
 					// GET VALUE FROM THE DATABASE
 					$form_atts['db'] = $this->getFiltersFromDB( $post->ID );
 
+					$form_atts['sections'] = array(
+						'postdate'	=> 'Filter by Date',
+						'tax'				=> 'Filter by Taxonomy'
+					);
+
 					// TRIGGER THE REPEATER FILTER BY DATA BEHAVIOUR ATTRIBUTE
 					_e( "<div data-behaviour='orbit-admin-filters' data-atts='".wp_json_encode( $form_atts )."'></div>");
 				}

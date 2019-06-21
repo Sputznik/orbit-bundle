@@ -28,7 +28,7 @@
 					'url'		=> 'edit.php?post_type=orbit-tmp'
 				),
 				'orbit-form' => array(
-					'label'	=> 'Orbit SearchForms',
+					'label'	=> 'Orbit Filters',
 					'url'		=> 'edit.php?post_type=orbit-form'
 				),
 			);
