@@ -40,9 +40,10 @@ jQuery.fn.repeater_columns = function(){
 
 				var $header           = $list_item.find( '.list-header' ),
 				    $content          = $list_item.find( '.list-content' ),
-            filter_type_text  = data['sections'][ filter['type'] ],
-            common_name       = 'orbit_export_csv_cols[' + repeater.count + ']';
+            filter_type_text  = data['sections'][ filter['type'] ];
 
+
+        $list_item.data( 'count', repeater.count );
         $list_item.data( 'type', filter_type_text );
 
         // TEXTAREA FOR FORM FIELD LABEL
@@ -56,7 +57,7 @@ jQuery.fn.repeater_columns = function(){
           element : 'input',
           attr    : {
             type : 'hidden',
-            name : common_name + '[type]',
+            name : getAttrName( 'type' ),
             value: filter['type']
           },
           append  : $content
@@ -65,19 +66,22 @@ jQuery.fn.repeater_columns = function(){
         function updateLabel(){
 
           var html = $list_item.data('type'),
-              field = $list_item.find('[name="' + common_name + '[field]"]').val();
+              field = $list_item.find('[name="' + getAttrName('field') + '"]').val();
 
           if( field ){ html += ' (' + field + ')'; }
 
           $label.html( html );
         }
 
+        function getAttrName( slug ){
+          var common_name = 'orbit_export_csv_cols[' + $list_item.data('count') + ']';
+          return common_name + '[' + slug + ']';
+        }
+
         // REUSABLE HELPER FUNCTION TO CREATE DROPDOWN FIELD
         function createDropdownField( field ){
           var $field = repeater.createDropdownField({
-            attr	: {
-              name	: common_name + '[' + field['slug'] + ']'
-            },
+            attr	: { name	: getAttrName( field['slug'] ) },
             value   : filter[ field['slug'] ] ? filter[ field['slug'] ] : '',
             options : field['options'],
             append	: field['append'],
@@ -92,8 +96,8 @@ jQuery.fn.repeater_columns = function(){
           var $field = repeater.createInputTextField({
             label : field['label'] ? field['label'] : '',
             attr  : {
-              placeholder : field['placeholder'] ? field['placeholder'] : '',
-              name        : common_name + '[' + field['slug'] +']'
+              placeholder  : field['placeholder'] ? field['placeholder'] : '',
+              name	       : getAttrName( field['slug'] )
             },
             help    : field['help'] ? field['help'] : '',
             append  : field['append']
