@@ -126,7 +126,7 @@
 
 			wp_enqueue_script( 'orbit-repeater', plugins_url( 'orbit-bundle/dist/js/repeater.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
 
-			if( $hook == 'post.php' && $post_type == 'orbit-form' ) {
+			if( ( $hook == 'post.php' || $hook == 'post-new.php' ) && $post_type == 'orbit-form' ) {
 				wp_enqueue_script( 'orbit-repeater-filters', plugins_url( 'orbit-bundle/dist/js/repeater-filters.js' ), array( 'jquery', 'orbit-repeater' ), ORBIT_BUNDLE_VERSION, true );
 			}
 
