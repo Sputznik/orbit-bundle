@@ -1,6 +1,6 @@
 <?php
 
-	class ORBIT_CUSTOM_FIELD{
+	class ORBIT_CUSTOM_FIELD extends ORBIT_BASE{
 
 		function __construct(){
 			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
@@ -21,20 +21,45 @@
 								'type' 		=> 'dropdown',
 								'text' 		=> 'Select Field Type',
 								'options'	=> array(
-									'text'		=> 'Text',
-									'dropdown'	=> 'Dropdown'
+									'text'			=> 'Text',
+									'textarea'	=> 'Textarea',
+									'dropdown'	=> 'Dropdown',
+									'checkbox'	=> 'Checkboxes'
 								)
 							),
 							'text' => array(
 								'type' 		=> 'text',
 								'text' 		=> 'Label',
 							),
+							'placeholder'	=> array(
+								'type'	=> 'text',
+								'text'	=> 'Placeholder',
+								'help'	=> 'Apeears within the input text fields'
+							),
 							'options' => array(
-								'type' 		=> 'textarea',
+								'type' 		=> 'repeater-options',
 								'text' 		=> 'Options',
-								'help'		=> 'Only valid for dropdown or checkboxes'
+								'help'		=> 'Only valid for dropdown or checkboxes. Enter each item on a new line.'
 							),
 						),
+						'rules'	=> array(
+							'options'	=> array(
+								'hide'	=> array(
+									'type'	=> array( 'text', 'textarea' )
+								),
+								'show'	=> array(
+									'type'	=> array( 'dropdown', 'checkbox' )
+								)
+							),
+							'placeholder'	=> array(
+								'show'	=> array(
+									'type'	=> array( 'text', 'textarea' )
+								),
+								'hide'	=> array(
+									'type'	=> array( 'dropdown', 'checkbox' )
+								)
+							),
+						)
 
 					);
 				}
@@ -43,6 +68,7 @@
 
 				global $orbit_vars;
 
+				// BUILD CUSTOM FIELDS BASED ON WHAT THE USER HAS SELECTED IN THE ORBIT-TYPES
 				if( isset( $orbit_vars['post_types'] ) && isset( $orbit_vars['post_types'][$post_type] ) && isset( $orbit_vars['post_types'][$post_type]['custom_fields'] ) && $orbit_vars['post_types'][$post_type]['custom_fields'] ){
 
 					$new_meta_box = array(
@@ -87,21 +113,14 @@
 
 				}
 
-				// echo "<pre>";
-				// print_r( $meta_box );
-				// echo "</pre>";
-				// wp_die();
-
-
 				return $meta_box;
 			});
 
 			add_filter( 'orbit_post_type_meta_fields_appended', function( $fields ){
-
 				array_push( $fields, 'custom_fields' );
-
 				return $fields;
 			});
+
 
 		}
 
@@ -196,8 +215,10 @@
 			$form_field_atts = array(
 				'name'	=> $slug,
 				'value'	=> $f['val'],
+				'placeholder'	=> isset( $f['placeholder'] ) ? $f['placeholder'] : '',
 				'label'	=> $f['text'],
 				'type'	=> $f['type'],
+				'rules'	=> isset( $f['rules'] ) ? $f['rules'] : array(),
 				'items'	=> array(),
 				'help'	=> isset( $f['help'] ) ? $f['help'] : ""
 			);
@@ -223,21 +244,15 @@
 			foreach( $meta_boxes as $meta_box ){
 
 				if( isset( $meta_box[ 'fields' ] ) ){
-
-
-
 					foreach( $meta_box[ 'fields' ] as $slug => $f ){
-
 						if( array_key_exists( $slug, $_POST ) ){
 							update_post_meta( $post_id, $slug, $_POST[ $slug ] );
-
 						}
-
-					}
-				}
-			}
-		}
+					}	// end of foreach
+				}		// end of if
+			}			// end of foreach
+		}				// enf of function
 
 	}
 
-	new ORBIT_CUSTOM_FIELD;
+	ORBIT_CUSTOM_FIELD::getInstance();

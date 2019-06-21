@@ -14,6 +14,7 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE{
 
     /* AJAX CALLBACK */
 		add_action( 'wp_ajax_'.$this->shortcode, array( $this, 'ajax' ) );
+		add_action( 'wp_ajax_nopriv_'.$this->shortcode, array( $this, 'ajax' ) );
 
 		/* SAMPLE ACTION HOOK FOR AJAX CALL */
 		add_action('space_batch_action_default', function(){
@@ -39,6 +40,7 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE{
 
 		/* CREATE ATTS ARRAY FROM DEFAULT PARAMETERS IN THE SHORTCODE */
 		$atts = shortcode_atts( array(
+			'ajax_method'		=> 'GET',
 			'result'				=> 'Entire process is completed',
 			'title'					=> 'Title of the process',
 			'desc'					=> 'Description of the process',
@@ -65,9 +67,9 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE{
 
 	/* AJAX CALLBACK */
 	function ajax(){
-
-		if( isset( $_GET['orbit_batch_action'] ) ){
-			do_action('orbit_batch_action_'.$_GET['orbit_batch_action']);
+		
+		if( isset( $_REQUEST['orbit_batch_action'] ) ){
+			do_action('orbit_batch_action_'.$_REQUEST['orbit_batch_action']);
 		}
 
 		wp_die();

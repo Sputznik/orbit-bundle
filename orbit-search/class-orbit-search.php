@@ -157,7 +157,7 @@
 			/* GET FORM DETAILS */
 			$form = get_post( $atts['id'] );
 
-			_e("<div class='orbit-search-container'>");
+			_e("<div class='orbit-search-container' data-behaviour='orbit-search'>");
 
 			include( 'templates/filters-form.php' );
 

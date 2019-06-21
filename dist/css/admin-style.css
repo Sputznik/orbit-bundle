@@ -368,7 +368,7 @@ ul.orbit-sections-dropdown li button.button{
 .orbit-options-repeater{
   position: relative;
   box-shadow: 1px 1px 2px 1px #eee;
-  margin-bottom: 14px;
+  margin-bottom: 22px;
 	width: 45%;
 }
 
@@ -428,4 +428,7 @@ ul.orbit-sections-dropdown li button.button{
 }
 [data-slug = "custom_fields"] .list-content{
 	padding-bottom: 10px;
+}
+[data-behaviour = "orbit-repeater-cf"] .ui-sortable{
+	margin-top: 22px;
 }
