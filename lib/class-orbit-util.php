@@ -67,13 +67,17 @@ class ORBIT_UTIL extends ORBIT_BASE{
     foreach( $tax_arr as $tax ){
       $temp = $this->explode_to_arr( $tax, ':' );
       if( count( $temp ) > 1 ){
-        array_push( $tax_query,
-          array(
-            'taxonomy'	=> $temp[0],
-            'field'		=> 'slug',
-            'terms'		=> $this->explode_to_arr( $temp[1] )
-          )
-        );
+        $terms = $this->explode_to_arr( $temp[1] );
+        if( count( $terms ) ){
+          array_push( $tax_query,
+            array(
+              'taxonomy'	=> $temp[0],
+              'field'		  => $this->getVariableType( $terms[0] ),
+              'terms'		  => $terms
+            )
+          );
+        }
+
       }
     }
     return $tax_query;
@@ -109,7 +113,7 @@ class ORBIT_UTIL extends ORBIT_BASE{
     $shortcode_str .= "]";
     return $shortcode_str;
   }
-  
+
   // CHECKS THE TYPE OF A VARIABLE
   function getVariableType( $input ){
     $type = "undefined";
