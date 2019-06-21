@@ -54,7 +54,7 @@
 				}
 			}, 1, 2 );
 
-			// // SEPARATE METABOX FOR CSV
+			// SEPARATE METABOX FOR EXPORTING CSV
 			add_action( 'orbit_meta_box_html', function( $post, $box ){
 
 				if( isset( $box['id'] ) && 'orbit-export-csv' == $box['id'] ){
@@ -76,7 +76,7 @@
 					);
 
 					$form_atts['post_options'] = array(
-						'title'				=>	'Post Title',
+						'title'				=>	'Title',
 						'description'	=>	'Description',
 						'date'				=>	'Date'
 					);

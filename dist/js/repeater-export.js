@@ -16,7 +16,7 @@ jQuery.fn.repeater_columns = function(){
 
         // ITERATE THROUGH EACH PAGES IN THE DB
         jQuery.each( data['db'], function( i, filter ){
-          if( filter != undefined && filter['label'] != undefined && filter['type'] != undefined ){
+          if( filter != undefined && filter['type'] != undefined ){
             repeater.addItem( filter );
           }
         });
@@ -31,8 +31,6 @@ jQuery.fn.repeater_columns = function(){
 				* HIDDEN: page COUNT
 				*/
 
-        console.log( filter );
-
         if( filter == undefined || filter['type'] == undefined ){
 					filter = { type : 'tax' };
 				}
@@ -45,28 +43,13 @@ jQuery.fn.repeater_columns = function(){
             filter_type_text  = data['sections'][ filter['type'] ],
             common_name       = 'orbit_export_csv_cols[' + repeater.count + ']';
 
-        // TEXTAREA FOR FORM FIELD LABEL
-    		var $textarea = repeater.createField({
-    			element	: 'textarea',
-    			attr	: {
-    				//'data-behaviour': 'space-autoresize',
-    				'placeholder'	  : 'Type Form Field Name Here',
-    				'name'			    : common_name + '[label]',
-    				'value'			    : filter_type_text + ' ' + ( repeater.count + 1 )
-    			},
-    			append	: $header
-    	   });
-    		//$textarea.space_autoresize();
-    		if( filter['label'] ){ $textarea.val( filter['label'] ); }
+        $list_item.data( 'type', filter_type_text );
 
-        // BUBBLE FIELD THAT IDENTIFIES THE REPEATER FIELD ITEM
-        var $bubble = repeater.createField({
-          element : 'div',
-          attr    : {
-            class : 'orbit-bubble'
-          },
-          html    : filter_type_text,
-          append  : $header
+        // TEXTAREA FOR FORM FIELD LABEL
+    		var $label = repeater.createField({
+          element	: 'label',
+    			//html    : filter_type_text + ' ' + ( repeater.count + 1 ),
+    			append	: $header
         });
 
         var $hidden = repeater.createField({
@@ -78,6 +61,16 @@ jQuery.fn.repeater_columns = function(){
           },
           append  : $content
         });
+
+        function updateLabel(){
+
+          var html = $list_item.data('type'),
+              field = $list_item.find('[name="' + common_name + '[field]"]').val();
+
+          if( field ){ html += ' (' + field + ')'; }
+
+          $label.html( html );
+        }
 
         // REUSABLE HELPER FUNCTION TO CREATE DROPDOWN FIELD
         function createDropdownField( field ){
@@ -140,6 +133,11 @@ jQuery.fn.repeater_columns = function(){
             break;
 
         }
+
+        $list_item.on('change', function(){
+          updateLabel();
+        });
+        updateLabel();
 
       },
 			reorder: function( repeater ){
