@@ -50,7 +50,6 @@ jQuery.fn.repeater_filters = function(){
 					},
 					append	: $header
 				});
-				//$textarea.space_autoresize();
 				if( filter['label'] ){ $textarea.val( filter['label'] ); }
 
 				// BUBBLE FIELD THAT IDENTIFIES THE REPEATER FIELD ITEM
@@ -88,7 +87,7 @@ jQuery.fn.repeater_filters = function(){
           label   : 'Form Field'
         });
 
-				//Filter typeVAL
+				//	Filter typevalue - terms for taxonomy & year, after & before queries for postdate
         var $filter_typeval = repeater.createDropdownField({
           attr	: { name : getAttrName( 'typeval' ) },
           options : atts[ filter['type'] + '_options' ],
@@ -102,13 +101,13 @@ jQuery.fn.repeater_filters = function(){
 				// COMMON FIELDS END HERE
 				switch( filter['type'] ){
 					case 'tax':
+
 						// 	BOOLEAN FIELD - IF CHECKED WILL SHOW ALL THE EMPTY TERMS
 						var $tax_hide_empty = createBooleanField( {
 							label 	: 'Show empty terms',
 							slug		: 'tax_show_empty',
 							append	: $content
 						} );
-
 
 						break;
 
@@ -121,7 +120,7 @@ jQuery.fn.repeater_filters = function(){
 					var flag = false;
 					if( filter && filter[ field.slug ] && filter[ field.slug ] > 0 ){ flag = true; }
 
-	        var $boolean_field = repeater.createBooleanField({
+	        return repeater.createBooleanField({
 	          attr   :  {
 	            name		: getAttrName( field.slug ),
 	            checked	: flag,
@@ -129,7 +128,6 @@ jQuery.fn.repeater_filters = function(){
 	          label  :  field.label,
 	          append :  field.append
 	        });
-					return $boolean_field;
 				}
 
 				function getAttrName( slug ){
