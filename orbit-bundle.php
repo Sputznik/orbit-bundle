@@ -8,7 +8,8 @@
     Author URI: http://sputznik.com
     */
 
-	define( 'ORBIT_BUNDLE_VERSION', '1.4.6' ); //time()
+
+	define( 'ORBIT_BUNDLE_VERSION', time() ); //'1.4.5'
 
 
 	wp_register_style( 'orbit-main', plugins_url( 'orbit-bundle/dist/css/main.css' ), array(), ORBIT_BUNDLE_VERSION );

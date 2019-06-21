@@ -9,8 +9,9 @@ jQuery.fn.orbit_repeater_cf = function(){
 			fields	= $el.data('fields');
 
 		var repeater = ORBIT_REPEATER( {
-			$el		: $el,
-			btn_text: '+ Add Custom Field',
+			$el							: $el,
+			btn_text				: '+ Add Custom Field',
+			close_btn_text	: 'Delete Field',
 			init	: function( repeater ){
 
 				/*
@@ -38,6 +39,20 @@ jQuery.fn.orbit_repeater_cf = function(){
 					row = {};
 				}
 
+				repeater.addCollapsibleItem( $list_item, $closeButton );
+
+				var $header = $list_item.find( '.list-header' );
+				var $content = $list_item.find( '.list-content' );
+
+				var $cf_name= repeater.createField({
+					element : 'label',
+					attr:{
+						'name' : 'customfield[' + repeater.count + ']'
+					},
+					html: 'Custom Field '+(repeater.count+1),
+					append: $header
+				});
+
 				function getSlug( field_slug ){
 					return slug + "[" + $list_item.data('count') + "]" + "[" + field_slug + "]";
 				}
@@ -54,16 +69,14 @@ jQuery.fn.orbit_repeater_cf = function(){
 				$list_item.data( 'count', repeater.count );
 
 				jQuery.each( fields, function( field_slug, field ){
-					
+
 					field.label = field.text;
 
 					field.slug = getSlug( field_slug );
 
 					field.value = undefined;
 
-					if( row[ field_slug ] != undefined ){
-						field.value = row[ field_slug ];
-					}
+					if( row[ field_slug ] != undefined ){ field.value = row[ field_slug ]; }
 
 					field.attr = {
 						name: field.slug
@@ -74,7 +87,7 @@ jQuery.fn.orbit_repeater_cf = function(){
 						attr	: {
 							'class'	: 'orbit-field orbit-field-' + field_slug,
 						},
-						append	: $list_item
+						append	: $content
 					});
 
 					field.append = $containerField;
@@ -91,6 +104,18 @@ jQuery.fn.orbit_repeater_cf = function(){
 
 						case 'textarea':
 							repeater.createTextareaField( field );
+							break;
+
+						case 'repeater-options':
+							var $cf_options = repeater.createField({
+								element	: 'div',
+								attr	: {
+									'data-behaviour' 	: 'orbit-repeater-cf',
+									'data-atts'       : JSON.stringify( row['options'] ? row['options'] : [] )
+								},
+								append	: $containerField
+							});
+							$cf_options.repeater_options( field.slug );
 							break;
 					}
 
@@ -127,10 +152,13 @@ jQuery.fn.orbit_repeater_cf = function(){
 				// DEFAULT CHECK WHEN THE LIST ITEM IS CREATED
 				checkForRules();
 
-
 				$closeButton.click( function( ev ){
 					ev.preventDefault();
-					$list_item.remove();
+					if( confirm( 'Are you sure you want to remove this?' ) ){
+						// IF PAGE ID IS NOT EMPTY THAT MEANS IT IS ALREADY IN THE DB, SO THE ID HAS TO BE PUSHED INTO THE HIDDEN DELETED FIELD
+						$list_item.remove();
+					}
+
 				});
 
 

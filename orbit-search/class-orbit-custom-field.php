@@ -37,7 +37,7 @@
 								'help'	=> 'Apeears within the input text fields'
 							),
 							'options' => array(
-								'type' 		=> 'textarea',
+								'type' 		=> 'repeater-options',
 								'text' 		=> 'Options',
 								'help'		=> 'Only valid for dropdown or checkboxes. Enter each item on a new line.'
 							),
