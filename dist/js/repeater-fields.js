@@ -1,5 +1,5 @@
 jQuery.fn.repeater_fields = function( parent_name, atts ){
-
+console.log( parent_name );
   return this.each(function() {
 
     var $el  = jQuery( this ),

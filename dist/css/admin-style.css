@@ -432,3 +432,13 @@ ul.orbit-sections-dropdown li button.button{
 [data-behaviour = "orbit-repeater-cf"] .ui-sortable{
 	margin-top: 22px;
 }
+/* Export to csv */
+/* [data-behaviour="orbit-export"] .ui-sortable .orbit-slide-repeater{
+	min-width: 150px;
+  display: inline-block;
+  margin-right: 20px;
+}
+
+[data-behaviour="orbit-export"] .orbit-bubble{
+	display: none;
+} */
