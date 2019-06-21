@@ -94,7 +94,16 @@ jQuery.fn.orbit_repeater_cf = function(){
 						repeater.createInputTextField( field );
 					}
 					else if( field.type == 'textarea' ){
-						repeater.createTextareaField( field );
+								// repeater.createTextareaField( field );
+								var $cf_options = repeater.createField({
+									element	: 'div',
+									attr	: {
+										'data-behaviour' 	: 'orbit-repeater-cf',
+										'data-atts'       : JSON.stringify( row['options'] ? row['options'] : [] )
+									},
+									append	: $content
+								});
+								$cf_options.repeater_options( field.slug );
 					}
 
 
