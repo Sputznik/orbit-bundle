@@ -10,7 +10,8 @@ jQuery.fn.orbit_dropdown_checkboxes = function(){
         $el.removeClass('open');
       }
     });
-    // IF SOME OTHER DROPDOWNS ARE OPEN THEN CLOSE THEM
+
+		// IF SOME OTHER DROPDOWNS ARE OPEN THEN CLOSE THEM
 		$el.find('button').click( function(){
       if( !$el.hasClass('open') ){
 				// CLOSE OTHER DROPDOWNS THAT ARE OPEN
@@ -19,16 +20,23 @@ jQuery.fn.orbit_dropdown_checkboxes = function(){
       $el.toggleClass('open');
     });
 
-    $el.on( 'change', function(){
-      updateLabel();
+    $el.on( 'change', function(){ updateLabel(); } );
+
+		$el.closest( 'form' ).on( 'reset', function(){
+			setTimeout( function(){
+				updateLabel();
+			}, 1);
+
     } );
+
+		// ON LOAD - DEFAULT
+    updateLabel();
 
 		function decodeEntities( encodedString ) {
 		  var textArea = document.createElement('textarea');
 		  textArea.innerHTML = encodedString;
 		  return textArea.value;
 		}
-    updateLabel();
 
     function updateLabel(){
       var $checkboxes = $el.find('input[type=checkbox]:checked'),
