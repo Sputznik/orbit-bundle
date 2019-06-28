@@ -243,6 +243,8 @@ class ORBIT_CSV extends ORBIT_BASE{
 	// IMPORT POSTS FROM A CSV DATA
 	function importPosts( $selectedCsv, $headerInfo, $defaults = array( 'post_status' => 'publish' ) ){
 
+		$orbit_util = ORBIT_UTIL::getInstance();
+
 		foreach( $selectedCsv as $rowCsv ){
 
       $post_id = 0;
@@ -265,27 +267,42 @@ class ORBIT_CSV extends ORBIT_BASE{
 
 			}
 
+			$orbit_util->test( $post_id );
+
+
 
       // ADD TERMS AND CUSTOM FIELDS ONLY IF POST ID IS VALID
       if( $post_id ){
 
+				print_r( $headerInfo['tax_info'] );
+
+				$orbit_util->test( $rowCsv );
+
         // ADD TAXONOMIES
         foreach( $headerInfo['tax_info'] as $taxonomy => $value ) {
-          $terms_id_arr = array();
-          if( isset( $rowCsv[ $value ] ) ){
-            $terms = explode( ',', $rowCsv[ $value ] );
-            foreach( $terms as $term_str ){
+					if( taxonomy_exists( $taxonomy ) && isset( $rowCsv[ $value ] ) ){
+						$terms_id_arr = array();
+
+						//$orbit_util->test( $taxonomy );
+
+						$terms = explode( ',', $rowCsv[ $value ] );
+
+						foreach( $terms as $term_str ){
     	        $term = term_exists( $term_str, $taxonomy );
     	        if( !$term ){
     	          $term = wp_insert_term( $term_str, $taxonomy );
     	        }
     	        array_push( $terms_id_arr, $term['term_id'] );
     	      }
-          }
-          if( count( $terms_id_arr ) ){
-            wp_set_post_terms( $post_id, $terms_id_arr, $taxonomy );
-          }
-        }
+
+						//$orbit_util->test( $terms );
+
+						if( count( $terms_id_arr ) ){
+	            wp_set_post_terms( $post_id, $terms_id_arr, $taxonomy );
+	          }
+					}
+				}
+
 
         // ADD CUSTOM FIELDS
         foreach( $headerInfo['cf_info'] as $metakey => $value ) {
