@@ -138,6 +138,12 @@ class ORBIT_UTIL extends ORBIT_BASE{
     return $type;
   }
 
+  function test( $data ){
+    echo "<pre>";
+    print_r( $data );
+    echo "</pre>";
+  }
+
 }
 
 ORBIT_UTIL::getInstance();
