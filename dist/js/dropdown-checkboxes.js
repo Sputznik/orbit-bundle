@@ -23,6 +23,11 @@ jQuery.fn.orbit_dropdown_checkboxes = function(){
       updateLabel();
     } );
 
+		function decodeEntities( encodedString ) {
+		  var textArea = document.createElement('textarea');
+		  textArea.innerHTML = encodedString;
+		  return textArea.value;
+		}
     updateLabel();
 
     function updateLabel(){
@@ -33,7 +38,17 @@ jQuery.fn.orbit_dropdown_checkboxes = function(){
 
       $checkboxes.each( function(){
         var $checkbox     = jQuery( this ),
-          checkbox_label  = $checkbox.parent().find('span').html();
+          checkbox_label  = decodeEntities( $checkbox.parent().find('span').html() ),
+					limit						= 10,
+					space_index 		= checkbox_label.indexOf(' ');
+
+				if( $checkboxes.length > 1 ){
+					// IF SPACE COMES BEFORE THEN BREAK RIGHT FROM THERE
+					if( space_index > 1 && space_index < 9 ){ limit = space_index; }
+
+					if( checkbox_label.length > limit ){ checkbox_label =  checkbox_label.substring( 0, limit ) + "..";}
+				}
+
         values.push( checkbox_label );
       });
 
