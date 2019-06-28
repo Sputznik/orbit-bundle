@@ -67,7 +67,7 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE{
 
 	/* AJAX CALLBACK */
 	function ajax(){
-		
+
 		if( isset( $_REQUEST['orbit_batch_action'] ) ){
 			do_action('orbit_batch_action_'.$_REQUEST['orbit_batch_action']);
 		}

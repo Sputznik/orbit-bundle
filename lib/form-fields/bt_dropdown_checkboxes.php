@@ -1,7 +1,9 @@
 <!-- ASSUMES THAT THE BOOTSTRAP DROPDOWN IS BEING USED -->
 <div class="dropdown" data-behaviour="bt-dropdown-checkboxes">
-  <button class="btn btn-primary dropdown-toggle" id="menu1" type="button"><?php _e( $atts['label'] );?>
-  <span class="caret"></span></button>
+  <button class="btn btn-primary dropdown-toggle" id="menu1" type="button">
+    <span class='btn-label'><?php _e( $atts['label'] );?></span>
+    <span class="caret"></span>
+  </button>
   <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
     <?php foreach( $atts['items'] as $item ): if( isset( $item['slug'] ) && $item['slug'] ):?>
       <li class="checkbox">

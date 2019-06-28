@@ -143,29 +143,6 @@ jQuery('[data-behaviour~=orbit-field-files]').each(function(){
 
 	});
 
+	jQuery('[data-behaviour~=bt-dropdown-checkboxes]').orbit_dropdown_checkboxes();
 
-
-	jQuery('[data-behaviour~=bt-dropdown-checkboxes]').each(function(){
-
-		var $el = jQuery(this);
-
-		jQuery( document ).on("click", function( event ){
-    	if( $el !== event.target && !$el.has( event.target ).length ){
-        $el.removeClass('open');
-      }
-    });
-
-		$el.find('button').click( function(){
-
-			if( !$el.hasClass('open') ){
-				// CLOSE OTHER DROPDOWNS THAT ARE OPEN
-				jQuery('[data-behaviour~=bt-dropdown-checkboxes].open').removeClass('open');
-			}
-
-			$el.toggleClass('open');
-
-
-		});
-
-
-	});
+	

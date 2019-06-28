@@ -216,3 +216,11 @@ li.orbit-article-db img{
 }
 
 /* COMMON */
+
+[data-behaviour~=bt-dropdown-checkboxes] .btn-label{
+	display: inline-block;
+	max-width: 98%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
