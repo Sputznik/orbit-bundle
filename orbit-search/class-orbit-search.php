@@ -191,7 +191,7 @@
 					'name' 			=> 'Orbit Searchforms',
 					'singular_name' => 'Orbit Searchform',
 				),
-				'supports'	=> array('title', 'editor'),
+				'supports'	=> array( 'title' ),
 				'public'	=> false,
 				'menu_icon'	=> 'dashicons-media-document'
 			);
