@@ -72,7 +72,7 @@ class ORBIT_UTIL extends ORBIT_BASE{
           array_push( $tax_query,
             array(
               'taxonomy'	=> $temp[0],
-              'field'		  => $this->getVariableType( $terms[0] ),
+              'field'		  => apply_filters( 'orbit_tax_query_params_'.$temp[0], $this->getVariableType( $terms[0] ) ),
               'terms'		  => $terms
             )
           );
