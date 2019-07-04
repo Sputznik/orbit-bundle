@@ -388,6 +388,11 @@ ul.orbit-sections-dropdown li button.button{
   padding-bottom: 0;
   height: 44px;
 }
+
+/* Removes overlapping on delete page and delete field button in fep */
+.orbit-sections-parent , .orbit-fields-repeater {
+margin-bottom: 10px;
+}
 /* ORBIT FEP STYLES ENDS */
 
 /* ORBIT CUSTOM FIELDS  */
