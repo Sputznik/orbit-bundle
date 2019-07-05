@@ -55,40 +55,40 @@
 			}, 1, 2 );
 
 			// SEPARATE METABOX FOR EXPORTING CSV
-			add_action( 'orbit_meta_box_html', function( $post, $box ){
-
-				if( isset( $box['id'] ) && 'orbit-export-csv' == $box['id'] ){
-
-					$orbit_export = ORBIT_FILTER::getInstance();
+			// add_action( 'orbit_meta_box_html', function( $post, $box ){
+			//
+			// 	if( isset( $box['id'] ) && 'orbit-export-csv' == $box['id'] ){
+			//
+			// 		$orbit_export = ORBIT_FILTER::getInstance();
 
 					// FORM ATTRIBUTES THAT IS NEEDED BY THE REPEATER FILTERS
-					$form_atts = $orbit_export->vars();
-					if( !$form_atts || !is_array( $form_atts ) ){ $form_atts = array(); }
-					$form_atts['tax_options'] = get_taxonomies();
+					// $form_atts = $orbit_export->vars();
+					// if( !$form_atts || !is_array( $form_atts ) ){ $form_atts = array(); }
+					// $form_atts['tax_options'] = get_taxonomies();
 
 					// GET VALUE FROM THE DATABASE
-					$form_atts['db'] = $this->getExportColsFromDB( $post->ID );
-
-					$form_atts['sections'] = array(
-						'post'	=> 'Post Information',
-						'tax'		=> 'Taxonomies',
-						'cf'		=> 'Custom Fields'
-					);
-
-					$form_atts['post_options'] = array(
-						'title'				=>	'Title',
-						'description'	=>	'Description',
-						'date'				=>	'Date'
-					);
+					// $form_atts['db'] = $this->getExportColsFromDB( $post->ID );
+					//
+					// $form_atts['sections'] = array(
+					// 	'post'	=> 'Post Information',
+					// 	'tax'		=> 'Taxonomies',
+					// 	'cf'		=> 'Custom Fields'
+					// );
+					//
+					// $form_atts['post_options'] = array(
+					// 	'title'				=>	'Title',
+					// 	'description'	=>	'Description',
+					// 	'date'				=>	'Date'
+					// );
 					// echo "<pre>";
 					// print_r( $form_atts );
 					// echo "<pre>";
 					// wp_die();
 
 					// TRIGGER THE REPEATER FILTER BY DATA BEHAVIOUR ATTRIBUTE
-					_e( "<div data-behaviour='orbit-export' data-atts='".wp_json_encode( $form_atts )."'></div>");
-				}
-			}, 1, 2 );
+			// 		_e( "<div data-behaviour='orbit-export' data-atts='".wp_json_encode( $form_atts )."'></div>");
+			// 	}
+			// }, 1, 2 );
 		}
 
 		// GET THE FILTERS STORED AS ARRAY IN POST META
@@ -174,11 +174,11 @@
 					'title'		=> 'Orbit Filters',
 					'fields'	=> array()
 				),
-				array(
-					'id'		=> 'orbit-export-csv',
-					'title'		=> 'Export to csv',
-					'fields'	=> array()
-				),
+				// array(
+				// 	'id'		=> 'orbit-export-csv',
+				// 	'title'		=> 'Export to csv',
+				// 	'fields'	=> array()
+				// ),
 			);
 			return $meta_box;
 		}
