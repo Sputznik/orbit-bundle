@@ -11,7 +11,6 @@ $(document).ready(function(){
 
 
 
-
     function createLabels(){
       $minLabel.prependTo( $range );
       $minLabel.addClass( 'minLabel' );
@@ -68,7 +67,7 @@ $(document).ready(function(){
 
     createLabels();
     updateLabels();
-    
+
     $input.on( 'range:updated', function(){
 
       var update = debounce(function() {
