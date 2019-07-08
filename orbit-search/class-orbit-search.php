@@ -142,8 +142,11 @@
 		function assets() {
 			wp_enqueue_script( 'orbit-dropdown-checkboxes', plugins_url( 'orbit-bundle/dist/js/dropdown-checkboxes.js' ), array('jquery'), ORBIT_BUNDLE_VERSION, true );
 			wp_enqueue_style( 'orbit-search', plugin_dir_url( __FILE__ ).'css/style.css', array(), ORBIT_BUNDLE_VERSION );
+			wp_enqueue_style( 'slider', plugin_dir_url( __FILE__ ).'css/multirange.css', array(), ORBIT_BUNDLE_VERSION );
 			wp_enqueue_script('typeahead', plugin_dir_url( __FILE__ ).'js/typeahead.min.js', array('jquery'), ORBIT_BUNDLE_VERSION, true );
 			wp_enqueue_script('orbit-search-script', plugin_dir_url( __FILE__ ).'js/main.js', array( 'jquery', 'typeahead', 'orbit-dropdown-checkboxes' ), ORBIT_BUNDLE_VERSION, true );
+			wp_enqueue_script('multirangeMain', plugin_dir_url( __FILE__ ).'js/multirange.js', array(), ORBIT_BUNDLE_VERSION, true );
+			wp_enqueue_script('multirange', plugin_dir_url( __FILE__ ).'js/jquery.multirange.js', array( 'jquery' ), ORBIT_BUNDLE_VERSION , true );
 		}
 
 		function create_meta_box( $meta_box ){
