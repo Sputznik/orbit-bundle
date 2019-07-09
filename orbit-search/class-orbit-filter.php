@@ -30,7 +30,8 @@
 					'dropdown' 								=> 'Dropdown (single)',
 					'typeahead'								=> 'Typeahead (input field)',
 					'bt_dropdown_checkboxes'  => 'Single Dropdown (with checkboxes)',
-					'date'										=> 'Date (input field)'
+					'date'										=> 'Date (input field)',
+					'multirange'							=>	'Multirange'
 				),
 				'shortcode'	=> array(
 					'type'						=> 'customfield',
@@ -85,6 +86,7 @@
 
 				case 'postdate':
 					$atts['items'] = $this->get_post_options( $atts['typeval'] );
+					
 					break;
 
 				case 'cf':
@@ -179,7 +181,7 @@
 					'type'	=> $atts['form'],
 					'items'	=> $new_items
 				) );
-				
+
 			}
 
 		}

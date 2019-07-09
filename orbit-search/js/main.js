@@ -145,4 +145,58 @@ jQuery('[data-behaviour~=orbit-field-files]').each(function(){
 
 	jQuery('[data-behaviour~=bt-dropdown-checkboxes]').orbit_dropdown_checkboxes();
 
-	
+	// jQuery( '[data-behaviour="orbit-search"] form' ).submit(function( event ){
+	// 	event.preventDefault();
+	// });
+
+	$( '[data-behaviour="orbit-search"] form' ).on( "submit", function( event ) {
+  event.preventDefault();
+  console.log( $( ' [data-behaviour="orbit-search"] form ' ).serialize() );
+});
+
+$.fn.ajax_form_submit = function(options){
+  var options = $.extend({
+    success : function(data){},
+  }, options);
+  return this.each(function(){
+    var form = $(this),
+    	url = form.attr('action'),
+			method = form.attr('method');
+
+		$.ajax({'type':method,'url':url,'data':form.serialize(),'success':function(data){
+      form.trigger('ajax_form:after', [form]);
+      options.success(data);
+    }});
+  });
+};
+
+jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
+
+	var $el = jQuery( this ),
+		$form = $el.find( 'form' );
+		$results = $el.find( '.orbit-search-results' );
+
+	$form.submit(function(event){
+		event.preventDefault();
+
+		$el.css({opacity:0.5});
+
+		$form.ajax_form_submit({
+			'success':function(data){
+
+				$el.css({ opacity:1 });
+
+				var $response = jQuery( data );
+
+				var html = $response.find('.orbit-search-results').html();
+
+				$results.html( html );
+
+				$("html, body").animate({ scrollTop: 0 }, "slow");
+					return false;
+			}
+		});
+	});
+
+
+});
