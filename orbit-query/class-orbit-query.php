@@ -120,7 +120,11 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 		echo "</pre>";
 		*/
 
-		$this->query = new WP_Query( $query_atts );
+		$orbit_wp = ORBIT_WP::getInstance();
+
+		$this->query = $orbit_wp->query( $query_atts ); //new WP_Query( $query_atts );
+
+		do_action( 'orbit_query_heading', $this->query );
 
 		if( $this->query->have_posts() ){
 			the_oq_articles( $atts );
@@ -129,7 +133,6 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			}
 			wp_reset_postdata();
 		}
-
 
 		return ob_get_clean();
 	}

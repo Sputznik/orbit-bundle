@@ -38,8 +38,17 @@ class ORBIT_WP extends ORBIT_BASE{
 
   }
 
+  function query( $query_atts ){
+    global $orbit_wp_query;
+    $wp_query = new WP_Query( $query_atts );
+    $orbit_wp_query = $wp_query;
+    return $wp_query;
+  }
+
 
 }
+
+
 
 
 ORBIT_WP::getInstance();

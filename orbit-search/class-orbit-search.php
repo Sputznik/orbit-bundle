@@ -209,42 +209,26 @@
 			);
 		}
 
-		function form( $atts ){
+		function getQueryShortcode( $atts ){
 
-			// CLASSES ORBIT
-			$orbit_util 	= ORBIT_UTIL::getInstance();
-			$orbit_filter = ORBIT_FILTER::getInstance();
-
-			ob_start();
-
-			/* CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE */
-			$atts = shortcode_atts( $this->get_default_atts(), $atts, 'orbit_search' );
-
-			/* GET FORM DETAILS */
-			$form = get_post( $atts['id'] );
-
-			_e("<div class='orbit-search-container' data-behaviour='orbit-search'>");
-
-			include( 'templates/filters-form.php' );
-
-			_e("<div class='orbit-search-results'>");
+			$orbit_util = ORBIT_UTIL::getInstance();
 
 			$shortcode_str = "[orbit_query pagination='1' ";
 
-			/* TEMPLATE FOR OBJECT QUERY */
+			// TEMPLATE FOR OBJECT QUERY
 			$tmpl_id = get_post_meta( $atts['id'], 'orbit-tmpl', true );
 			if( $tmpl_id ){
 				$shortcode_str .= "style='".$atts['style']."' style_id='".$tmpl_id."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
 			}
 
-			/* POST TYPES - FORM */
+			// POST TYPES - FORM
 			$post_types = get_post_meta( $atts['id'], 'posttypes', true );
 			if( !$post_types ){ $post_types = array(); } 		/* IF VALUE IS NOT SET */
 			$post_types = implode(',', $post_types);			/* CONVERTING ARRAY TO STRING */
 			$shortcode_str .= "post_type='".$post_types."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
 
 
-			/* POSTS PER PAGE - FORM */
+			// POSTS PER PAGE - FORM
 			$posts_per_page = get_post_meta( $atts['id'], 'posts_per_page', true );
 			if( !$posts_per_page ){ $posts_per_page = 10; }
 			$shortcode_str .= "posts_per_page='".$posts_per_page."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
@@ -256,6 +240,31 @@
 
 			// END OF SHORTCODE STRING
 			$shortcode_str .= "]";
+
+			return $shortcode_str;
+		}
+
+		function form( $atts ){
+
+			// CLASSES ORBIT
+			$orbit_util 	= ORBIT_UTIL::getInstance();
+			$orbit_filter = ORBIT_FILTER::getInstance();
+
+			ob_start();
+
+			// CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE
+			$atts = shortcode_atts( $this->get_default_atts(), $atts, 'orbit_search' );
+
+			// GET FORM DETAILS
+			$form = get_post( $atts['id'] );
+
+			_e("<div class='orbit-search-container' data-behaviour='orbit-search'>");
+
+			include( 'templates/filters-form.php' );
+
+			_e("<div class='orbit-search-results'>");
+
+			$shortcode_str = $this->getQueryShortcode( $atts );
 
 			//echo $shortcode_str;
 
