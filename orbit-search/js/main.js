@@ -110,49 +110,10 @@ jQuery('[data-behaviour~=orbit-field-files]').each(function(){
 
 	});
 
-	jQuery('[data-behaviour~=orbit-search]').each(function(){
-
-		var $el 				= jQuery(this),
-			$search_form 	= $el.find('.orbit-search-form');
-
-			function makeFormCollapsible(){
-				var $form 						= $search_form.find('form'),
-					window_width				= jQuery( window ).width();
-					$search_form_arrow 	= $search_form.find('.orbit-search-form-title .arrow-down');
-
-				// hide the form on mobile and make it collapsible
-				if( window_width < 768 ){
-
-					// hide the form
-					$form.hide();
-
-					// trigger collapsible
-					$search_form_arrow.click( function(){
-						$form.toggle('slide');
-					});
-				}
-			}
-
-			function init(){
-
-				makeFormCollapsible();
-
-			}
-
-		init();
-
-	});
-
 	jQuery('[data-behaviour~=bt-dropdown-checkboxes]').orbit_dropdown_checkboxes();
 
-	// jQuery( '[data-behaviour="orbit-search"] form' ).submit(function( event ){
-	// 	event.preventDefault();
-	// });
 
-	$( '[data-behaviour="orbit-search"] form' ).on( "submit", function( event ) {
-  event.preventDefault();
-  console.log( $( ' [data-behaviour="orbit-search"] form ' ).serialize() );
-});
+
 
 $.fn.ajax_form_submit = function(options){
   var options = $.extend({
@@ -172,10 +133,28 @@ $.fn.ajax_form_submit = function(options){
 
 jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
 
-	var $el = jQuery( this ),
-		$form = $el.find( 'form' );
-		$results = $el.find( '.orbit-search-results' );
+	var $el 				= jQuery( this ),
+		$search_form 	= $el.find('.orbit-search-form'),
+		$form 				= $el.find( 'form' ),
+		$results 			= $el.find( '.orbit-search-results' );
 
+	function makeFormCollapsible(){
+		var window_width			= jQuery( window ).width();
+			$search_form_arrow 	= $search_form.find('.orbit-search-form-title .arrow-down');
+
+		// hide the form on mobile and make it collapsible
+		if( window_width < 768 ){
+			// hide the form
+			$form.hide();
+
+			// trigger collapsible
+			$search_form_arrow.click( function(){ $form.toggle('slide'); });
+		}
+	}
+
+	makeFormCollapsible();
+
+	/*
 	$form.submit(function(event){
 		event.preventDefault();
 
@@ -197,6 +176,6 @@ jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
 			}
 		});
 	});
-
+	*/
 
 });

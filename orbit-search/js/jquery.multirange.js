@@ -41,13 +41,20 @@ $(document).ready(function(){
         minValue  = $range.attr( 'data-min' ),
         maxValue    = $range.attr( 'data-max' );
 
-      minValue = parseInt( ( minValue * steps ) / 100 ) + parseInt( ranges[0] );
-      maxValue = parseInt( ( maxValue * steps ) / 100 ) + parseInt( ranges[1] ) - parseInt( steps );
+      minLabel = parseInt( ( minValue * steps ) / 100 ) + parseInt( ranges[0] );
+      maxLabel = parseInt( ( maxValue * steps ) / 100 ) + parseInt( ranges[1] ) - parseInt( steps );
 
-      $minLabel.html( minValue );
-      $maxLabel.html( maxValue );
+      $minLabel.html( minLabel );
+      $maxLabel.html( maxLabel );
 
-      updateCheckboxes( minValue, maxValue );
+      if( ! ( minValue == 0 && maxValue ==  100 ) ){
+        updateCheckboxes( minLabel, maxLabel );
+      }
+      else{
+        // RESET THE CHECKBOXES WHEN MINVALUE=0 & MAXVALUE=100
+        $checkboxes.prop( 'checked', false );
+      }
+
     }
 
     function debounce(func, wait, immediate) {
