@@ -4,8 +4,8 @@ $(document).ready(function(){
 
     var $range = jQuery(this),
       $input    = $range.find( 'input[type=range]' ),
-      $minLabel = jQuery(document.createElement( 'div' ) ),
-      $maxLabel = jQuery(document.createElement( 'div' ) ),
+      $minLabel = $range.find( '.min-label' ),
+      $maxLabel = $range.find( '.max-label' ),
       $checkboxes = jQuery( '.multirange-checkboxes input[type=checkbox]' );
 
 
@@ -72,7 +72,7 @@ $(document).ready(function(){
     	};
     };
 
-    createLabels();
+    //createLabels();
     updateLabels();
 
     $input.on( 'range:updated', function(){

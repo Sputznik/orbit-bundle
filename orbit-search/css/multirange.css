@@ -46,13 +46,8 @@
 }
 
 /* Labels */
-.minLabel{
-	margin-right: 4px;
-}
-.maxLabel{
-	margin-left: 4px;
-}
-.minLabel, .maxLabel{
+[data-behaviour="multirange"]{ position: relative; }
+[data-behaviour="multirange"] .min-label, [data-behaviour="multirange"] .max-label{
   display: inline-block;
   border: 1px solid #000;
   border-radius: 4px;
@@ -60,4 +55,11 @@
   background: #2c3e50;
   color: #fff;
   padding: 1px 5px;
+}
+[data-behaviour="multirange"] .labels{ min-height: 25px; }
+[data-behaviour="multirange"] .min-label{ float:left; }
+[data-behaviour="multirange"] .max-label{ float:right; }
+
+[data-behaviour="multirange"] input[type="range"].multirange{
+	width: 100%;
 }

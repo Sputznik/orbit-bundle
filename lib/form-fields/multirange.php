@@ -31,6 +31,10 @@
 <?php if( count( $range_values ) ): ?>
 <div data-behaviour="multirange" data-name="<?php _e( $atts['name'] );?>" data-range='<?php _e( $minValue ) ?>,<?php _e( $maxValue )?>'>
   <input type="range" multiple value="<?php _e( $selectMinPercentageValue );?>,<?php _e( $selectMaxPercentageValue );?>">
+  <div class='labels'>
+    <div class='min-label'></div>
+    <div class='max-label'></div>
+  </div>
 </div>
 <div class='multirange-checkboxes' style="display:none;">
 <?php
