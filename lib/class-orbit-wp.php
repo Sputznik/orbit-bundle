@@ -45,6 +45,20 @@ class ORBIT_WP extends ORBIT_BASE{
     return $wp_query;
   }
 
+  function getCurrentURL(){
+    global $wp;
+
+    // get current url with query string.
+    $current_url =  home_url( $wp->request );
+
+    // get the position where '/page.. ' text start.
+    $pos = strpos($current_url , '/page');
+
+    // remove string from the specific postion
+    $finalurl = substr( $current_url, 0, $pos );
+
+    return $finalurl;
+  }
 
 }
 

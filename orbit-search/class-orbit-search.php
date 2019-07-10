@@ -191,8 +191,8 @@
 			$post_types['orbit-form'] = array(
 				'slug' 		=> 'orbit-form',
 				'labels'	=> array(
-					'name' 			=> 'Orbit Searchforms',
-					'singular_name' => 'Orbit Searchform',
+					'name' 			=> 'Orbit Filters',
+					'singular_name' => 'Orbit Filter',
 				),
 				'supports'	=> array( 'title' ),
 				'public'	=> false,
@@ -249,6 +249,7 @@
 			// CLASSES ORBIT
 			$orbit_util 	= ORBIT_UTIL::getInstance();
 			$orbit_filter = ORBIT_FILTER::getInstance();
+			$orbit_wp = ORBIT_WP::getInstance();
 
 			ob_start();
 

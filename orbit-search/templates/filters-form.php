@@ -4,7 +4,7 @@
 			<span><?php _e( apply_filters( 'orbit-search-form-title', 'Filter this data' ) );?></span>
 			<span class="arrow-down"></span>
 		</div>
-		<form method='GET'>
+		<form method='GET' action="<?php _e( $orbit_wp->getCurrentURL() );?>">
 		<?php
 			// CHECK IF THE ORBIT FILTERS EXISTS INSIDE THE POST META
 			$db_filters = $this->getFiltersFromDB( $form->ID );
