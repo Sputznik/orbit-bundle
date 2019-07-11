@@ -60,6 +60,36 @@ class ORBIT_WP extends ORBIT_BASE{
     return $finalurl;
   }
 
+  // RETURNS THE LIST OF POST IDS ONLY FOR THE ENTIRE QUERY RESULT SET
+  function get_post_ids( $query_atts ){
+    $query_atts['fields'] = 'ids';
+    $query_atts['posts_per_page'] = -1;
+    $posts = get_posts( $query_atts );
+    return $posts;
+  }
+
+  // GET CONTEXTUAL TERM COUNT BY QUERY, USEFUL IN CALCULATING TOTAL OF TERMS FROM A RESULT SET
+  function get_term_count_by_query( $term, $query_atts ){
+
+    if( !isset( $query_atts['tax_query'] ) ){ $query_atts['tax_query'] = array(); }
+
+    array_push( $query_atts['tax_query'], array(
+      'taxonomy'  => $term->taxonomy,
+      'field'     => 'slug',
+      'terms'     => array( $term->slug )
+    ) );
+
+    $query_atts['fields'] = 'ids';
+
+    $ps = get_post_ids( $query_atts );
+
+    if( count( $ps ) > 0 ){ return count( $ps ); }
+
+    return 0;
+  }
+
+
+
 }
 
 
