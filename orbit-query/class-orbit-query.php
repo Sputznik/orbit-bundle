@@ -124,7 +124,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 
 		$this->query = $orbit_wp->query( $query_atts ); //new WP_Query( $query_atts );
 
-		do_action( 'orbit_query_heading', $this->query );
+		do_action( 'orbit_query_heading', $query_atts );
 
 		if( $this->query->have_posts() ){
 			the_oq_articles( $atts );
