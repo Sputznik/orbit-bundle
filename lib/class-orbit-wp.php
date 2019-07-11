@@ -51,13 +51,16 @@ class ORBIT_WP extends ORBIT_BASE{
     // get current url with query string.
     $current_url =  home_url( $wp->request );
 
-    // get the position where '/page.. ' text start.
-    $pos = strpos($current_url , '/page');
+    // REMOVE PAGINATION PARAMETERS
+    if( strpos( $current_url, '/page' ) !== false ){
+      // get the position where '/page.. ' text start.
+      $pos = strpos( $current_url , '/page' );
 
-    // remove string from the specific postion
-    $finalurl = substr( $current_url, 0, $pos );
+      // remove string from the specific postion
+      $current_url = substr( $current_url, 0, $pos );
+    }
 
-    return $finalurl;
+    return $current_url;
   }
 
   // RETURNS THE LIST OF POST IDS ONLY FOR THE ENTIRE QUERY RESULT SET
