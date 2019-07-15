@@ -84,7 +84,7 @@ class ORBIT_WP extends ORBIT_BASE{
 
     $query_atts['fields'] = 'ids';
 
-    $ps = get_post_ids( $query_atts );
+    $ps = $this->get_post_ids( $query_atts );
 
     if( count( $ps ) > 0 ){ return count( $ps ); }
 
