@@ -39,6 +39,9 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			'pagination'						=> '0',
 			'paged'									=> '1',
 			'style'									=> '',
+			'order'									=> 'DESC',
+			'orderby'								=> 'date',
+			'meta_key'							=> '', // ORDER BY
 			'id'										=> 'posts-'.rand()
 		);
 	}
@@ -84,6 +87,19 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			$atts['post__not_in'] = implode(',', $atts['post__not_in']);
 		}
 
+		// ORDER QUERY
+		if ( $atts['orderby'] && strpos( $atts['orderby'], ':') !== false) {
+			$orderby_atts = array();
+			foreach( explode( ',', $atts['orderby'] ) as $key => $value ){
+				$order_params = explode( ':', $value );
+				$orderby_atts[ $order_params[0] ] = $order_params[1];
+			}
+
+			if( count( $orderby_atts ) ){
+				$atts['orderby'] = $orderby_atts;
+			}
+		}
+
 		/* CREATE QUERY ATTRIBUTES WITH DEFAULT VALUES FROM THE SHORTCODE ATTRIBUTES */
 		$query_atts = array(
 			'post_type'				=> $orbit_util->explode_to_arr( $atts['post_type'] ),
@@ -96,7 +112,10 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			's' 							=> $atts['s'],
 			'post__not_in' 		=> $orbit_util->explode_to_arr( $atts['post__not_in'] ),
 			'post__in'				=> $orbit_util->explode_to_arr( $atts['post__in'] ),
-			'offset'					=> self::get_offset($atts)
+			'offset'					=> self::get_offset($atts),
+			'order' 					=> $atts['order'],
+			'orderby' 				=> $atts['orderby'],
+			'meta_key' 				=> $atts['meta_key'],
 		);
 
 		/* DONT FETCH SQL_CALC_FOUND_ROWS */
@@ -113,6 +132,8 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 		if( isset( $atts['date_query'] ) && !empty( $atts['date_query'] ) ){
 			$query_atts['date_query'] = $orbit_util->getDateQueryParams( $atts['date_query'] );
 		}
+
+
 
 		/*
 		echo "<pre>";
