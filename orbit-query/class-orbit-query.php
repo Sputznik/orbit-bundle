@@ -112,7 +112,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			'offset'					=> self::get_offset($atts),
 			'order' 					=> $atts['order'],
 			'orderby' 				=> $atts['orderby'],
-			'meta_key' 				=> $atts['meta_key'],
+			//'meta_key' 				=> $atts['meta_key'],
 		);
 
 		/* DONT FETCH SQL_CALC_FOUND_ROWS */
@@ -134,7 +134,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 		echo "<pre>";
 		print_r( $query_atts );
 		echo "</pre>";
-		
+
 
 		$orbit_wp = ORBIT_WP::getInstance();
 
