@@ -99,20 +99,20 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 
 		/* CREATE QUERY ATTRIBUTES WITH DEFAULT VALUES FROM THE SHORTCODE ATTRIBUTES */
 		$query_atts = array(
-			'post_type'				=> $atts['post_type'], //$orbit_util->explode_to_arr( $atts['post_type'] ),
+			'post_type'				=> $orbit_util->explode_to_arr( $atts['post_type'] ),
 			'post_status'			=> $atts['post_status'],
 			'posts_per_page'	=> $atts['posts_per_page'],
-			//'cat' 						=> $atts['cat'],
-			//'author'					=> $atts['author'],
-			//'category_name' 	=> $atts['category_name'],
-			//'tag' 						=> $atts['tag'],
-			//'s' 							=> $atts['s'],
-			//'post__not_in' 		=> $orbit_util->explode_to_arr( $atts['post__not_in'] ),
-			//'post__in'				=> $orbit_util->explode_to_arr( $atts['post__in'] ),
+			'cat' 						=> $atts['cat'],
+			'author'					=> $atts['author'],
+			'category_name' 	=> $atts['category_name'],
+			'tag' 						=> $atts['tag'],
+			's' 							=> $atts['s'],
+			'post__not_in' 		=> $orbit_util->explode_to_arr( $atts['post__not_in'] ),
+			'post__in'				=> $orbit_util->explode_to_arr( $atts['post__in'] ),
 			'offset'					=> self::get_offset($atts),
-			//'order' 					=> $atts['order'],
-			//'orderby' 				=> $atts['orderby'],
-			//'meta_key' 				=> $atts['meta_key'],
+			'order' 					=> $atts['order'],
+			'orderby' 				=> $atts['orderby'],
+			'meta_key' 				=> $atts['meta_key'],
 		);
 
 		/* DONT FETCH SQL_CALC_FOUND_ROWS */
@@ -131,10 +131,12 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 		}
 
 
+
+		/*
 		echo "<pre>";
 		print_r( $query_atts );
 		echo "</pre>";
-
+		*/
 
 		$orbit_wp = ORBIT_WP::getInstance();
 
