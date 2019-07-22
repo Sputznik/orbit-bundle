@@ -110,8 +110,8 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			'post__not_in' 		=> $orbit_util->explode_to_arr( $atts['post__not_in'] ),
 			'post__in'				=> $orbit_util->explode_to_arr( $atts['post__in'] ),
 			'offset'					=> self::get_offset($atts),
-			'order' 					=> $atts['order'],
-			'orderby' 				=> $atts['orderby'],
+			//'order' 					=> $atts['order'],
+			//'orderby' 				=> $atts['orderby'],
 			//'meta_key' 				=> $atts['meta_key'],
 		);
 
