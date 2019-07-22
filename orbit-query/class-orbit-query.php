@@ -99,7 +99,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 
 		/* CREATE QUERY ATTRIBUTES WITH DEFAULT VALUES FROM THE SHORTCODE ATTRIBUTES */
 		$query_atts = array(
-			'post_type'				=> $orbit_util->explode_to_arr( $atts['post_type'] ),
+			'post_type'				=> $atts['post_type'], //$orbit_util->explode_to_arr( $atts['post_type'] ),
 			'post_status'			=> $atts['post_status'],
 			'posts_per_page'	=> $atts['posts_per_page'],
 			//'cat' 						=> $atts['cat'],
