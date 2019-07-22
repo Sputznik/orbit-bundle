@@ -94,10 +94,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 				$order_params = explode( ':', $value );
 				$orderby_atts[ $order_params[0] ] = $order_params[1];
 			}
-
-			if( count( $orderby_atts ) ){
-				$atts['orderby'] = $orderby_atts;
-			}
+			if( count( $orderby_atts ) ){ $atts['orderby'] = $orderby_atts;}
 		}
 
 		/* CREATE QUERY ATTRIBUTES WITH DEFAULT VALUES FROM THE SHORTCODE ATTRIBUTES */
@@ -134,12 +131,10 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 		}
 
 
-
-		/*
 		echo "<pre>";
 		print_r( $query_atts );
 		echo "</pre>";
-		*/
+		
 
 		$orbit_wp = ORBIT_WP::getInstance();
 
