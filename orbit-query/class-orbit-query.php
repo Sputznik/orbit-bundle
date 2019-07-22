@@ -144,9 +144,9 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 
 
 		echo "<pre>";
-		print_r( $this->query );
+		echo $GLOBALS['wp_query']->request;
 		echo "</pre>";
-		
+
 
 		do_action( 'orbit_query_heading', $query_atts );
 
