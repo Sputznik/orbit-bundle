@@ -128,7 +128,7 @@
 				$orbit_vars['post_types'][ $post_type['slug'] ] = $post_type;
 			}
 
-			if( isset( $post_type[ 'rewrite' ] ) ){
+			if( !isset( $post_type[ 'rewrite' ] ) ){
 				$post_type[ 'rewrite' ] = array('slug' => $post_type['slug'], 'with_front' => false );
 			}
 

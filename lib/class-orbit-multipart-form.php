@@ -5,7 +5,11 @@
 class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
 
   function __construct(){
-    wp_register_script( 'orbit-slides', plugins_url( 'orbit-bundle/dist/js/orbit-slides.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
+
+    add_action('wp_enqueue_scripts', function(){
+      wp_register_script( 'orbit-slides', plugins_url( 'orbit-bundle/dist/js/orbit-slides.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
+    });
+    
   }
 
   function enqueue_assets(){

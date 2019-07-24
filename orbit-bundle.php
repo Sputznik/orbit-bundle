@@ -11,8 +11,9 @@
 
 	define( 'ORBIT_BUNDLE_VERSION', time() ); //'1.4.5'
 
-
-	wp_register_style( 'orbit-main', plugins_url( 'orbit-bundle/dist/css/main.css' ), array(), ORBIT_BUNDLE_VERSION );
+	add_action('wp_enqueue_scripts', function(){
+		wp_register_style( 'orbit-main', plugins_url( 'orbit-bundle/dist/css/main.css' ), array(), ORBIT_BUNDLE_VERSION );
+	});
 
 	$inc_files = array(
 		"lib/class-orbit-base.php",
