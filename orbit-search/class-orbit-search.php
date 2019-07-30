@@ -84,7 +84,7 @@
 				if( isset( $box['id'] ) && 'orbit-sort' == $box['id'] ){
 
 					// GET VALUE FROM THE DATABASE
-					$form_atts['db'] = $this->getExportColsFromDB( $post->ID );
+					$form_atts['db'] = $this->getSortingFieldsFromDB( $post->ID );
 
 					$form_atts['sections'] = array(
 						'post'	=> 'Post Information',
@@ -107,6 +107,17 @@
 
 
 		}
+
+
+		// GET THE SORTING FIELDS STORED AS ARRAY IN POST META
+		function getSortingFieldsFromDB( $post_id ){
+			$filtersFromDB = get_post_meta( $post_id, 'orbit_sort_fields', true );
+			if( $filtersFromDB && is_array( $filtersFromDB ) ){
+				return $filtersFromDB;
+			}
+			return array();
+		}
+
 
 		// GET THE FILTERS STORED AS ARRAY IN POST META
 		function getFiltersFromDB( $post_id ){
@@ -149,6 +160,9 @@
 				update_post_meta( $post_id, 'orbit_export_csv_cols', $_POST['orbit_export_csv_cols'] );
 			}
 
+			if( isset( $_POST['orbit_sort_fields'] ) && is_array( $_POST['orbit_sort_fields'] ) ){
+				update_post_meta( $post_id, 'orbit_sort_fields', $_POST['orbit_sort_fields'] );
+			}
 
 
 			//wp_die();
@@ -277,8 +291,23 @@
 			if( isset( $extra_params['tax'] ) && $extra_params['tax'] ){ $shortcode_str .= "tax_query='".$extra_params['tax']."'"; }
 			if( isset( $extra_params['date'] ) && $extra_params['date'] ){ $shortcode_str .= " date_query='".$extra_params['date']."'"; }
 
+			// ADD ORDER AND ORDER BY PARAMS
+			if( isset( $_GET['orbit_sort'] ) ){
+
+				$orbit_sort = explode( ':', $_GET[ 'orbit_sort' ] );
+				if( $orbit_sort[0] == 'post' ){
+					$shortcode_str .= " orderby='".$orbit_sort[1].":".$orbit_sort[2]."'";
+					//print_r( $orbit_sort );
+				}
+				elseif( $orbit_sort[0] == 'cf' ){
+					$shortcode_str .= " orderby='meta_value:".$orbit_sort[2]."' meta_key='".$orbit_sort[1]."'";
+				}
+
+			}
+
 			// END OF SHORTCODE STRING
 			$shortcode_str .= "]";
+
 
 			return $shortcode_str;
 		}
@@ -322,7 +351,7 @@
 
 			return ob_get_clean();
 		}
-		
+
 		function results_header( $post_id ){
 
 			$filter_header = get_post_meta( $post_id, 'filter_header', true );

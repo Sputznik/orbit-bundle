@@ -73,7 +73,7 @@ jQuery.fn.repeater_sort = function(){
 
 
         function getAttrName( slug ){
-          var common_name = 'orbit_export_csv_cols[' + $list_item.data('count') + ']';
+          var common_name = 'orbit_sort_fields[' + $list_item.data('count') + ']';
           return common_name + '[' + slug + ']';
         }
 
