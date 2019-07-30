@@ -91,7 +91,39 @@ class ORBIT_WP extends ORBIT_BASE{
     return 0;
   }
 
+  // CONTEXTUAL TERM LINK
+  function getContextualTermLink( $term ){
 
+    $url = $this->getCurrentURL();
+
+    $get_params = array();
+
+    $params = $_GET;
+
+    $params[ 'tax_'.$term->taxonomy ] = $term->name;
+
+    $query = http_build_query( $params );
+
+    if( $query ){ $url .= "?" . $query; }
+
+    return $url;
+  }
+
+  // GET LIST OF TERMS BY TAXONOMY FOR SET OF POSTS
+  function getPostsTerms( $taxonomy, $posts, $query_atts ){
+
+    $terms_list = array();
+
+    $terms = wp_get_object_terms( $posts,  $taxonomy );
+
+    foreach( $terms as $term ){
+      $text = "<a href='".$this->getContextualTermLink( $term )."'>" . $term->name . " (" . $this->get_term_count_by_query( $term, $query_atts ) . ")" . "</a>";
+      array_push( $terms_list, $text );
+    }
+
+    return $terms_list;
+
+  }
 
 }
 

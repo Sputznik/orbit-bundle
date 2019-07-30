@@ -26,6 +26,12 @@
 				return $opt;
 			} );
 
+			/* ADD REGISTERED TAXONOMIES TO THE CUSTOM FIELDS */
+			add_filter( 'orbit_custom_field_taxonomies_options', function( $opt ){
+				$taxonomies = get_taxonomies();
+				return $taxonomies;
+			} );
+
 			/* ENQUEUE ASSETS */
 			add_action( 'wp_enqueue_scripts', array( $this, 'assets' ) );
 
@@ -180,7 +186,8 @@
 							'type'		=> 'number',
 							'text'		=> 'Posts Per Page',
 							'default'	=> 10
-						)
+						),
+
 					),
 					'field_name'	=> 'filter_settings'
 				),
@@ -199,6 +206,23 @@
 				// 	'title'		=> 'Export to csv',
 				// 	'fields'	=> array()
 				// ),
+				array(
+					'id'		=> 'orbit-header',
+					'title'		=> 'Header Section',
+					'fields'	=> array(
+						'results_heading'	=> array(
+							'type' 		=> 'text',
+							'text'		=> 'Results Heading',
+							'placeholder'	=> 'Items (%d)'
+						),
+						'taxonomies'	=> array(
+							'type'		=> 'checkbox',
+							'text'		=> 'Show Inline Terms Of The Taxonomies With Count',
+							'options'	=> array()
+						)
+					),
+					'field_name'	=> 'filter_header'
+				),
 			);
 			return $meta_box;
 		}
@@ -226,27 +250,25 @@
 			);
 		}
 
-		function getQueryShortcode( $atts ){
+		function getQueryShortcode( $atts, $filter_settings ){
 
 			$orbit_util = ORBIT_UTIL::getInstance();
 
 			$shortcode_str = "[orbit_query pagination='1' ";
 
 			// TEMPLATE FOR OBJECT QUERY
-			$tmpl_id = get_post_meta( $atts['id'], 'orbit-tmpl', true );
+			$tmpl_id = isset( $filter_settings[ 'orbit-tmpl' ] ) ? $filter_settings[ 'orbit-tmpl' ] : "";
 			if( $tmpl_id ){
 				$shortcode_str .= "style='".$atts['style']."' style_id='".$tmpl_id."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
 			}
 
 			// POST TYPES - FORM
-			$post_types = get_post_meta( $atts['id'], 'posttypes', true );
-			if( !$post_types ){ $post_types = array(); } 		/* IF VALUE IS NOT SET */
-			$post_types = implode(',', $post_types);			/* CONVERTING ARRAY TO STRING */
+			$post_types = isset( $filter_settings[ 'posttypes' ] ) ? $filter_settings[ 'posttypes' ] : array();
+			$post_types = implode(',', $post_types);					/* CONVERTING ARRAY TO STRING */
 			$shortcode_str .= "post_type='".$post_types."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
 
-
 			// POSTS PER PAGE - FORM
-			$posts_per_page = get_post_meta( $atts['id'], 'posts_per_page', true );
+			$posts_per_page = isset( $filter_settings[ 'posts_per_page' ] ) ? $filter_settings[ 'posts_per_page' ] : 0;
 			if( !$posts_per_page ){ $posts_per_page = 10; }
 			$shortcode_str .= "posts_per_page='".$posts_per_page."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
 
@@ -273,6 +295,8 @@
 			// CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE
 			$atts = shortcode_atts( $this->get_default_atts(), $atts, 'orbit_search' );
 
+			$filter_settings = get_post_meta( $atts['id'], 'filter_settings', true );
+
 			// GET FORM DETAILS
 			$form = get_post( $atts['id'] );
 
@@ -280,23 +304,15 @@
 
 			include( 'templates/filters-form.php' );
 
-			_e("<div class='orbit-search-results'>");
+			_e( "<div class='orbit-search-results'>" );
 
-			$shortcode_str = $this->getQueryShortcode( $atts );
+			$shortcode_str = $this->getQueryShortcode( $atts, $filter_settings );
 
 			//echo $shortcode_str;
 
 			$results_html = do_shortcode( $shortcode_str );
 
-			global $orbit_wp_query;
-
-			$orbit_wp = ORBIT_WP::getInstance();
-
-			$posts = $orbit_wp->get_post_ids( $orbit_wp_query->query );
-
-			$total_posts = count( $posts );
-
-			echo "<h3>" . sprintf( "Total %u Laws Found", $total_posts ) . "</h3>";
+			$this->results_header( $atts['id'] );
 
 			echo $results_html;
 
@@ -306,7 +322,40 @@
 
 			return ob_get_clean();
 		}
+		
+		function results_header( $post_id ){
 
+			$filter_header = get_post_meta( $post_id, 'filter_header', true );
+
+			global $orbit_wp_query;
+
+			$orbit_wp = ORBIT_WP::getInstance();
+
+			$posts = $orbit_wp->get_post_ids( $orbit_wp_query->query );
+
+			$total_posts = count( $posts );
+
+			_e( "<div class='orbit-results-header'>" );
+
+			if( isset( $filter_header['results_heading'] ) ){
+				echo "<h3 class='orbit-results-heading'>" . sprintf( $filter_header['results_heading'], $total_posts ) . "</h3>";
+			}
+
+			// LIST OF TERMS FROM THE TAXONOMIES SELECTED IN THE BACKEND
+			$taxonomies = isset( $filter_header['taxonomies'] ) ? $filter_header['taxonomies'] : array();
+			foreach( $taxonomies as $taxonomy_slug ){
+				$taxonomy = get_taxonomy( $taxonomy_slug );
+				$terms_list = $orbit_wp->getPostsTerms( $taxonomy_slug, $posts, $orbit_wp_query->query );
+        if( count( $terms_list ) ){
+          echo "<div class='orbit-terms-count'><b>" . $taxonomy->label . "</b>: " . implode( ', ', $terms_list ) . "</div>";
+        }
+      }
+
+			_e( "<hr>" );
+
+			_e( "</div>" );
+
+		}
 
 	}
 

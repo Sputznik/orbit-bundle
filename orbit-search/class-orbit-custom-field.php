@@ -193,7 +193,7 @@
 				}
 
 				foreach( $box[ 'args' ][ 'fields' ] as $slug => $f ){
-
+					
 					/* HOOK TO ADD OPTIONS */
 					if( isset( $f['options'] ) ){
 						$f['options'] = apply_filters( 'orbit_custom_field_'.$slug.'_options', $f['options'] );
