@@ -371,14 +371,16 @@
 			}
 
 			// LIST OF TERMS FROM THE TAXONOMIES SELECTED IN THE BACKEND
-			$taxonomies = isset( $filter_header['taxonomies'] ) ? $filter_header['taxonomies'] : array();
-			foreach( $taxonomies as $taxonomy_slug ){
-				$taxonomy = get_taxonomy( $taxonomy_slug );
-				$terms_list = $orbit_wp->getPostsTerms( $taxonomy_slug, $posts, $orbit_wp_query->query );
-        if( count( $terms_list ) ){
-          echo "<div class='orbit-terms-count'><b>" . $taxonomy->label . "</b>: " . implode( ', ', $terms_list ) . "</div>";
-        }
-      }
+			if( isset( $_GET ) && count( $_GET ) ){
+				$taxonomies = isset( $filter_header['taxonomies'] ) ? $filter_header['taxonomies'] : array();
+				foreach( $taxonomies as $taxonomy_slug ){
+					$taxonomy = get_taxonomy( $taxonomy_slug );
+					$terms_list = $orbit_wp->getPostsTerms( $taxonomy_slug, $posts, $orbit_wp_query->query );
+	        if( count( $terms_list ) ){
+	          echo "<div class='orbit-terms-count'><b>" . $taxonomy->label . "</b>: " . implode( ', ', $terms_list ) . "</div>";
+	        }
+	      }
+			}
 
 			_e( "<hr>" );
 
