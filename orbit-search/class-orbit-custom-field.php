@@ -186,15 +186,30 @@
 
 				_e("<div class='form-wrap'>");
 
-				foreach( $box[ 'args' ][ 'fields' ] as $slug => $f ){
+				$clubbed_meta_values = array();
+				if( isset( $box['args']['field_name'] ) ){
+					$clubbed_meta_values = get_post_meta( $post->ID, $box['args']['field_name'], true );
+					$clubbed_meta_values = is_array( $clubbed_meta_values ) ? $clubbed_meta_values : array();
+				}
 
+				foreach( $box[ 'args' ][ 'fields' ] as $slug => $f ){
+					
 					/* HOOK TO ADD OPTIONS */
 					if( isset( $f['options'] ) ){
 						$f['options'] = apply_filters( 'orbit_custom_field_'.$slug.'_options', $f['options'] );
 					}
 
 					// GETTING VALUE FROM THE POST META TABLE
-					$f['val'] = get_post_meta( $post->ID, $slug, true );
+					if( isset( $box['args']['field_name'] ) && isset( $clubbed_meta_values[ $slug ] ) ){
+						$f['val'] = $clubbed_meta_values[ $slug ];
+					}
+					else{
+						$f['val'] = get_post_meta( $post->ID, $slug, true );
+					}
+
+					if( isset( $box['args']['field_name'] ) ){
+						$slug = $box['args']['field_name']."[".$slug."]";
+					}
 
 					$this->field_html( $slug, $f );
 
@@ -239,15 +254,22 @@
 
 		}
 
+		function save_field( $post_id, $slug ){
+			if( array_key_exists( $slug, $_POST ) ){
+				update_post_meta( $post_id, $slug, $_POST[ $slug ] );
+			}
+		}
+
 		function save( $post_id ){
 			$meta_boxes = $this->get_meta_boxes();
 			foreach( $meta_boxes as $meta_box ){
 
-				if( isset( $meta_box[ 'fields' ] ) ){
+				if( isset( $meta_box['field_name'] ) ){
+					$this->save_field( $post_id, $meta_box['field_name'] );
+				}
+				elseif( isset( $meta_box[ 'fields' ] ) ){
 					foreach( $meta_box[ 'fields' ] as $slug => $f ){
-						if( array_key_exists( $slug, $_POST ) ){
-							update_post_meta( $post_id, $slug, $_POST[ $slug ] );
-						}
+						$this->save_field( $post_id, $slug );
 					}	// end of foreach
 				}		// end of if
 			}			// end of foreach

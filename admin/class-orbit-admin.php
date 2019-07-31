@@ -129,6 +129,7 @@
 			if( ( $hook == 'post.php' || $hook == 'post-new.php' ) && $post_type == 'orbit-form' ) {
 				wp_enqueue_script( 'orbit-repeater-filters', plugins_url( 'orbit-bundle/dist/js/repeater-filters.js' ), array( 'jquery', 'orbit-repeater' ), ORBIT_BUNDLE_VERSION, true );
 				wp_enqueue_script( 'orbit-repeater-export', plugins_url( 'orbit-bundle/dist/js/repeater-export.js' ), array( 'jquery', 'orbit-repeater' ), ORBIT_BUNDLE_VERSION, true );
+				wp_enqueue_script( 'orbit-repeater-sort', plugins_url( 'orbit-bundle/dist/js/repeater-sort.js' ), array( 'jquery', 'orbit-repeater' ), ORBIT_BUNDLE_VERSION, true );
 			}
 
 			/*

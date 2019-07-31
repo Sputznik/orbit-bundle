@@ -26,20 +26,27 @@
 				return $opt;
 			} );
 
+			/* ADD REGISTERED TAXONOMIES TO THE CUSTOM FIELDS */
+			add_filter( 'orbit_custom_field_taxonomies_options', function( $opt ){
+				$taxonomies = get_taxonomies();
+				return $taxonomies;
+			} );
+
 			/* ENQUEUE ASSETS */
 			add_action( 'wp_enqueue_scripts', array( $this, 'assets' ) );
 
 			// SEPERATE METABOX FOR FILTERS ONLY
 			add_action( 'orbit_meta_box_html', function( $post, $box ){
 
+				$orbit_filter = ORBIT_FILTER::getInstance();
+
+				// FORM ATTRIBUTES THAT IS NEEDED BY THE REPEATER FILTERS
+				$form_atts = $orbit_filter->vars();
+				if( !$form_atts || !is_array( $form_atts ) ){ $form_atts = array(); }
+				$form_atts['tax_options'] = get_taxonomies();
+
+
 				if( isset( $box['id'] ) && 'orbit-form-filters' == $box['id'] ){
-
-					$orbit_filter = ORBIT_FILTER::getInstance();
-
-					// FORM ATTRIBUTES THAT IS NEEDED BY THE REPEATER FILTERS
-					$form_atts = $orbit_filter->vars();
-					if( !$form_atts || !is_array( $form_atts ) ){ $form_atts = array(); }
-					$form_atts['tax_options'] = get_taxonomies();
 
 					// GET VALUE FROM THE DATABASE
 					$form_atts['db'] = $this->getFiltersFromDB( $post->ID );
@@ -52,44 +59,65 @@
 					// TRIGGER THE REPEATER FILTER BY DATA BEHAVIOUR ATTRIBUTE
 					_e( "<div data-behaviour='orbit-admin-filters' data-atts='".wp_json_encode( $form_atts )."'></div>");
 				}
-			}, 1, 2 );
 
-			// SEPARATE METABOX FOR EXPORTING CSV
-			// add_action( 'orbit_meta_box_html', function( $post, $box ){
-			//
-			// 	if( isset( $box['id'] ) && 'orbit-export-csv' == $box['id'] ){
-			//
-			// 		$orbit_export = ORBIT_FILTER::getInstance();
-
-					// FORM ATTRIBUTES THAT IS NEEDED BY THE REPEATER FILTERS
-					// $form_atts = $orbit_export->vars();
-					// if( !$form_atts || !is_array( $form_atts ) ){ $form_atts = array(); }
-					// $form_atts['tax_options'] = get_taxonomies();
+				if( isset( $box['id'] ) && 'orbit-export-csv' == $box['id'] ){
 
 					// GET VALUE FROM THE DATABASE
-					// $form_atts['db'] = $this->getExportColsFromDB( $post->ID );
-					//
-					// $form_atts['sections'] = array(
-					// 	'post'	=> 'Post Information',
-					// 	'tax'		=> 'Taxonomies',
-					// 	'cf'		=> 'Custom Fields'
-					// );
-					//
-					// $form_atts['post_options'] = array(
-					// 	'title'				=>	'Title',
-					// 	'description'	=>	'Description',
-					// 	'date'				=>	'Date'
-					// );
-					// echo "<pre>";
-					// print_r( $form_atts );
-					// echo "<pre>";
-					// wp_die();
+					$form_atts['db'] = $this->getExportColsFromDB( $post->ID );
 
-					// TRIGGER THE REPEATER FILTER BY DATA BEHAVIOUR ATTRIBUTE
-			// 		_e( "<div data-behaviour='orbit-export' data-atts='".wp_json_encode( $form_atts )."'></div>");
-			// 	}
-			// }, 1, 2 );
+					$form_atts['sections'] = array(
+						'post'	=> 'Post Information',
+						'tax'		=> 'Taxonomies',
+						'cf'		=> 'Custom Fields'
+					);
+
+					$form_atts['post_options'] = array(
+						'title'				=>	'Title',
+						'description'	=>	'Description',
+						'date'				=>	'Date'
+					);
+
+					//TRIGGER THE REPEATER FILTER BY DATA BEHAVIOUR ATTRIBUTE
+					_e( "<div data-behaviour='orbit-export' data-atts='".wp_json_encode( $form_atts )."'></div>");
+				}
+
+				if( isset( $box['id'] ) && 'orbit-sort' == $box['id'] ){
+
+					// GET VALUE FROM THE DATABASE
+					$form_atts['db'] = $this->getSortingFieldsFromDB( $post->ID );
+
+					$form_atts['sections'] = array(
+						'post'	=> 'Post Information',
+						'cf'		=> 'Custom Fields'
+					);
+
+					$form_atts['post_options'] = array(
+						'ID'					=> 	'Post ID',
+						'author'			=>	'Author',
+						'title'				=>	'Title',
+						'date'				=>	'Date'
+					);
+
+					//TRIGGER THE REPEATER FILTER BY DATA BEHAVIOUR ATTRIBUTE
+					_e( "<div data-behaviour='orbit-sort' data-atts='".wp_json_encode( $form_atts )."'></div>");
+				}
+
+
+			}, 1, 2 );
+
+
 		}
+
+
+		// GET THE SORTING FIELDS STORED AS ARRAY IN POST META
+		function getSortingFieldsFromDB( $post_id ){
+			$filtersFromDB = get_post_meta( $post_id, 'orbit_sort_fields', true );
+			if( $filtersFromDB && is_array( $filtersFromDB ) ){
+				return $filtersFromDB;
+			}
+			return array();
+		}
+
 
 		// GET THE FILTERS STORED AS ARRAY IN POST META
 		function getFiltersFromDB( $post_id ){
@@ -132,6 +160,9 @@
 				update_post_meta( $post_id, 'orbit_export_csv_cols', $_POST['orbit_export_csv_cols'] );
 			}
 
+			if( isset( $_POST['orbit_sort_fields'] ) && is_array( $_POST['orbit_sort_fields'] ) ){
+				update_post_meta( $post_id, 'orbit_sort_fields', $_POST['orbit_sort_fields'] );
+			}
 
 
 			//wp_die();
@@ -169,12 +200,19 @@
 							'type'		=> 'number',
 							'text'		=> 'Posts Per Page',
 							'default'	=> 10
-						)
-					)
+						),
+
+					),
+					'field_name'	=> 'filter_settings'
 				),
 				array(
 					'id'		=> 'orbit-form-filters',
 					'title'		=> 'Orbit Filters',
+					'fields'	=> array()
+				),
+				array(
+					'id'		=> 'orbit-sort',
+					'title'		=> 'Orbit Sorting Fields',
 					'fields'	=> array()
 				),
 				// array(
@@ -182,6 +220,23 @@
 				// 	'title'		=> 'Export to csv',
 				// 	'fields'	=> array()
 				// ),
+				array(
+					'id'		=> 'orbit-header',
+					'title'		=> 'Header Section',
+					'fields'	=> array(
+						'results_heading'	=> array(
+							'type' 		=> 'text',
+							'text'		=> 'Results Heading',
+							'placeholder'	=> 'Items (%d)'
+						),
+						'taxonomies'	=> array(
+							'type'		=> 'checkbox',
+							'text'		=> 'Show Inline Terms Of The Taxonomies With Count',
+							'options'	=> array()
+						)
+					),
+					'field_name'	=> 'filter_header'
+				),
 			);
 			return $meta_box;
 		}
@@ -209,27 +264,25 @@
 			);
 		}
 
-		function getQueryShortcode( $atts ){
+		function getQueryShortcode( $atts, $filter_settings ){
 
 			$orbit_util = ORBIT_UTIL::getInstance();
 
 			$shortcode_str = "[orbit_query pagination='1' ";
 
 			// TEMPLATE FOR OBJECT QUERY
-			$tmpl_id = get_post_meta( $atts['id'], 'orbit-tmpl', true );
+			$tmpl_id = isset( $filter_settings[ 'orbit-tmpl' ] ) ? $filter_settings[ 'orbit-tmpl' ] : "";
 			if( $tmpl_id ){
 				$shortcode_str .= "style='".$atts['style']."' style_id='".$tmpl_id."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
 			}
 
 			// POST TYPES - FORM
-			$post_types = get_post_meta( $atts['id'], 'posttypes', true );
-			if( !$post_types ){ $post_types = array(); } 		/* IF VALUE IS NOT SET */
-			$post_types = implode(',', $post_types);			/* CONVERTING ARRAY TO STRING */
+			$post_types = isset( $filter_settings[ 'posttypes' ] ) ? $filter_settings[ 'posttypes' ] : array();
+			$post_types = implode(',', $post_types);					/* CONVERTING ARRAY TO STRING */
 			$shortcode_str .= "post_type='".$post_types."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
 
-
 			// POSTS PER PAGE - FORM
-			$posts_per_page = get_post_meta( $atts['id'], 'posts_per_page', true );
+			$posts_per_page = isset( $filter_settings[ 'posts_per_page' ] ) ? $filter_settings[ 'posts_per_page' ] : 0;
 			if( !$posts_per_page ){ $posts_per_page = 10; }
 			$shortcode_str .= "posts_per_page='".$posts_per_page."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
 
@@ -238,8 +291,23 @@
 			if( isset( $extra_params['tax'] ) && $extra_params['tax'] ){ $shortcode_str .= "tax_query='".$extra_params['tax']."'"; }
 			if( isset( $extra_params['date'] ) && $extra_params['date'] ){ $shortcode_str .= " date_query='".$extra_params['date']."'"; }
 
+			// ADD ORDER AND ORDER BY PARAMS
+			if( isset( $_GET['orbit_sort'] ) ){
+
+				$orbit_sort = explode( ':', $_GET[ 'orbit_sort' ] );
+				if( $orbit_sort[0] == 'post' ){
+					$shortcode_str .= " orderby='".$orbit_sort[1].":".$orbit_sort[2]."'";
+					//print_r( $orbit_sort );
+				}
+				elseif( $orbit_sort[0] == 'cf' ){
+					$shortcode_str .= " orderby='meta_value:".$orbit_sort[2]."' meta_key='".$orbit_sort[1]."'";
+				}
+
+			}
+
 			// END OF SHORTCODE STRING
 			$shortcode_str .= "]";
+
 
 			return $shortcode_str;
 		}
@@ -256,6 +324,8 @@
 			// CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE
 			$atts = shortcode_atts( $this->get_default_atts(), $atts, 'orbit_search' );
 
+			$filter_settings = get_post_meta( $atts['id'], 'filter_settings', true );
+
 			// GET FORM DETAILS
 			$form = get_post( $atts['id'] );
 
@@ -263,13 +333,17 @@
 
 			include( 'templates/filters-form.php' );
 
-			_e("<div class='orbit-search-results'>");
+			_e( "<div class='orbit-search-results'>" );
 
-			$shortcode_str = $this->getQueryShortcode( $atts );
+			$shortcode_str = $this->getQueryShortcode( $atts, $filter_settings );
 
 			//echo $shortcode_str;
 
-			echo do_shortcode( $shortcode_str );
+			$results_html = do_shortcode( $shortcode_str );
+
+			$this->results_header( $atts['id'] );
+
+			echo $results_html;
 
 			_e("</div>");
 
@@ -278,6 +352,39 @@
 			return ob_get_clean();
 		}
 
+		function results_header( $post_id ){
+
+			$filter_header = get_post_meta( $post_id, 'filter_header', true );
+
+			global $orbit_wp_query;
+
+			$orbit_wp = ORBIT_WP::getInstance();
+
+			$posts = $orbit_wp->get_post_ids( $orbit_wp_query->query );
+
+			$total_posts = count( $posts );
+
+			_e( "<div class='orbit-results-header'>" );
+
+			if( isset( $filter_header['results_heading'] ) ){
+				echo "<h3 class='orbit-results-heading'>" . sprintf( $filter_header['results_heading'], $total_posts ) . "</h3>";
+			}
+
+			// LIST OF TERMS FROM THE TAXONOMIES SELECTED IN THE BACKEND
+			$taxonomies = isset( $filter_header['taxonomies'] ) ? $filter_header['taxonomies'] : array();
+			foreach( $taxonomies as $taxonomy_slug ){
+				$taxonomy = get_taxonomy( $taxonomy_slug );
+				$terms_list = $orbit_wp->getPostsTerms( $taxonomy_slug, $posts, $orbit_wp_query->query );
+        if( count( $terms_list ) ){
+          echo "<div class='orbit-terms-count'><b>" . $taxonomy->label . "</b>: " . implode( ', ', $terms_list ) . "</div>";
+        }
+      }
+
+			_e( "<hr>" );
+
+			_e( "</div>" );
+
+		}
 
 	}
 
