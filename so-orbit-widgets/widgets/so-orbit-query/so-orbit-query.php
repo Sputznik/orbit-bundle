@@ -8,35 +8,32 @@ Widget URI:
 Video URI:
 */
 class SP_ORBIT_WIDGET extends SiteOrigin_Widget{
-  // public $templates = array();
+
   function __construct(){
-    // $post_types = $this->post_types();
-    // print_r( $post_types );
     $form_options = array(
       'post_type' => array(
-          'type' => 'checkboxes',
-          'label' => __( 'Choose post type', 'siteorigin-widgets' ),
-          'default' => false,
-          'options' => $this->post_types()
+        'type'    => 'checkboxes',
+        'label'   => __( 'Choose post type', 'siteorigin-widgets' ),
+        'default' => false,
+        'options' => $this->get_posts_type()
       ),
       'style' => array(
-          'type' => 'select',
-          'label' => __( 'Choose Template Style', 'siteorigin-widgets' ),
-          'default' => 'select',
-          'options' => $this->templates()
-        ),
-        'style_id' => array(
-            'type' => 'select',
-            'label' => __( 'Choose Style', 'siteorigin-widgets' ),
-            'default' => '',
-            'options' => $this->templateId()
-          ),
-        'posts_per_page' => array(
-          'type' => 'text',
-          'label' => __( 'Posts Per Page', 'widget-form-fields-text-domain' ),
-          'default' => '4'
-        ),
-
+        'type' => 'select',
+        'label' => __( 'Choose Template Style', 'siteorigin-widgets' ),
+        'default' => 'select',
+        'options' => $this->get_templates()
+      ),
+      'style_id' => array(
+        'type' => 'select',
+        'label' => __( 'Choose Style', 'siteorigin-widgets' ),
+        'default' => '',
+        'options' => $this->get_db_templates()
+      ),
+      'posts_per_page' => array(
+        'type' => 'text',
+        'label' => __( 'Posts Per Page', 'widget-form-fields-text-domain' ),
+        'default' => '4'
+      ),
     );
     parent::__construct(
       'so-orbit-query',
@@ -52,35 +49,47 @@ class SP_ORBIT_WIDGET extends SiteOrigin_Widget{
   }//construct function ends here
 
   // Post types
-  function post_types(){
-    $types = get_post_types( array( 'public' => true ), 'names' );;
-    // print_r(  $types );
-    // wp_die();
+  function get_posts_type(){
+
+    // Gets built in post types
+    $types = get_post_types( array( 'public' => true ), 'names' );
+
+    // Gets orbit bundle post types
+    $args = array(
+      'post_type'       => 'orbit-types',
+      'posts_per_page'  =>  20
+    );
+
+    $query = new WP_Query( $args );
+    foreach ( $query->posts as $key => $value) {
+      $types[$value->post_name] = $value->post_title;
+    }
     return $types;
   }
 
-  function templates(){
+  function get_templates(){
     $templates = array(
       'select' => 'Select',
-      'db' =>  'db',
+      'db'     =>  'db',
     );
     return $templates;
   }
 
-  function templateId(){
+  function get_db_templates(){
 
-    $temp = array();
+    $db_templates = array();
+
     $args = array(
-      'post_type' => 'orbit-tmp',
-      'posts_per_page'  =>  -1
+      'post_type'       => 'orbit-tmp',
+      'posts_per_page'  =>  20
     );
     $query = new WP_Query( $args );
 
     foreach ( $query->posts as $key => $value) {
-      $temp[$value->ID] = $value->post_title;
+      $db_templates[$value->ID] = $value->post_title;
     }
 
-    return $temp;
+    return $db_templates;
   }
 
   function get_template_name($instance){
@@ -94,8 +103,3 @@ class SP_ORBIT_WIDGET extends SiteOrigin_Widget{
     }
 }
 siteorigin_widget_register('so-orbit-query',__FILE__,'SP_ORBIT_WIDGET');
-
-  ?>
-<script>
-console.log( '<?php _e( $widget_id );?>' );
-</script>
