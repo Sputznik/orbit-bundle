@@ -31,7 +31,7 @@
 		"orbit-cache/orbit-cache.php",
 		"admin/class-orbit-admin.php",
 		"orbit-fep/class-orbit-fep.php",
-		"so-orbit-widgets/so-orbit-widgets.php"
+		"so-widgets/so-widgets.php"
 	);
 
 	foreach( $inc_files as $inc_file ){

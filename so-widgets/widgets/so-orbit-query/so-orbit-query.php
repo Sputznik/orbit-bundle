@@ -1,7 +1,7 @@
 <?php
 /*
-Widget Name: Sputznik Orbit Query Widget
-Description: Sputznik Orbit Query Widget, allows users to use orbit query functionalities without writing the orbit shortcodes.
+Widget Name: Sputznik Orbit Query
+Description: Sputznik Orbit Query allows users to use orbit query functionalities without writing the orbit shortcodes.
 Author: Stephen Anil, Sputznik
 Author URI: http://www.sputznik.com
 Widget URI:
@@ -17,17 +17,37 @@ class SP_ORBIT_WIDGET extends SiteOrigin_Widget{
         'default' => false,
         'options' => $this->get_posts_type()
       ),
+      'is_db_template' => array(
+        'type'     => 'checkbox',
+        'label'    => __( 'Use DB template', 'siteorigin-widgets' ),
+        'default'  => false,
+        'state_emitter' => array(
+          'callback' 	  => 'conditional',
+          'args' 	=> array(
+            'is_db_template[active]: val',
+            'is_db_template[inactive]: !val'
+          )
+        ),
+      ),
       'style' => array(
         'type' => 'select',
-        'label' => __( 'Choose Template Style', 'siteorigin-widgets' ),
+        'label' => __( 'Choose Template', 'siteorigin-widgets' ),
         'default' => 'select',
-        'options' => $this->get_templates()
+        'options' => $this->get_templates(),
+        'state_handler' => array(
+          'is_db_template[active]' 	=> array( 'hide' ),
+          '_else[is_db_template]' 	=> array( 'show' ),
+        ),
       ),
       'style_id' => array(
         'type' => 'select',
-        'label' => __( 'Choose Style', 'siteorigin-widgets' ),
+        'label' => __( 'Choose Template', 'siteorigin-widgets' ),
         'default' => '',
-        'options' => $this->get_db_templates()
+        'options' => $this->get_db_templates(),
+        'state_handler' => array(
+          'is_db_template[active]' 	=> array( 'show' ),
+          '_else[is_db_template]' 	=> array( 'hide' ),
+        ),
       ),
       'posts_per_page' => array(
         'type' => 'text',
@@ -35,18 +55,20 @@ class SP_ORBIT_WIDGET extends SiteOrigin_Widget{
         'default' => '4'
       ),
     );
+
     parent::__construct(
       'so-orbit-query',
-      __( 'Orbit Query Widget','siteorigin-widgets' ),
+      __( 'Sputznik Orbit Query','siteorigin-widgets' ),
       array(
-        'description' =>  __( 'Widget for Orbit Queries','siteorigin-widgets' ),
+        'description' =>  __( 'Allows users to use orbit query functionalities without writing the orbit shortcodes.','siteorigin-widgets' ),
         'help'        =>  ''
       ),
       array(),
       $form_options,
       plugin_dir_path(__FILE__).'/widgets/so-orbit-query'
     );
-  }//construct function ends here
+
+  } // construct function ends here
 
   // Post types
   function get_posts_type(){
@@ -68,28 +90,19 @@ class SP_ORBIT_WIDGET extends SiteOrigin_Widget{
   }
 
   function get_templates(){
-    $templates = array(
-      'select' => 'Select',
-      'db'     =>  'db',
-    );
-    return $templates;
+    return apply_filters( 'so-orbit-query-templates', array( 'default' => 'Default' ) ); 
   }
 
   function get_db_templates(){
+    $templates = get_posts( array(
+			'post_type'		=> 'orbit-tmp',
+			'post_status'	=> 'publish',
+			'numberposts'	=> 20
+		) );
 
-    $db_templates = array();
-
-    $args = array(
-      'post_type'       => 'orbit-tmp',
-      'posts_per_page'  =>  20
-    );
-    $query = new WP_Query( $args );
-
-    foreach ( $query->posts as $key => $value) {
-      $db_templates[$value->ID] = $value->post_title;
-    }
-
-    return $db_templates;
+    $data = array();
+    foreach ( $templates as $template ) { $data[ $template->ID ] = $template->post_title; }
+    return $data;
   }
 
   function get_template_name($instance){
