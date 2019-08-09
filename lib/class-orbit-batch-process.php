@@ -27,13 +27,17 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE{
 
 		});
 
-		add_action('wp_enqueue_scripts', function() {
-			wp_register_script( 'orbit-batch-process', plugins_url( 'orbit-bundle/dist/js/batch-process.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );	
-		});
-		
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_assets' ) );
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_assets' ) );
+
 
 		parent::__construct();
 
+	}
+
+	function register_assets(){
+		wp_register_script( 'orbit-batch-process', plugins_url( 'orbit-bundle/dist/js/batch-process.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
 	}
 
 	/* SHORTCODE FUNCTION */
