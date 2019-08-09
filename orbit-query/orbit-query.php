@@ -12,11 +12,10 @@ $inc_files = array(
 	'class-orbit-query-base.php',
 	'class-orbit-query.php',
 	'class-orbit-query-users.php',
+	'class-orbit-related-query.php',
 	'the.php',
 );
 
 foreach( $inc_files as $inc_file ){
 	include( $inc_file );
 }
-
-
