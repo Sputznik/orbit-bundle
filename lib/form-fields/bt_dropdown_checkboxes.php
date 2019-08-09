@@ -5,6 +5,7 @@
     <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+    <li style="padding: 0 10px;"><a href="#" data-btn="reset">Clear All</a></li>
     <?php foreach( $atts['items'] as $item ): if( isset( $item['slug'] ) && $item['slug'] ):?>
     <li class="checkbox">
     	<label>

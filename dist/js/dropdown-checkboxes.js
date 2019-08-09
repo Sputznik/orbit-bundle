@@ -2,7 +2,8 @@ jQuery.fn.orbit_dropdown_checkboxes = function(){
 
 	return this.each(function(){
 
-    var $el = jQuery(this);
+    var $el 			= jQuery(this),
+			$reset_btn 	= $el.find( '[data-btn=reset]' );
 
     // IF CLICK IS MADE OUTSIDE THE ELEMENT THEN CLOSE THE DROPDOWN
 		jQuery( document ).on("click", function( event ){
@@ -28,6 +29,15 @@ jQuery.fn.orbit_dropdown_checkboxes = function(){
 			}, 1);
 
     } );
+
+		$reset_btn.click( function( ev ){
+			ev.preventDefault();
+
+			$el.find('input[type=checkbox]:checked').prop( "checked", false );
+
+			updateLabel();
+
+		});
 
 		// ON LOAD - DEFAULT
     updateLabel();

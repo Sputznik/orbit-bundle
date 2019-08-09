@@ -98,6 +98,13 @@
 	color: #333;
 }
 
+[data-behaviour~=bt-dropdown-checkboxes] ul.dropdown-menu>li>a{
+	display: inline-block;
+	padding: 0;
+	text-decoration: underline;
+	font-style: italic;
+}
+
 @media( max-width: 768px ){
 	.orbit-search-container{
 		grid-template-columns: 1fr;
