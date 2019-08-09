@@ -54,7 +54,11 @@
 				_e( do_shortcode( $form->post_content ) );
 			}
 		?>
-			<p><button type='submit'>Submit</button></p>
+			<ul class="list-inline" data-list="form-btns">
+				<li><button type='submit'>Submit</button></li>
+				<li>or</li>
+				<li><a href="#" data-btn="reset" style="text-decoration:underline">Reset</a></li>
+			</ul>
 		</form>
 	</div>
 </div>

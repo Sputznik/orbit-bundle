@@ -23,21 +23,25 @@ jQuery.fn.orbit_dropdown_checkboxes = function(){
 
     $el.on( 'change', function(){ updateLabel(); } );
 
-		$el.closest( 'form' ).on( 'reset', function(){
-			setTimeout( function(){
-				updateLabel();
-			}, 1);
 
-    } );
+		function reset(){
+			$el.find('input[type=checkbox]:checked').prop( "checked", false );
+
+			updateLabel();
+		}
 
 		$reset_btn.click( function( ev ){
 			ev.preventDefault();
 
-			$el.find('input[type=checkbox]:checked').prop( "checked", false );
-
-			updateLabel();
-
+			reset();
 		});
+
+		$el.closest( 'form' ).on( 'reset', function(){
+			setTimeout( function(){
+				reset();
+			}, 1);
+		} );
+
 
 		// ON LOAD - DEFAULT
     updateLabel();

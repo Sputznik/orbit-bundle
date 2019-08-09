@@ -136,6 +136,7 @@ jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
 	var $el 				= jQuery( this ),
 		$search_form 	= $el.find('.orbit-search-form'),
 		$form 				= $el.find( 'form' ),
+		$reset_btn		= $el.find( 'form [data-list="form-btns"] [data-btn=reset]' );
 		$results 			= $el.find( '.orbit-search-results' );
 
 	function makeFormCollapsible(){
@@ -151,6 +152,20 @@ jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
 			$search_form_arrow.click( function(){ $form.toggle('slide'); });
 		}
 	}
+
+	$reset_btn.click( function( ev ){
+		ev.preventDefault();
+		$form.trigger( 'reset' );
+	});
+
+	$form.on( 'reset', function(){
+		setTimeout( function(){
+			//console.log('submit');
+			$form.submit();
+		}, 20 );
+
+	} );
+
 
 	makeFormCollapsible();
 
