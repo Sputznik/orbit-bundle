@@ -31,19 +31,26 @@ class ORBIT_RELATED_QUERY extends ORBIT_QUERY_BASE{
 
 		global $post;
 
-		$post_terms = array();
-
 		$post_type = get_post_type();
 
-		$get_terms = wp_get_post_terms( $post->ID, $atts['taxonomy'] );
-
-		foreach ( $get_terms as $key => $value ) {
-			array_push( $post_terms , $value->slug);
-		}
-		$post_terms = implode( ",", $post_terms );
-
 		$query = "[orbit_query ";
-		$query .= "post_type='".$post_type."' posts_per_page='".$atts['posts_per_page']."' tax_query='".$atts['taxonomy'].":$post_terms' ";
+		$query .= "post_type='".$post_type."' posts_per_page='".$atts['posts_per_page']."' ";
+
+		if( $atts['taxonomy'] ){
+			$post_terms = array();
+			$get_terms = wp_get_post_terms( $post->ID, $atts['taxonomy'] );
+
+			foreach ( $get_terms as $key => $value ) {
+				array_push( $post_terms , $value->slug);
+			}
+
+			if( count( $post_terms ) ){
+				$post_terms = implode( ",", $post_terms );
+				$query .= "tax_query='".$atts['taxonomy'].":$post_terms' ";
+			}
+
+		}
+
 		$query .= "post__not_in=".$post->ID." style='".$atts['style']."' style_id='".$atts['style_id']."' ";
 		$query .= "]";
 
