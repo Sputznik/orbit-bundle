@@ -205,7 +205,7 @@
 							'type' 				=> 'text',
 							'text'				=> 'Results Heading',
 							'placeholder'	=> '',
-							'default'			=> 'Filter this data'
+							'default'			=> 'FILTER'
 						),
 					),
 					'field_name'	=> 'filter_settings'

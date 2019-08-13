@@ -1,6 +1,7 @@
 <div class='orbit-search-form'>
 	<div class="orbit-search-form-box">
 		<div class="orbit-search-form-title">
+			<span class='fa-icon'><i class="fa fa-filter"></i></span>
 			<span><?php _e( isset( $filter_settings['filter_heading'] ) ? $filter_settings['filter_heading'] : "" );?></span>
 			<span class="arrow-down"></span>
 		</div>
