@@ -54,10 +54,13 @@
 				_e( do_shortcode( $form->post_content ) );
 			}
 		?>
+
+		<?php $orbit_wp = ORBIT_WP::getInstance();?>
+
 			<ul class="list-inline" data-list="form-btns">
 				<li><button type='submit'>Submit</button></li>
 				<li>or</li>
-				<li><a href="#" data-btn="reset" style="text-decoration:underline">Reset</a></li>
+				<li><a href="<?php _e( $orbit_wp->getCurrentURL() );?>" style="text-decoration:underline">Reset</a></li>
 			</ul>
 		</form>
 	</div>

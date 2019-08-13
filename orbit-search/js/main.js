@@ -153,6 +153,7 @@ jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
 		}
 	}
 
+	/* NO LONGER NEEDED
 	$reset_btn.click( function( ev ){
 		ev.preventDefault();
 		$form.trigger( 'reset' );
@@ -165,7 +166,7 @@ jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
 		}, 20 );
 
 	} );
-
+	*/
 
 	makeFormCollapsible();
 
