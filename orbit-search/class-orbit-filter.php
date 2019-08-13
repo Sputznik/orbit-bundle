@@ -86,7 +86,7 @@
 
 				case 'postdate':
 					$atts['items'] = $this->get_post_options( $atts['typeval'] );
-					
+
 					break;
 
 				case 'cf':
@@ -96,9 +96,15 @@
 
 			}
 
-
-
-			$this->display( $atts );
+			$custom_function = 'default';
+			$custom_function = apply_filters( 'orbit-filter-field', $custom_function, $atts );
+			
+			if( $custom_function == 'default' ){
+				$this->display( $atts );
+			}
+			else{
+				call_user_func( $custom_function, $atts );
+			}
 
 			return ob_get_clean();
 		}
