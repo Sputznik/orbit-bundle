@@ -453,3 +453,39 @@ margin-bottom: 10px;
 }
 [data-behaviour="orbit-export"] .orbit-admin-text{
 	margin: 12px 0 33px;
+}
+
+
+/* Orbit Batch */
+
+[data-behaviour="orbit-batch"] {
+	padding: 10px;
+}
+
+[data-behaviour="orbit-batch"] .progress-container {
+	border: #333 solid 1px; 
+	margin-bottom: 10px;
+}
+
+[data-behaviour="orbit-batch"] .progress{
+	height: 30px;
+	background: #555;
+	width: 0%;
+}
+
+[data-behaviour="orbit-batch"] .spinner {
+	float:none;
+}
+
+[data-behaviour="orbit-batch"] .progress-btn {
+	margin-bottom: 10px;
+}
+
+[data-behaviour="orbit-batch"] .logs-container {
+	margin-top:30px;
+}
+
+[data-behaviour="orbit-batch"] .logs {
+	height:250px;
+	overflow: auto;
+}

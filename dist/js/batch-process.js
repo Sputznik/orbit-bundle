@@ -2,8 +2,8 @@ jQuery.fn.orbit_batch_process = function(){
 
 	return this.each(function(){
 
-		var $el 			= jQuery(this),
-			atts 				= $el.data('atts'),
+		var $el 		= jQuery(this),
+			atts 		= $el.data('atts'),
 			batch_step 	= 1;
 
 		function startProgress(){
@@ -57,6 +57,7 @@ jQuery.fn.orbit_batch_process = function(){
 
 			var $result = jQuery( document.createElement('div') );
 			$result.addClass( 'result' );
+			$result.html('<div class="spinner is-active"></div>');
 			$result.appendTo( $el );
 
 

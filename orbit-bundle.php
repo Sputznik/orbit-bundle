@@ -20,6 +20,7 @@
 		"lib/class-orbit-shortcode.php",
 		"lib/class-orbit-batch-process.php",
 		"lib/class-orbit-csv.php",
+		"lib/class-orbit-bulk-delete.php",
 		"lib/class-orbit-translations.php",
 		"lib/class-orbit-util.php",
 		"lib/class-orbit-wp.php",
