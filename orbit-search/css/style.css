@@ -122,3 +122,52 @@
 		margin-top: 10px;
 	}
 }
+
+
+
+/* Filters */
+.orbit-form-group input[type=date]{
+	padding: 5px 15px;
+}
+
+.orbit-form-group [data-behaviour~=bt-dropdown-checkboxes] button,
+.orbit-form-group select,
+.orbit-form-group input[type=date]{
+  width: 100%;
+}
+
+.orbit-form-group [data-behaviour~=bt-dropdown-checkboxes] button,
+button.btn,
+[data-behaviour~=oq-ajax-loading]{
+  border-radius: 0;
+  min-width: 150px;
+  padding: 10px 15px;
+}
+
+[data-behaviour~=oq-ajax-loading]{
+  background: #333;
+  color: #fff;
+  border: #000 solid 1px;
+}
+
+.orbit-form-group [data-behaviour~=bt-dropdown-checkboxes] button{
+  border: #ddd solid 1px;
+  background: #eee;
+  color: #333;
+}
+
+
+.orbit-form-group [data-behaviour~=bt-dropdown-checkboxes] button{
+  background: #fff;
+  text-align: left;
+}
+
+ .orbit-form-group [data-behaviour~=bt-dropdown-checkboxes] button .caret{
+  margin-top: 10px;
+  margin-right: -5px;
+  float: right;
+}
+
+.orbit-form-group select{
+  padding: 10px 15px;
+}
