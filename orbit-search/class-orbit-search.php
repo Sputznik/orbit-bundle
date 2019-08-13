@@ -201,7 +201,12 @@
 							'text'		=> 'Posts Per Page',
 							'default'	=> 10
 						),
-
+						'filter_heading'	=> array(
+							'type' 				=> 'text',
+							'text'				=> 'Results Heading',
+							'placeholder'	=> '',
+							'default'			=> 'Filter this data'
+						),
 					),
 					'field_name'	=> 'filter_settings'
 				),
@@ -401,7 +406,7 @@
 			if( !isset( $filter_header['results_heading'] ) || empty( $filter_header['results_heading'] ) ){
 				$filter_header['results_heading'] = "Total Items (%d)";
 			}
-			
+
 			include( 'templates/results-header.php' );
 
 		}

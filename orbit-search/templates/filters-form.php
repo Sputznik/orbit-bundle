@@ -1,7 +1,7 @@
 <div class='orbit-search-form'>
 	<div class="orbit-search-form-box">
 		<div class="orbit-search-form-title">
-			<span><?php _e( apply_filters( 'orbit-search-form-title', 'Filter this data' ) );?></span>
+			<span><?php _e( isset( $filter_settings['filter_heading'] ) ? $filter_settings['filter_heading'] : "" );?></span>
 			<span class="arrow-down"></span>
 		</div>
 		<form method='GET' action="<?php _e( $orbit_wp->getCurrentURL() );?>">
@@ -23,7 +23,7 @@
 					_e( do_shortcode( $filter_shortcode ) );
 				}
 
-				
+
 
 			}
 			else{

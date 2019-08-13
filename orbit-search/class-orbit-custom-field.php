@@ -91,7 +91,7 @@
 									// INCASE STRING IS PASSED AS OPTIONS - VERSION 1
 									if( !is_array( $field['options'] ) ){
 										$options = explode( "\r\n", $field['options'] );
-										
+
 										$field['options'] = array();
 
 										foreach( $options as $opt ){
@@ -236,14 +236,15 @@
 			$orbit_form_field = ORBIT_FORM_FIELD::getInstance();
 
 			$form_field_atts = array(
-				'name'	=> $slug,
-				'value'	=> $f['val'],
+				'name'				=> $slug,
+				'value'				=> $f['val'],
+				'default'			=> isset( $f['default'] ) ? $f['default'] : '',
 				'placeholder'	=> isset( $f['placeholder'] ) ? $f['placeholder'] : '',
-				'label'	=> $f['text'],
-				'type'	=> $f['type'],
-				'rules'	=> isset( $f['rules'] ) ? $f['rules'] : array(),
-				'items'	=> array(),
-				'help'	=> isset( $f['help'] ) ? $f['help'] : ""
+				'label'				=> $f['text'],
+				'type'				=> $f['type'],
+				'rules'				=> isset( $f['rules'] ) ? $f['rules'] : array(),
+				'items'				=> array(),
+				'help'				=> isset( $f['help'] ) ? $f['help'] : ""
 			);
 
 			// CONFORM THE OPTIONS TO THE ITEMS ARRAY THAT IS NEEDED IN ORBIT_FORM_FIELD
