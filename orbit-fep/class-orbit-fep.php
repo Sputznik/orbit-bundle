@@ -364,7 +364,12 @@ class ORBIT_FEP extends ORBIT_BASE{
       }
     }
 
-    $post_id = wp_insert_post( $post_info );
+    if( isset( $post_info['post_title'] ) && !empty( $post_info['post_title'] ) ){
+      $post_id = wp_insert_post( $post_info );
+    }
+    else{
+      $post_id = 0;
+    }
 
     // IF POST ID IS NOT VALID THEN RETURN ERROR
     if( !$post_id || is_array( $post_id ) ){ print_r( $post_id );return 0; }
