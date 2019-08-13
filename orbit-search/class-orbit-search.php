@@ -395,7 +395,9 @@
 
 			$total_posts = count( $posts );
 
-			if( !isset( $filter_header['results_heading'] ) ){ $filter_header['results_heading'] = "Total Items (%d)"; }
+			if( !isset( $filter_header['results_heading'] ) || !$filter_header['results_heading'] ){
+				$filter_header['results_heading'] = "Total Items (%d)";
+			}
 
 			include( 'templates/results-header.php' );
 
