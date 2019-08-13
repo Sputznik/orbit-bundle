@@ -23,30 +23,7 @@
 					_e( do_shortcode( $filter_shortcode ) );
 				}
 
-				// SORTING FEATURE BEGINS HERE
-				$sorting_options = $this->getSortingFieldsFromDB( $form->ID );
-				if( is_array( $sorting_options ) && count( $sorting_options ) ){
-
-					$sorting_options_val = array();
-
-					foreach( $sorting_options as $sorting_option ){
-						array_push( $sorting_options_val, array(
-							'slug' => $sorting_option['type'].":".$sorting_option['field'].":".$sorting_option['order'],
-							'name' => $sorting_option['label'] )
-						);
-					}
-
-					$orbit_form_field = ORBIT_FORM_FIELD::getInstance();
-					$orbit_form_field->display( array(
-						'name'	=> 'orbit_sort',
-						'value'	=> isset( $_GET[ 'orbit_sort' ] ) ? $_GET[ 'orbit_sort' ] : "",
-						'label'	=> 'Sort By',
-						'type'	=> 'dropdown',
-						'items'	=> $sorting_options_val
-					) );
-
-
-				}
+				
 
 			}
 			else{
