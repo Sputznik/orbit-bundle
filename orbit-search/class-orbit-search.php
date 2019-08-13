@@ -336,7 +336,8 @@
 				$orbit_form_field->display( array(
 					'name'	=> 'orbit_sort',
 					'value'	=> isset( $_GET[ 'orbit_sort' ] ) ? $_GET[ 'orbit_sort' ] : "",
-					'label'	=> 'Sort By',
+					'default_option'	=> 'Sort By',
+					//'label'	=> 'Sort By',
 					'type'	=> 'dropdown',
 					'items'	=> $sorting_options_val
 				) );

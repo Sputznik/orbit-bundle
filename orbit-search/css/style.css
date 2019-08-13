@@ -11,9 +11,17 @@
 }
 
 .orbit-search-results .orbit-results-header{
-	border-bottom: #ddd solid 1px;
-	padding-bottom: 30px;
+	border-bottom: #eee solid 2px;
 	margin-bottom: 30px;
+}
+
+.orbit-search-results .orbit-results-header .orbit-terms-count{
+	margin-bottom: 5px;
+}
+
+.orbit-search-results .orbit-results-header .orbit-form-group select{
+	padding: 5px;
+	font-size: small;
 }
 
 .orbit-search-results .orbit-results-header .orbit-form-group{ display: none; }
@@ -21,7 +29,7 @@
 @media( min-width: 768px ){
 	.orbit-search-results .orbit-results-header.has-sorting{
 		display: grid;
-		grid-template-columns: 1fr 200px;
+		grid-template-columns: 1fr 140px;
 	}
 	.orbit-search-results .orbit-results-header .orbit-form-group{ display: block; }
 }
