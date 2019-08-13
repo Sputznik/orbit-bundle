@@ -153,6 +153,49 @@ jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
 		}
 	}
 
+	function removeURLParameter(url, parameter) {
+		//prefer to use l.search if you have a location/link object
+		var urlparts = url.split('?');
+		if (urlparts.length >= 2) {
+			var prefix = encodeURIComponent(parameter) + '=';
+			var pars = urlparts[1].split(/[&;]/g);
+
+			//reverse iteration as may be destructive
+			for (var i = pars.length; i-- > 0;) {
+				//idiom for string.startsWith
+				if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+					pars.splice(i, 1);
+				}
+			}
+
+			return urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : '');
+		}
+		return url;
+	}
+
+	function hasUrlParameters( url ){
+		var urlparts = url.split('?');
+		if( urlparts.length >= 2 ) return true;
+		return false;
+	}
+
+	// ON THE CHANGE OF DROPDOWN VALUE, REDIRECT THE RESULTS
+	$results.find('.orbit-results-header select').change( function(){
+
+		var $select = jQuery( this ),
+			name_param = $select.attr( 'name' );
+
+		var urlAfterRemoval = removeURLParameter( location.href, name_param );
+
+		var query_param = hasUrlParameters( urlAfterRemoval ) ? "&" : "?";
+
+		var url =  urlAfterRemoval + query_param + name_param + "=" + $select.val();
+
+		// redirect to new url
+		location.href = url;
+	} );
+
+	/* NO LONGER NEEDED
 	$reset_btn.click( function( ev ){
 		ev.preventDefault();
 		$form.trigger( 'reset' );
@@ -165,7 +208,7 @@ jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
 		}, 20 );
 
 	} );
-
+	*/
 
 	makeFormCollapsible();
 

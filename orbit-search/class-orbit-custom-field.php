@@ -87,14 +87,22 @@
 								$slug_field = sanitize_title( $field['text'] );
 
 								if( isset( $field['options'] ) ){
-									$options = explode( "\r\n", $field['options'] );
 
-									$field['options'] = array();
+									// INCASE STRING IS PASSED AS OPTIONS - VERSION 1
+									if( !is_array( $field['options'] ) ){
+										$options = explode( "\r\n", $field['options'] );
+										
+										$field['options'] = array();
 
-									foreach( $options as $opt ){
-										$opt_slug = sanitize_title( $opt );
-										$field['options'][$opt_slug] = $opt;
+										foreach( $options as $opt ){
+											$opt_slug = sanitize_title( $opt );
+											$field['options'][$opt_slug] = $opt;
+										}
 									}
+
+
+
+
 								}
 
 								$new_meta_box['fields'][$slug_field] = $field;
@@ -193,7 +201,7 @@
 				}
 
 				foreach( $box[ 'args' ][ 'fields' ] as $slug => $f ){
-					
+
 					/* HOOK TO ADD OPTIONS */
 					if( isset( $f['options'] ) ){
 						$f['options'] = apply_filters( 'orbit_custom_field_'.$slug.'_options', $f['options'] );

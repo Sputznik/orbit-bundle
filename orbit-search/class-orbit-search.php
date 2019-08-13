@@ -312,6 +312,37 @@
 			return $shortcode_str;
 		}
 
+		function has_sorting( $form_id ){
+			$sorting_options = $this->getSortingFieldsFromDB( $form_id );
+			if( is_array( $sorting_options ) && count( $sorting_options ) ) return true;
+			return false;
+		}
+
+		// HTML FOR SORTING DROPDOWN
+		function sorting_dropdown( $form_id ){
+			$sorting_options = $this->getSortingFieldsFromDB( $form_id );
+
+			if( is_array( $sorting_options ) && count( $sorting_options ) ){
+				$sorting_options_val = array();
+
+				foreach( $sorting_options as $sorting_option ){
+					array_push( $sorting_options_val, array(
+						'slug' => $sorting_option['type'].":".$sorting_option['field'].":".$sorting_option['order'],
+						'name' => $sorting_option['label'] )
+					);
+				}
+
+				$orbit_form_field = ORBIT_FORM_FIELD::getInstance();
+				$orbit_form_field->display( array(
+					'name'	=> 'orbit_sort',
+					'value'	=> isset( $_GET[ 'orbit_sort' ] ) ? $_GET[ 'orbit_sort' ] : "",
+					'label'	=> 'Sort By',
+					'type'	=> 'dropdown',
+					'items'	=> $sorting_options_val
+				) );
+			}
+		}
+
 		function form( $atts ){
 
 			// CLASSES ORBIT
@@ -364,27 +395,11 @@
 
 			$total_posts = count( $posts );
 
-			_e( "<div class='orbit-results-header'>" );
-
-			if( isset( $filter_header['results_heading'] ) ){
-				echo "<h3 class='orbit-results-heading'>" . sprintf( $filter_header['results_heading'], $total_posts ) . "</h3>";
+			if( !isset( $filter_header['results_heading'] ) || !$filter_header['results_heading'] ){
+				$filter_header['results_heading'] = "Total Items (%d)";
 			}
 
-			// LIST OF TERMS FROM THE TAXONOMIES SELECTED IN THE BACKEND
-			if( isset( $_GET ) && count( $_GET ) ){
-				$taxonomies = isset( $filter_header['taxonomies'] ) ? $filter_header['taxonomies'] : array();
-				foreach( $taxonomies as $taxonomy_slug ){
-					$taxonomy = get_taxonomy( $taxonomy_slug );
-					$terms_list = $orbit_wp->getPostsTerms( $taxonomy_slug, $posts, $orbit_wp_query->query );
-	        if( count( $terms_list ) ){
-	          echo "<div class='orbit-terms-count'><b>" . $taxonomy->label . "</b>: " . implode( ', ', $terms_list ) . "</div>";
-	        }
-	      }
-			}
-
-			_e( "<hr>" );
-
-			_e( "</div>" );
+			include( 'templates/results-header.php' );
 
 		}
 
