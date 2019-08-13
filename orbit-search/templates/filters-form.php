@@ -23,9 +23,6 @@
 					//echo $filter_shortcode;
 					_e( do_shortcode( $filter_shortcode ) );
 				}
-
-
-
 			}
 			else{
 				// FALLBACK TO DEFAULT FUNCTIONALITY
