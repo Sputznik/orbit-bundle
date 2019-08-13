@@ -141,7 +141,7 @@ class ORBIT_FEP extends ORBIT_BASE{
             'options'	=> array()
           ),
           'form_success_msg' => array(
-            'type' 		=> 'text',
+            'type' 		=> 'textarea',
             'text' 		=> 'Enter the message to be shown when the form gets submitted.',
             'options'	=> array()
           ),
@@ -304,14 +304,19 @@ class ORBIT_FEP extends ORBIT_BASE{
     $orbit_multipart_form->create( $pages );
 
     wp_nonce_field( 'orbit-fep' );
+    // END OF FORM TAG
+    echo "</form>";
 
     // DISPLAY MESSAGE ON FORM SUBMISSION
     if( $form_success_flag ){
-      echo "<div style='margin-top:50px;' class='form-alert'>" . $success_message . "</div>";
+      // echo "<div style='margin-top:50px;' class='form-alert'>" . $success_message . "</div>";
+      echo "<style>.soah-fep{ display:none; }</style>";
+      $this->showMessage( $success_message );
     }
-
-    // END OF FORM TAG
-    echo "</form>";
+  }
+  //Message on form submission
+  function showMessage( $success_message ){
+    echo "<div style='margin-top:50px;' class='form-alert'>" . $success_message . "</div>";
   }
 
   function validateFiles(){
@@ -345,7 +350,7 @@ class ORBIT_FEP extends ORBIT_BASE{
       foreach( $data as $key => $value ){
         $attachment_id = media_handle_upload( $key, $post_id, array( 'test_form'=> false ) );
         if( is_wp_error( $attachment_id ) ){
-          print_r( $attachment_id );
+          // print_r( $attachment_id );
         }
       }
     }
