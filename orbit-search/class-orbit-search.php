@@ -264,7 +264,8 @@
 
 		function get_default_atts(){
 			return array(
-				'id' 	=> '0',
+				'id' 			=> '0',
+				'theme'		=> 'default-theme',
 				'style'		=> 'db'
 			);
 		}
@@ -366,7 +367,7 @@
 			// GET FORM DETAILS
 			$form = get_post( $atts['id'] );
 
-			_e("<div class='orbit-search-container' data-behaviour='orbit-search'>");
+			_e("<div class='orbit-search-container ". $atts['theme']."' data-behaviour='orbit-search'>");
 
 			include( 'templates/filters-form.php' );
 
@@ -375,7 +376,7 @@
 			$shortcode_str = $this->getQueryShortcode( $atts, $filter_settings );
 
 			//echo $shortcode_str;
-
+			
 			$results_html = do_shortcode( $shortcode_str );
 
 			$this->results_header( $atts['id'] );
