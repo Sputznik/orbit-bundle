@@ -220,3 +220,174 @@ li.orbit-article-db img{
 [data-behaviour~=bt-dropdown-checkboxes] .btn-label{
 	white-space: normal;
 }
+
+
+
+/* Orbit Fep */
+form[data-behaviour~=meteor-slides] .form-progress{
+	margin-bottom: 50px;
+	position: relative;
+}
+form[data-behaviour~=meteor-slides] .form-progress h5{
+	font-size: 14px;
+}
+form[data-behaviour~=meteor-slides] .form-progress .fep-progress-bar{
+	height: 30px;
+	border: #ddd solid 1px;
+	border-radius: 2px;
+}
+form[data-behaviour~=meteor-slides] .form-progress .fep-progress-bar .bar{
+	height: 100%;
+	background: #036493;
+	width: 0%;
+}
+
+form[data-behaviour~=meteor-slides] input[type=submit],
+form[data-behaviour~=meteor-slides] input[type=button],
+form[data-behaviour~=meteor-slides] button{
+	margin: 20px 0px ;
+	padding: 10px 15px;
+	background: #eee;
+	border: #ddd solid 1px;
+	min-width: 200px;
+}
+form.soah-fep{
+	width: 100%;
+	max-width:650px;
+	margin-left:auto;
+	margin-right:auto;
+	padding: 50px 30px;
+
+}
+
+/* form.soah-fep .form-alert{
+	padding: 20px;
+	border: #eee solid 1px;
+	background: #ffffcc;
+	margin: 20px 0;
+} */
+
+form.soah-fep .form-field{
+	margin-bottom: 30px;
+}
+
+form.soah-fep label{
+	display: block;
+}
+
+form.soah-fep input[type=text],
+form.soah-fep input[type=number],
+form.soah-fep input[type=email],
+form.soah-fep textarea, form.soah-fep select{
+	width: 100%;
+	padding: 10px 15px;
+}
+
+form.soah-fep .form-categories ul{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 10px;
+}
+
+form.soah-fep .form-categories ul li{
+	background: #eee;
+	margin: 0;
+	display: block;
+	min-height: 30px;
+	padding: 10px;
+	width: 100%;
+}
+
+form.soah-fep .form-multi-fields{ max-width: 400px; }
+
+form.soah-fep .form-multi-fields .add-btn{ margin-top: 5px;}
+
+form.soah-fep .form-multi-fields .multi-field-wrapper{ margin-bottom: 5px; }
+
+@media( min-width: 768px ){
+	form.soah-fep .grid-2 .section-fields{
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: 20px;
+	}
+
+	form.soah-fep .form-address .section-fields{
+		display: grid;
+		grid-gap: 20px;
+		grid-template-columns: 1fr 1fr;
+		grid-template-areas: "state district" "address address";
+	}
+
+	form.soah-fep .form-address .form-state{
+		grid-area: state;
+	}
+	form.soah-fep .form-address .form-district{
+		grid-area: district;
+	}
+	form.soah-fep .form-address .form-address-text{
+		grid-area: address;
+	}
+	form.soah-fep .form-address .form-field{
+		margin-bottom: 0;
+	}
+}
+
+@media screen and (max-width: 768px) {
+  .form-links {
+    margin-top: 55px;
+		margin-bottom: 55px;
+  }
+	form.soah-fep .form-categories ul{
+		grid-template-columns: 1fr;
+	}
+}
+
+
+form[data-behaviour~=meteor-slides] .meteor-slide{
+	display: none;
+}
+form[data-behaviour~=meteor-slides] .meteor-slide.active{
+	display: block;
+}
+
+form[data-behaviour~=meteor-slides] .meteor-list{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+form[data-behaviour~=meteor-slides] .meteor-list li{
+	display: inline-block;
+	margin-right: 20px;
+}
+
+form[data-behaviour~=meteor-slides] .hide-label label{
+	display: none;
+}
+
+/* REQUIRED */
+form.soah-fep span.red{
+	color: red;
+}
+
+/* LANGUAGE SWITCHER */
+form.soah-fep .lang-switcher{
+	float: right;
+	font-size: 14px;
+	margin-top: 10px;
+	margin-bottom: 10px !important;
+	margin-left: 10px;
+}
+form.soah-fep .lang-switcher select{
+	padding: 2px !important;
+	width: auto !important;
+}
+
+.form-alert{
+	padding: 20px;
+	border: #eee solid 1px;
+	background: #ffffcc;
+	margin: 20px 0;
+	width: 500px;
+	margin: 50px auto;
+	text-align: center;
+}

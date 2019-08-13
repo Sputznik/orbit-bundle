@@ -388,6 +388,8 @@
 
 			$filter_header = get_post_meta( $post_id, 'filter_header', true );
 
+			if( !is_array( $filter_header ) ){ $filter_header = array(); }
+
 			global $orbit_wp_query;
 
 			$orbit_wp = ORBIT_WP::getInstance();
@@ -396,10 +398,10 @@
 
 			$total_posts = count( $posts );
 
-			if( !isset( $filter_header['results_heading'] ) || !$filter_header['results_heading'] ){
+			if( !isset( $filter_header['results_heading'] ) || empty( $filter_header['results_heading'] ) ){
 				$filter_header['results_heading'] = "Total Items (%d)";
 			}
-
+			
 			include( 'templates/results-header.php' );
 
 		}
