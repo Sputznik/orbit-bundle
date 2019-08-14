@@ -174,7 +174,6 @@
     width: 100%;
     background: #fff;
     max-width: 1200px;
-    padding-top: 30px;
     left: 0;
   }
 
@@ -209,6 +208,7 @@
       position: fixed;
       width: 250px;
       z-index: 4;
+      top: 50px;
     }
     .orbit-search-header-top{
       display: grid;

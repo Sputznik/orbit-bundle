@@ -213,14 +213,16 @@ jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
 			$el.find( '.orbit-search-grid' ).addClass('filters-visible');
 		} );
 
+		var top = $el.find('.orbit-search-grid').offset().top - 120;
+
 		$(window).scroll(function(e){
 
 			var $target = $el.find('.orbit-search-grid');
 
-			if( $(this).scrollTop() > 200 ){
+			if( $(this).scrollTop() > top ){
 		    $target.addClass( 'is-fixed' );
 		  }
-		  if( $(this).scrollTop() < 200 ){
+		  if( $(this).scrollTop() < top ){
 		    $target.removeClass( 'is-fixed' );
 		  }
 
