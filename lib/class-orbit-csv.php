@@ -11,12 +11,16 @@ class ORBIT_CSV extends ORBIT_BASE {
 			$arrayCsv = $this->toArray($path);
 
 			$offset = ($_GET['orbit_batch_step'] - 1) * $_GET['per_page'];
+			
 			if (!$offset) {$offset = 1;}
+			
 			$selected_array_csv = array_slice($arrayCsv, $offset, $_GET['per_page']);
 
-			echo "<pre>";
-			print_r($selected_array_csv);
-			echo "</pre>";
+			// echo "<pre>";
+			// print_r($selected_array_csv);
+			// echo "</pre>";
+
+			echo "<p><strong> Batch #". $_GET['orbit_batch_step'] ." </strong></p>";
 
 			$this->syncTerms($selected_array_csv, $_GET['taxonomy']);
 		});
@@ -30,13 +34,17 @@ class ORBIT_CSV extends ORBIT_BASE {
 			$headerInfo = $this->getHeaderInfo($arrayCsv);
 
 			$offset = ($_GET['orbit_batch_step'] - 1) * $_GET['per_page'];
+			
 			if (!$offset) {$offset = 1;}
+			
 			$selected_array_csv = array_slice($arrayCsv, $offset, $_GET['per_page']);
 
-			echo "<pre>";
+			//echo "<pre>";
 			//print_r( $headerInfo );
 			//print_r( $selected_array_csv );
-			echo "</pre>";
+			//echo "</pre>";
+
+			echo "<p><strong> Batch #". $_GET['orbit_batch_step'] ." </strong></p>";
 
 			$this->importPosts($selected_array_csv, $headerInfo, array('post_status' => 'publish', 'post_type' => $_GET['post_type']));
 
@@ -52,11 +60,14 @@ class ORBIT_CSV extends ORBIT_BASE {
 	function toArray($path) {
 		$file     = fopen($path, "r");
 		$arrayCsv = array();
+		
 		while (!feof($file)) {
 			$fpTotal = fgetcsv($file);
 			array_push($arrayCsv, $fpTotal);
 		}
+		
 		fclose($file);
+		
 		return $arrayCsv;
 	}
 
@@ -83,6 +94,8 @@ class ORBIT_CSV extends ORBIT_BASE {
 
 	function syncTerms($arrayCsv, $taxonomy) {
 
+		echo "<ul>";
+
 		foreach ($arrayCsv as $rowCsv) {
 
 			$parent_id = 0;
@@ -103,10 +116,14 @@ class ORBIT_CSV extends ORBIT_BASE {
 				$term_id = $this->syncTerm($rowCsv[0], $taxonomy, $parent_id, $desc);
 			}
 
+			echo "<li>Added Term id: ". $term_id ."</li>";
+
 			//print_r( $term_id );
 			//echo "<br>";
 
 		}
+
+		echo "</ul>";
 
 	}
 
@@ -232,20 +249,29 @@ class ORBIT_CSV extends ORBIT_BASE {
 
 		$orbit_util = ORBIT_UTIL::getInstance();
 
+		echo "<ul>";
+
 		foreach ($selectedCsv as $rowCsv) {
 
 			$post_id = 0;
 
 			// INSERT POST
 			$new_post = array();
+			
 			foreach ($headerInfo['post_info'] as $slug => $value) {
+				
 				if (isset($rowCsv[$value])) {
 					$new_post[$slug] = $rowCsv[$value];
 				}
+			
 			}
+			
 			$new_post = wp_parse_args($new_post, $defaults);
+			
 			if (isset($new_post['post_title']) || isset($new_post['post_content']) || isset($new_post['post_excerpt'])) {
+				
 				$post_id = wp_insert_post($new_post, true);
+				
 				if (isset($post_id->errors)) {
 					echo "<pre>";
 					print_r($post_id->errors);
@@ -254,14 +280,14 @@ class ORBIT_CSV extends ORBIT_BASE {
 
 			}
 
-			$orbit_util->test($post_id);
+			//$orbit_util->test($post_id);
 
 			// ADD TERMS AND CUSTOM FIELDS ONLY IF POST ID IS VALID
 			if ($post_id) {
 
-				print_r($headerInfo['tax_info']);
+				//print_r($headerInfo['tax_info']);
 
-				$orbit_util->test($rowCsv);
+				//$orbit_util->test($rowCsv);
 
 				// ADD TAXONOMIES
 				foreach ($headerInfo['tax_info'] as $taxonomy => $value) {
@@ -295,9 +321,11 @@ class ORBIT_CSV extends ORBIT_BASE {
 					}
 				}
 
+				echo "<li>Added Post id: ".$post_id."</li>";
 			}
-
 		}
+
+		echo "</ul>";
 
 	}
 

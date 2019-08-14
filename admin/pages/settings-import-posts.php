@@ -1,7 +1,9 @@
 <?php $post_types = get_post_types(array(), 'objects');?>
+
+<?php if (!isset($_POST['submit'])): ?>
+
 <p>Import posts from a CSV file where the header row defines the contents of the file.</p>
 <p class="help">Header Information starting with "post_" is assumed to be part of the post information. And starting with "tax_" is assumed to be part of the taxonomy and terms information. And starting with "cf_" is assumed to be part of the custom fields information.</p>
-<?php if (!isset($_POST['submit'])): ?>
 
 <form method="POST" enctype="multipart/form-data" >
   <div>
@@ -33,7 +35,8 @@ if (isset($_FILES['file'])) {
 
 	// CHECK IF UPLOAD PROCESS WAS COMPLETED WITHOUT ANY ERROR
 	if ($movefile && !isset($movefile['error'])) {
-		echo "File is valid, and was successfully uploaded.\n";
+		
+		//echo "File is valid, and was successfully uploaded.\n";
 
 		$orbit_csv = ORBIT_CSV::getInstance();
 		$num_rows  = $orbit_csv->numRows($movefile['file']);
