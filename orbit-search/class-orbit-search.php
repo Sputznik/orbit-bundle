@@ -265,7 +265,7 @@
 		function get_default_atts(){
 			return array(
 				'id' 			=> '0',
-				'theme'		=> 'default-theme',
+				'theme'		=> 'default',
 				'style'		=> 'db'
 			);
 		}
@@ -337,7 +337,7 @@
 						'name' => $sorting_option['label'] )
 					);
 				}
-
+				echo "<div data-behaviour='orbit-sorting'>";
 				$orbit_form_field = ORBIT_FORM_FIELD::getInstance();
 				$orbit_form_field->display( array(
 					'name'	=> 'orbit_sort',
@@ -347,6 +347,7 @@
 					'type'	=> 'dropdown',
 					'items'	=> $sorting_options_val
 				) );
+				echo "</div>";
 			}
 		}
 
@@ -354,7 +355,6 @@
 
 			// CLASSES ORBIT
 			$orbit_util 	= ORBIT_UTIL::getInstance();
-			$orbit_filter = ORBIT_FILTER::getInstance();
 			$orbit_wp = ORBIT_WP::getInstance();
 
 			ob_start();
@@ -362,56 +362,60 @@
 			// CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE
 			$atts = shortcode_atts( $this->get_default_atts(), $atts, 'orbit_search' );
 
+			// GET SETTINGS THAT ARE REQUIRED
 			$filter_settings = get_post_meta( $atts['id'], 'filter_settings', true );
+			$filter_header = get_post_meta( $atts['id'], 'filter_header', true );
+			if( !is_array( $filter_header ) ){ $filter_header = array(); }
 
 			// GET FORM DETAILS
 			$form = get_post( $atts['id'] );
 
-			_e("<div class='orbit-search-container ". $atts['theme']."' data-behaviour='orbit-search'>");
-
-			include( 'templates/filters-form.php' );
-
-			_e( "<div class='orbit-search-results'>" );
-
+			// GET RESULTS HTML
 			$shortcode_str = $this->getQueryShortcode( $atts, $filter_settings );
-
-			//echo $shortcode_str;
-			
 			$results_html = do_shortcode( $shortcode_str );
 
-			$this->results_header( $atts['id'] );
+			global $orbit_wp_query;
+			$posts = $orbit_wp->get_post_ids( $orbit_wp_query->query );
+			$total_posts = count( $posts );
 
-			echo $results_html;
-
-			_e("</div>");
-
+			// FINAL RENDERING
+			$atts['theme'] .= "-theme";
+			_e("<div class='orbit-search-container ". $atts['theme']."' data-behaviour='orbit-search'>");
+			include( "templates/" . $atts['theme'] .".php" );
 			_e("</div>");
 
 			return ob_get_clean();
 		}
 
-		function results_header( $post_id ){
-
-			$filter_header = get_post_meta( $post_id, 'filter_header', true );
-
-			if( !is_array( $filter_header ) ){ $filter_header = array(); }
-
-			global $orbit_wp_query;
-
+		function filters_form( $form ){
+			$orbit_filter = ORBIT_FILTER::getInstance();
 			$orbit_wp = ORBIT_WP::getInstance();
+			include( 'templates/filters-form.php' );
+		}
 
-			$posts = $orbit_wp->get_post_ids( $orbit_wp_query->query );
-
-			$total_posts = count( $posts );
-
+		function results_title( $filter_header, $total_posts ){
 			if( !isset( $filter_header['results_heading'] ) || empty( $filter_header['results_heading'] ) ){
 				$filter_header['results_heading'] = "Total Items (%d)";
 			}
-
-			include( 'templates/results-header.php' );
-
+			return sprintf( $filter_header['results_heading'], $total_posts );
 		}
 
+		function results_inline_terms( $filter_header, $posts ){
+			$orbit_wp = ORBIT_WP::getInstance();
+			global $orbit_wp_query;
+
+			// LIST OF TERMS FROM THE TAXONOMIES SELECTED IN THE BACKEND
+      if( isset( $_GET ) && count( $_GET ) ){
+        $taxonomies = isset( $filter_header['taxonomies'] ) ? $filter_header['taxonomies'] : array();
+        foreach( $taxonomies as $taxonomy_slug ){
+          $taxonomy = get_taxonomy( $taxonomy_slug );
+          $terms_list = $orbit_wp->getPostsTerms( $taxonomy_slug, $posts, $orbit_wp_query->query );
+          if( count( $terms_list ) ){
+            echo "<div class='orbit-terms-count'><b>" . $taxonomy->label . "</b>: " . implode( ', ', $terms_list ) . "</div>";
+          }
+        }
+      }
+		}
 	}
 
 	new ORBIT_SEARCH;

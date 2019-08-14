@@ -136,22 +136,7 @@ jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
 	var $el 				= jQuery( this ),
 		$search_form 	= $el.find('.orbit-search-form'),
 		$form 				= $el.find( 'form' ),
-		$reset_btn		= $el.find( 'form [data-list="form-btns"] [data-btn=reset]' );
 		$results 			= $el.find( '.orbit-search-results' );
-
-	function makeFormCollapsible(){
-		var window_width			= jQuery( window ).width();
-			$search_form_arrow 	= $search_form.find('.orbit-search-form-title .arrow-down');
-
-		// hide the form on mobile and make it collapsible
-		if( window_width < 768 ){
-			// hide the form
-			$form.hide();
-
-			// trigger collapsible
-			$search_form_arrow.click( function(){ $form.toggle('slide'); });
-		}
-	}
 
 	function removeURLParameter(url, parameter) {
 		//prefer to use l.search if you have a location/link object
@@ -179,8 +164,8 @@ jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
 		return false;
 	}
 
-	// ON THE CHANGE OF DROPDOWN VALUE, REDIRECT THE RESULTS
-	$results.find('.orbit-results-header select').change( function(){
+	// ON THE CHANGE OF DROPDOWN VALUE OF SORTING, REDIRECT THE RESULTS
+	$el.find('[data-behaviour~=orbit-sorting] select').change( function(){
 
 		var $select = jQuery( this ),
 			name_param = $select.attr( 'name' );
@@ -195,45 +180,28 @@ jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
 		location.href = url;
 	} );
 
-	/* NO LONGER NEEDED
-	$reset_btn.click( function( ev ){
-		ev.preventDefault();
-		$form.trigger( 'reset' );
-	});
+	if( $el.hasClass('default-theme') ){
 
-	$form.on( 'reset', function(){
-		setTimeout( function(){
-			//console.log('submit');
-			$form.submit();
-		}, 20 );
+		// TO ONLY WORK FOR DEFAULT THEME
+		function makeDefaultFormCollapsible(){
+			var window_width			= jQuery( window ).width();
+				$search_form_arrow 	= $search_form.find('.orbit-search-form-title .arrow-down');
 
-	} );
-	*/
+			// hide the form on mobile and make it collapsible
+			if( window_width < 768 ){
+				// hide the form
+				$form.hide();
 
-	makeFormCollapsible();
-
-	/*
-	$form.submit(function(event){
-		event.preventDefault();
-
-		$el.css({opacity:0.5});
-
-		$form.ajax_form_submit({
-			'success':function(data){
-
-				$el.css({ opacity:1 });
-
-				var $response = jQuery( data );
-
-				var html = $response.find('.orbit-search-results').html();
-
-				$results.html( html );
-
-				$("html, body").animate({ scrollTop: 0 }, "slow");
-					return false;
+				// trigger collapsible
+				$search_form_arrow.click( function(){ $form.toggle('slide'); });
 			}
-		});
-	});
-	*/
+		}
+
+		makeDefaultFormCollapsible();
+	}
+
+
+
+
 
 });

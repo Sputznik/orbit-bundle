@@ -1,10 +1,10 @@
 <!-- ASSUMES THAT THE BOOTSTRAP DROPDOWN IS BEING USED -->
-<div class="dropdown" data-behaviour="bt-dropdown-checkboxes">
-  <button class="btn btn-primary dropdown-toggle" id="menu1" type="button">
+<div class="orbit-dropdown" data-behaviour="bt-dropdown-checkboxes">
+  <button type="button">
     <span class='btn-label'><?php _e( 'Select' );?></span>
     <span class="caret"></span>
   </button>
-  <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+  <ul class="orbit-dropdown-menu" role="menu" aria-labelledby="menu1">
     <li style="padding: 0 10px;"><a href="#" data-btn="reset">Clear All</a></li>
     <?php foreach( $atts['items'] as $item ): if( isset( $item['slug'] ) && $item['slug'] ):?>
     <li class="checkbox">

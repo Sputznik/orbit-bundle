@@ -195,3 +195,69 @@ button.btn,
 .orbit-form-group select{
   padding: 10px 15px;
 }
+
+/* dropdown checkboxes */
+.orbit-dropdown{ position: relative; }
+.orbit-dropdown button{
+	background: #fff;
+	text-align: left;
+	border: #ddd solid 1px;
+	color: #333;
+	display: inline-block;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.42;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-appearance: button;
+}
+.orbit-dropdown.open button{
+	background-image: none;
+	background-color: #286090;
+	border-color: #204d74;
+	color: #fff;
+}
+.orbit-dropdown .orbit-dropdown-menu{
+	max-height: 250px;
+	overflow-y: scroll;
+	width: 100%;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
+	float: left;
+	min-width: 160px;
+	padding: 5px 0;
+	margin: 2px 0 0;
+	font-size: 14px;
+	text-align: left;
+	list-style: none;
+	background-color: #fff;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0,0,0,.15);
+	border-radius: 4px;
+	-webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+	box-shadow: 0 6px 12px rgba(0,0,0,.175);
+	display: none;
+}
+.orbit-dropdown.open .orbit-dropdown-menu{ display: block; }
+.orbit-dropdown .orbit-dropdown-menu li.checkbox{
+	padding: 0 10px;
+	color: #333;
+}
+.orbit-dropdown button .caret{
+  margin-top: 10px;
+  margin-right: -5px;
+  float: right;
+}
+/* dropdown checkboxes */
