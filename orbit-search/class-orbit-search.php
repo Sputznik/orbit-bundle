@@ -401,6 +401,9 @@
 		}
 
 		function results_inline_terms( $filter_header, $posts ){
+
+			ob_start();
+
 			$orbit_wp = ORBIT_WP::getInstance();
 			global $orbit_wp_query;
 
@@ -411,10 +414,11 @@
           $taxonomy = get_taxonomy( $taxonomy_slug );
           $terms_list = $orbit_wp->getPostsTerms( $taxonomy_slug, $posts, $orbit_wp_query->query );
           if( count( $terms_list ) ){
-            echo "<div class='orbit-terms-count'><b>" . $taxonomy->label . "</b>: " . implode( ', ', $terms_list ) . "</div>";
+            echo "<div class='orbit-terms-count'><b>" . $taxonomy->label . "</b><span class='colon'>:</span> " . implode( '<span class="comma">,</span> ', $terms_list ) . "</div>";
           }
         }
-      }
+      }	
+			return ob_get_clean();
 		}
 	}
 

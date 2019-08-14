@@ -201,6 +201,39 @@ jQuery( '[data-behaviour="orbit-search"]' ).each( function(){
 	}
 
 
+	if( $el.hasClass( 'grid-theme' ) ){
+
+		$el.find( 'a[href].orbit-btn-close' ).click( function( ev ){
+			ev.preventDefault();
+			$el.find( '.orbit-search-grid' ).removeClass('filters-visible');
+		} );
+
+		$el.find( 'a[href].orbit-open-filters' ).click( function( ev ){
+			ev.preventDefault();
+			$el.find( '.orbit-search-grid' ).addClass('filters-visible');
+		} );
+
+		$(window).scroll(function(e){
+
+			var $target = $el.find('.orbit-search-grid');
+
+			if( $(this).scrollTop() > 200 ){
+		    $target.addClass( 'is-fixed' );
+		  }
+		  if( $(this).scrollTop() < 200 ){
+		    $target.removeClass( 'is-fixed' );
+		  }
+
+		});
+
+		var window_width = jQuery( window ).width();
+		if( window_width > 960 ){
+			$el.find('.orbit-search-grid').addClass( 'filters-visible' );
+		}
+
+	}
+
+
 
 
 
