@@ -37,12 +37,10 @@
 </div>
 <style>
 
+  .orbit-search-container.grid-theme .orbit-search-grid .orbit-search-filters{ display: none; }
+  .orbit-search-container.grid-theme .orbit-search-grid.filters-visible .orbit-search-filters{ display: block; }
 
-
-  .orbit-search-grid .orbit-search-filters{ display: none; }
-  .orbit-search-grid.filters-visible .orbit-search-filters{ display: block; }
-
-  .orbit-search-grid .orbit-search-filters{
+  .orbit-search-container.grid-theme .orbit-search-grid .orbit-search-filters{
     position: fixed;
     background: #000000dd;
     top: 0;
@@ -53,7 +51,7 @@
     z-index: 4;
   }
 
-  .orbit-search-grid .orbit-search-filters-box{
+  .orbit-search-container.grid-theme .orbit-search-grid .orbit-search-filters-box{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -68,7 +66,7 @@
 
 
 
-  .orbit-search-grid .orbit-search-filters-box::before{
+  .orbit-search-container.grid-theme .orbit-search-grid .orbit-search-filters-box::before{
     content: "";
     position: absolute;
     top: 0;
@@ -78,7 +76,7 @@
     background-color: #41307c;
     z-index: 2;
   }
-  .orbit-search-grid .orbit-search-filters span.filters-title{
+  .orbit-search-container.grid-theme .orbit-search-grid .orbit-search-filters span.filters-title{
     position: absolute;
     z-index: 3;
     color: #fff;
@@ -86,7 +84,7 @@
 
   }
 
-  .orbit-search-grid .orbit-search-filters a[href].orbit-btn-close{
+  .orbit-search-container.grid-theme .orbit-search-grid .orbit-search-filters a[href].orbit-btn-close{
     position: absolute;
     top: 0;
     right: 0;
@@ -103,7 +101,7 @@
     z-index: 3;
   }
 
-  .orbit-search-header-top{
+  .orbit-search-container.grid-theme .orbit-search-header-top{
     border: #eee solid 1px;
     border-left: none;
     border-right: none;
@@ -116,45 +114,39 @@
     grid-template-columns: 140px 1fr 140px;
   }
 
-  .orbit-search-header-top .orbit-form-group{ margin-bottom: 0; }
-  .orbit-search-header-top .orbit-form-group select{
+  .orbit-search-container.grid-theme .orbit-search-header-top .orbit-form-group{ margin-bottom: 0; }
+  .orbit-search-container.grid-theme .orbit-search-header-top .orbit-form-group select{
     padding: 5px;
     font-size: smaller;
   }
 
-  .orbit-search-header-left{
-    grid-area: filter;
-  }
-  .orbit-search-grid.filters-visible .orbit-search-header-left{ display: none;}
+  .orbit-search-container.grid-theme .orbit-search-header-left{ grid-area: filter;}
+  .orbit-search-container.grid-theme .orbit-search-grid.filters-visible .orbit-search-header-left{ display: none;}
 
 
-  .orbit-search-header-left a[href]{
+  .orbit-search-container.grid-theme .orbit-search-header-left a[href]{
     border: #aaa solid 1px;
     padding: 7px 10px;
     display: inline-block;
     font-size: smaller;
   }
 
-  .orbit-search-header-middle{
+  .orbit-search-container.grid-theme .orbit-search-header-middle{
     text-transform: uppercase;
     grid-area: title;
   }
 
-  .orbit-search-header-right{
-    grid-area: sort;
-  }
+  .orbit-search-container.grid-theme .orbit-search-header-right{ grid-area: sort;}
 
-  .orbit-search-inline-terms{
+  .orbit-search-container.grid-theme .orbit-search-inline-terms{
     background: #f9f9f9;
     padding: 10px;
     text-align: center;
   }
 
-  .orbit-search-inline-terms .orbit-terms-count{
-    margin-bottom: 10px;
-  }
+  .orbit-search-container.grid-theme .orbit-search-inline-terms .orbit-terms-count{ margin-bottom: 10px;}
 
-  .orbit-search-inline-terms .orbit-terms-count a[href]{
+  .orbit-search-container.grid-theme .orbit-search-inline-terms .orbit-terms-count a[href]{
     display: inline-block;
     font-size: 12px;
     padding: 5px;
@@ -163,12 +155,12 @@
     color: #555;
     border-radius: 5px;
   }
-  .orbit-search-inline-terms .orbit-terms-count span.colon,
-  .orbit-search-inline-terms .orbit-terms-count span.comma{
+  .orbit-search-container.grid-theme .orbit-search-inline-terms .orbit-terms-count span.colon,
+  .orbit-search-container.grid-theme .orbit-search-inline-terms .orbit-terms-count span.comma{
     display: none;
   }
 
-  .orbit-search-grid.is-fixed .orbit-search-header{
+  .orbit-search-container.grid-theme .orbit-search-grid.is-fixed .orbit-search-header{
     position: fixed;
     top: 50px;
     width: 100%;
@@ -178,45 +170,45 @@
   }
 
   @media( min-width:960px ){
-    .orbit-search-grid.filters-visible{
+    .orbit-search-container.grid-theme .orbit-search-grid.filters-visible{
       display: grid;
       grid-template-columns: 250px 1fr;
     }
 
 
-    .orbit-search-grid.is-fixed .orbit-search-header{
+    .orbit-search-container.grid-theme .orbit-search-grid.is-fixed .orbit-search-header{
       left: auto;
     }
 
-    .orbit-search-grid.filters-visible.is-fixed .orbit-search-header{
+    .orbit-search-container.grid-theme .orbit-search-grid.filters-visible.is-fixed .orbit-search-header{
       max-width: 900px;
     }
 
-    .orbit-search-grid .orbit-search-filters{
+    .orbit-search-container.grid-theme .orbit-search-grid .orbit-search-filters{
       position: relative;
       background: none;
       padding: 0;
     }
-    .orbit-search-grid .orbit-search-filters-box{
+    .orbit-search-container.grid-theme .orbit-search-grid .orbit-search-filters-box{
       transform: none;
       position: relative;
       left: auto;
       top: auto;
       max-width: none;
     }
-    .orbit-search-grid.is-fixed .orbit-search-filters-box{
+    .orbit-search-container.grid-theme .orbit-search-grid.is-fixed .orbit-search-filters-box{
       position: fixed;
       width: 250px;
       z-index: 4;
       top: 50px;
     }
-    .orbit-search-header-top{
+    .orbit-search-container.grid-theme .orbit-search-header-top{
       display: grid;
       grid-template-areas: "filter title sort";
       grid-template-columns: 140px 1fr 140px;
       padding: 15px 0;
     }
-    .orbit-search-header-middle{
+    .orbit-search-container.grid-theme .orbit-search-header-middle{
       padding-top: 7px;
       text-align: center;
     }
