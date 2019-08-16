@@ -2,6 +2,62 @@
 
 class ORBIT_FORM_FIELD extends ORBIT_BASE{
 
+  function nested_dropdown( $atts ){
+
+    $terms = get_terms( array(
+      'taxonomy'    => $atts['typeval'],
+      'hide_empty'  => false,
+      'orderby'     => 'term_id'
+    ) );
+
+    $cats = array();
+    $subcats = array();
+    foreach ( $terms as $term ) {
+      if( $term->parent ){
+        array_push( $subcats, array(
+          'name'    => $term->name,
+          'slug'    => $term->term_id,
+          'parent'  => $term->parent
+        ) );
+      }
+      else{
+        array_push( $cats, array(
+          'name'    => $term->name,
+          'slug'    => $term->term_id,
+          'parent'  => $term->parent
+        ) );
+      }
+    }
+
+    $param = "tax_" . $atts['typeval'];
+    $name_param = $param . "[]";
+    $values = $_GET[ $param ];
+
+    _e( "<div data-behaviour='orbit-nested-dropdown'>" );
+
+    _e( "<div class='cats'>" );
+    $this->display( array(
+      'label'   => $atts['label'],
+      'type'    => 'dropdown',
+      'name'    => $name_param,
+      'items'   => $cats,
+      'value'   => is_array( $values ) ? $values[0] : ""
+    ) );
+    _e( "</div>" );
+
+    _e( "<div class='subcats'>" );
+    $this->display( array(
+      'label'           => apply_filters( 'orbit-nested-dropdown-label', 'Select Sub', $atts ),
+      'type'            => 'dropdown',
+      'name'            => $name_param,
+      'items'           => $subcats,
+      'value'           => ( is_array( $values ) && count( $values ) > 1 ) ? $values[1] : ""
+    ) );
+    _e( "</div>" );
+
+    _e( "</div>" );
+  }
+
   function display( $atts = array( 'name' => '', 'value' => '', 'label' => '', 'type' => '', 'class' => '' ) ){
 
     if( isset( $atts['type'] ) ){
