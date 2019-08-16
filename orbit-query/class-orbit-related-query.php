@@ -15,7 +15,8 @@ class ORBIT_RELATED_QUERY extends ORBIT_QUERY_BASE{
 			'taxonomy'					=> '',
 			'posts_per_page'		=> '',
 			'style'							=> '',
-			'style_id'					=> ''
+			'style_id'					=> '',
+			'random'						=> '0'
 		);
 	}
 
@@ -34,6 +35,11 @@ class ORBIT_RELATED_QUERY extends ORBIT_QUERY_BASE{
 		$post_type = get_post_type();
 
 		$query = "[orbit_query ";
+
+		if( $atts['random'] == 1 ){
+			$query .= "post_type='".$post_type."' posts_per_page='".$atts['posts_per_page']."' orderby='rand' ";
+		}
+
 		$query .= "post_type='".$post_type."' posts_per_page='".$atts['posts_per_page']."' ";
 
 		if( $atts['taxonomy'] ){
