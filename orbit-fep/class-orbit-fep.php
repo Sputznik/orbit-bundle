@@ -177,7 +177,7 @@ class ORBIT_FEP extends ORBIT_BASE{
         'content'   =>  'Description',
         'date'      =>  'Date',
         'files'     =>  'Attachments',
-        'featured'  =>  'Featured Image'
+        'featured'  =>  'Featured Image',
       );
 
       //NEW FORM FIELDS
