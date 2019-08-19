@@ -1,6 +1,9 @@
 <?php $taxonomies = get_taxonomies( array(), 'objects' );?>
-<p>Import terms of taxonomy from a CSV file</p>
+
 <?php if( ! isset( $_POST['submit'] ) ):?>
+
+<p>Import terms of taxonomy from a CSV file</p>
+
 
 <form method="POST" enctype="multipart/form-data" >
   <div>
@@ -32,7 +35,8 @@
 
     // CHECK IF UPLOAD PROCESS WAS COMPLETED WITHOUT ANY ERROR
     if ( $movefile && ! isset( $movefile['error'] ) ) {
-      echo "File is valid, and was successfully uploaded.\n";
+      
+      //echo "File is valid, and was successfully uploaded.\n";
 
       $orbit_csv = ORBIT_CSV::getInstance();
       $num_rows = $orbit_csv->numRows( $movefile['file'] );
