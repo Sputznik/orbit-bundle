@@ -11,9 +11,9 @@ class ORBIT_CSV extends ORBIT_BASE {
 			$arrayCsv = $this->toArray($path);
 
 			$offset = ($_GET['orbit_batch_step'] - 1) * $_GET['per_page'];
-			
+
 			if (!$offset) {$offset = 1;}
-			
+
 			$selected_array_csv = array_slice($arrayCsv, $offset, $_GET['per_page']);
 
 			// echo "<pre>";
@@ -34,9 +34,9 @@ class ORBIT_CSV extends ORBIT_BASE {
 			$headerInfo = $this->getHeaderInfo($arrayCsv);
 
 			$offset = ($_GET['orbit_batch_step'] - 1) * $_GET['per_page'];
-			
+
 			if (!$offset) {$offset = 1;}
-			
+
 			$selected_array_csv = array_slice($arrayCsv, $offset, $_GET['per_page']);
 
 			//echo "<pre>";
@@ -60,14 +60,14 @@ class ORBIT_CSV extends ORBIT_BASE {
 	function toArray($path) {
 		$file     = fopen($path, "r");
 		$arrayCsv = array();
-		
+
 		while (!feof($file)) {
 			$fpTotal = fgetcsv($file);
 			array_push($arrayCsv, $fpTotal);
 		}
-		
+
 		fclose($file);
-		
+
 		return $arrayCsv;
 	}
 
@@ -132,9 +132,10 @@ class ORBIT_CSV extends ORBIT_BASE {
 		$headerCsv = $arrayCsv[0];
 
 		$headerInfo = array(
-			'post_info' => array(),
-			'tax_info'  => array(),
-			'cf_info'   => array(),
+			'post_info' 	=> array(),
+			'tax_info'  	=> array(),
+			'cf_info'   	=> array(),
+			'term_info'		=> array()
 		);
 
 		$i = 0;
@@ -145,15 +146,20 @@ class ORBIT_CSV extends ORBIT_BASE {
 				$headerInfo['post_info'][$col] = $i;
 			} elseif (strpos($col, 'tax_') !== false) {
 				// TAXONOMY INFORMATION
-				$temp_col                             = explode('tax_', $col);
+				$temp_col = explode('tax_', $col);
 				$headerInfo['tax_info'][$temp_col[1]] = $i;
 			} elseif (strpos($col, 'cf_') !== false) {
 				// CUSTOM FIELDS INFORMATION
-				$temp_col                            = explode('cf_', $col);
+				$temp_col = explode('cf_', $col);
 				$headerInfo['cf_info'][$temp_col[1]] = $i;
+			} elseif (strpos($col, 'term_') !== false) {
+				// TERMS INFORMATION - PASSING TERM ID
+				$temp_col = explode('term_', $col);
+				$headerInfo['term_info'][$temp_col[1]] = $i;
 			} elseif (strpos($col, '|') !== false) {
+				// NEED SOME DOCUMENTATION FOR THIS - MAYBE THIS WAS USED WHILE EXPORTING
 				// TERMS INFORMATION
-				$temp_col                               = explode('|', $col);
+				$temp_col = explode('|', $col);
 				$headerInfo[$temp_col[0]][$temp_col[1]] = $i;
 			}
 
@@ -257,21 +263,21 @@ class ORBIT_CSV extends ORBIT_BASE {
 
 			// INSERT POST
 			$new_post = array();
-			
+
 			foreach ($headerInfo['post_info'] as $slug => $value) {
-				
+
 				if (isset($rowCsv[$value])) {
 					$new_post[$slug] = $rowCsv[$value];
 				}
-			
+
 			}
-			
+
 			$new_post = wp_parse_args($new_post, $defaults);
-			
+
 			if (isset($new_post['post_title']) || isset($new_post['post_content']) || isset($new_post['post_excerpt'])) {
-				
+
 				$post_id = wp_insert_post($new_post, true);
-				
+
 				if (isset($post_id->errors)) {
 					echo "<pre>";
 					print_r($post_id->errors);
@@ -288,6 +294,8 @@ class ORBIT_CSV extends ORBIT_BASE {
 				//print_r($headerInfo['tax_info']);
 
 				//$orbit_util->test($rowCsv);
+
+				$terms_info_arr = array();
 
 				// ADD TAXONOMIES
 				foreach ($headerInfo['tax_info'] as $taxonomy => $value) {
@@ -309,7 +317,14 @@ class ORBIT_CSV extends ORBIT_BASE {
 						//$orbit_util->test( $terms );
 
 						if (count($terms_id_arr)) {
-							wp_set_post_terms($post_id, $terms_id_arr, $taxonomy);
+
+							if( !isset( $terms_info_arr[ $taxonomy ] ) ){
+								$terms_info_arr[ $taxonomy ] = array();
+							}
+
+							$terms_info_arr[ $taxonomy ] = array_merge( $terms_info_arr[ $taxonomy ], $terms_id_arr );
+
+							//wp_set_post_terms($post_id, $terms_id_arr, $taxonomy);
 						}
 					}
 				}
@@ -320,6 +335,33 @@ class ORBIT_CSV extends ORBIT_BASE {
 						update_post_meta($post_id, $metakey, $rowCsv[$value]);
 					}
 				}
+
+				// TEMRS INFO
+				foreach ($headerInfo['term_info'] as $term_info => $value) {
+					// $term_col[0] - taxonomy
+					// $term_col[1] - term ID
+					$term_col = explode( '|', $term_info );
+
+					if( $rowCsv[$value] == 'Y' ){
+
+						if( !isset( $terms_info_arr[ $taxonomy ] ) ){
+							$terms_info_arr[ $taxonomy ] = array();
+						}
+
+						array_push( $terms_info_arr[ $taxonomy ], $term_col[1] );
+
+					}
+				}
+
+
+				// FINALLY ADDING ALL THE TERMS TOGETHER
+				foreach ( $terms_info_arr as $taxonomy => $terms_id_arr ) {
+					wp_set_post_terms( $post_id, $terms_id_arr, $taxonomy );
+				}
+
+				//echo "<pre>";
+				//print_r( $terms_info_arr );
+				//echo "</pre>";
 
 				echo "<li>Added Post id: ".$post_id."</li>";
 			}
