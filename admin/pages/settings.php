@@ -15,10 +15,15 @@ $screens = array(
 		'tab' => plugin_dir_path(__FILE__) . 'settings-import-posts.php',
 		'action' => 'import-posts',
 	),
-	'bulk-delete' => array(
-		'label' => 'Bulk Delete',
-		'tab' => plugin_dir_path(__FILE__) . 'settings-bulk-delete.php',
-		'action' => 'bulk-delete',
+	'delete-posts' => array(
+		'label' => 'Bulk Delete Posts',
+		'tab' => plugin_dir_path(__FILE__) . 'settings-delete-posts.php',
+		'action' => 'bulk-delete-posts',
+	),
+	'delete-terms' => array(
+		'label' => 'Bulk Delete Terms',
+		'tab' => plugin_dir_path(__FILE__) . 'settings-delete-terms.php',
+		'action' => 'bulk-delete-terms',
 	),
 );
 

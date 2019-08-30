@@ -3,28 +3,31 @@
 class ORBIT_BULK_DELETE extends ORBIT_BASE {
 
 	function __construct() {
-		/* ACTION HOOK FOR AJAX CALL - bulk delete */
-		add_action('orbit_batch_action_bulk_delete', function () {
+		/* ACTION HOOK FOR AJAX CALL - bulk delete posts */
+		add_action('orbit_batch_action_bulk_delete_posts', function () {
 
 			$per_page 		= $_GET['per_page'];
 			$batch_step 	= $_GET['orbit_batch_step'];
 			$resource_name 	= $_GET['resource_name'];
 
+			$this->handlePostDelete($resource_name, $per_page, $batch_step);
 
-			if( 'post_type' == $_GET['delete_type'] ) {
+		});
 
-				$this->handlePostsDelete($resource_name, $per_page, $batch_step);
 
-			} else if( 'taxonomy' == $_GET['delete_type'] ) {
+		/* ACTION HOOK FOR AJAX CALL - bulk delete terms*/
+		add_action('orbit_batch_action_bulk_delete_terms', function () {
 
-				$this->handleTermsDelete($resource_name, $per_page, $batch_step);
-			}
+			$per_page 		= $_GET['per_page'];
+			$batch_step 	= $_GET['orbit_batch_step'];
+			$resource_name 	= $_GET['resource_name'];
 
+			$this->handleTermDelete($resource_name, $per_page, $batch_step);
 
 		});
 	}
 
-	function handlePostsDelete( $name, $per_page, $batch_step ) {
+	function handlePostDelete( $name, $per_page, $batch_step ) {
 
 		$posts= get_posts( array(
 			'post_type'   => $name,
@@ -50,7 +53,7 @@ class ORBIT_BULK_DELETE extends ORBIT_BASE {
 	}
 
 
-	function handleTermsDelete( $name, $per_page, $batch_step ) {
+	function handleTermDelete( $name, $per_page, $batch_step ) {
 
 		$terms = get_terms( array(
 		    'taxonomy' => $name,

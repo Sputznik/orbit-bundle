@@ -160,8 +160,24 @@ jQuery.fn.orbit_batch_process = function(){
 	});
 };
 
+jQuery.fn.orbit_batch_delete = function(){
+
+	return this.each(function() {
+		var $el = jQuery(this);
+			
+		$el.click(function(ev) {
+
+			if( !confirm("Are you Sure to Delete?") ){
+				ev.preventDefault();
+				return false;
+			}
+
+		});
+	});
+};
 
 
 jQuery( document ).ready( function(){
 	jQuery('[data-behaviour~=orbit-batch]').orbit_batch_process();
+	jQuery('.orbit-bd-form input[type=submit]').orbit_batch_delete();
 });
