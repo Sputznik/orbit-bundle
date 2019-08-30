@@ -160,7 +160,7 @@ jQuery.fn.orbit_batch_process = function(){
 	});
 };
 
-jQuery.fn.orbit_batch_delete = function(){
+jQuery.fn.orbit_submit_confirmation = function(){
 
 	return this.each(function() {
 		var $el = jQuery(this);
@@ -179,5 +179,5 @@ jQuery.fn.orbit_batch_delete = function(){
 
 jQuery( document ).ready( function(){
 	jQuery('[data-behaviour~=orbit-batch]').orbit_batch_process();
-	jQuery('.orbit-bd-form input[type=submit]').orbit_batch_delete();
+	jQuery('.orbit-bd-form input[type=submit]').orbit_submit_confirmation();
 });
