@@ -6,7 +6,7 @@ class ORBIT_FORM_FIELD extends ORBIT_BASE{
 
     $terms = get_terms( array(
       'taxonomy'    => $atts['typeval'],
-      'hide_empty'  => false,
+      'hide_empty'  => $atts['tax_hide_empty'] == 1 ? true : false,
       'orderby'     => 'term_id'
     ) );
 
