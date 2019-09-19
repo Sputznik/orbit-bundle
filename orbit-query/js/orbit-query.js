@@ -96,23 +96,6 @@ jQuery('document').ready(function(){
 					$ul.trigger( 'ajax-load:start' );
 				});
 
-				// Trigger load more on scroll
-				//var $btn_div = jQuery('[data-behaviour="oq-ajax-loading"]');
-				var $btn_bottom = $btn.offset().top + parseInt( $btn.height() ) + 60;
-
-				jQuery(window).scroll(function() {
-    			var window_position = jQuery(this).scrollTop() + parseInt( jQuery(window).height() );
-
-					// Test if the load button has reached
-					if( window_position > $btn_bottom && $btn.html() != "Loading ..." ){
-						$btn.data( 'html', $btn.html() );
-						$btn.html( 'Loading ...' );
-						$ul.trigger( 'ajax-load:start' );
-					}
-
-				});
-				// Trigger load more on scroll ends
-
 				$ul.on( 'ajax-load:complete', function( ev ){
 					$btn.html( $btn.data('html') );
 				} );
