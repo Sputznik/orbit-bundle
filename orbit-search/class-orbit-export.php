@@ -18,6 +18,7 @@ class ORBIT_EXPORT extends ORBIT_BASE{
 
 			// GET PARAMETERS
 			$step = $_REQUEST['orbit_batch_step'];
+      $total_batches = $_REQUEST['orbit_batches'];
 			$file_slug = $_REQUEST['file_slug'];
       $form_id = $_REQUEST['id'];
 
@@ -31,7 +32,17 @@ class ORBIT_EXPORT extends ORBIT_BASE{
       // ADD HEADER ROW FOR THE FIRST BATCH REQUEST ONLY
 			if( $step == 1 ){
 				$orbit_csv->addHeaderToCSV( $file_slug, $header );
+        echo "<p>Create the CSV file. First batch of records added.</p>";
 			}
+      else if( $step == $total_batches ){
+        $filePath = $orbit_csv->getFilePath( $file_slug );
+        echo "<p>Finish adding the remaining records.</p>";
+        echo "<p><a href='" . $filePath['url'] . "'>Click here to download</a></p>";
+      }
+      else{
+        $tot_added = $settings['posts_per_page'] * $step;
+        echo "<p>Total ". $tot_added . " records added to the CSV</p>";
+      }
 
       $orbit_csv->exportPosts( $file_slug, $headerInfo, $query_args );
     });
@@ -60,6 +71,10 @@ class ORBIT_EXPORT extends ORBIT_BASE{
     global $post;
 
     if( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'orbit_export') ) {
+
+      // ORBIT SEARCH ENQUEUE ASSETS
+      $orbit_search = ORBIT_SEARCH::getInstance();
+      $orbit_search->enqueue_assets();
 
       // BATCH PROCESS ENQUEUE ASSETS
       $batch_process = ORBIT_BATCH_PROCESS::getInstance();
@@ -96,55 +111,65 @@ class ORBIT_EXPORT extends ORBIT_BASE{
     return new WP_Query( $query_args );
   }
 
-  function form($atts){
-
-    ob_start();
+  function process_form( $form_id ){
 
     $orbit_search   = ORBIT_SEARCH::getInstance();
     $orbit_csv      = ORBIT_CSV::getInstance();
     $orbit_util     = ORBIT_UTIL::getInstance();
     $batch_process  = ORBIT_BATCH_PROCESS::getInstance();
 
-    $orbit_search->filters_form( $atts['id'] );
+    $filter_settings = $orbit_search->getSettings( $form_id );
+
+    // KEEP THE NAME OF THE FILE DYNAMIC
+    $file_slug = 'mv-data-'.time();
+
+    // NEED TO PASS THIS INFORMATION TO THE MODAL TO DOWNLOAD WHEN THE PROCESS IS COMPLETED
+    $filePath = $orbit_csv->getFilePath( $file_slug );
+
+    // HAS TWO ITEMS IN THE ARRAY: TAX AND DATE
+    $batch_params = $orbit_util->paramsToString( $_GET );
+
+    $total_posts = $this->getQuery( $batch_params, $filter_settings )->found_posts;                                    // TOTAL NUMBER OF POSTS FOUND IN THE QUERY ARGS PASSED
+    $batches = (int) ceil( $total_posts / $filter_settings['posts_per_page'] );    // DYNAMICALLY CREATE THE NUMBER OF BATCHES
+    if( !$batches ){ $batches = 1; }                                           // MINIMUM SHOULD BE 1
+
+    // KEEPING THE CONTENTS URL SAFE SO THAT WE DON'T LOOSE ANY INFORMATION DURING THE TRANSFER
+    //if( isset( $batch_params['tax'] ) ){ $batch_params['tax'] = urlencode( $batch_params['tax'] ); }
+
+    // ADDING THE FILE SLUG INTO THE PARMAETERS THAT NEEDS TO BE PASSED
+    $batch_params['file_slug'] = $file_slug;
+    $batch_params['id'] = $form_id;
+
+    // PROGRESS BAR TO SHOW THE BATCH PROCESSING OF EXPORTING POSTS INTO A CSV FILE
+    echo $batch_process->plain_shortcode( array(
+      'ajax_method' => 'POST',
+      'result'      => '',
+      'title'	      => 'Total Data: '.$total_posts.'. Please wait as the CSV is being exported.',
+      'desc'			  => 'Make sure that your popups are enabled for this url or the browser will stop the download. Do not press the back button until the export completes.',
+      'batches'		  => $batches,
+      'btn_text' 		=> 'Export CSV',
+      'batch_action'=> 'orbit_export',
+      'params'		  => $batch_params
+    ) );
+  }
+
+
+  function form($atts){
+
+    ob_start();
+
+    $orbit_search = ORBIT_SEARCH::getInstance();
+
+    echo "<div style='max-width:650px;'>";
 
     if( $_GET && count( $_GET ) > 1 ){
-
-      $filter_settings = $orbit_search->getSettings( $atts['id'] );
-
-      // KEEP THE NAME OF THE FILE DYNAMIC
-      $file_slug = 'mv-data-'.time();
-
-      // NEED TO PASS THIS INFORMATION TO THE MODAL TO DOWNLOAD WHEN THE PROCESS IS COMPLETED
-      $filePath = $orbit_csv->getFilePath( $file_slug );
-
-      // HAS TWO ITEMS IN THE ARRAY: TAX AND DATE
-      $batch_params = $orbit_util->paramsToString( $_GET );
-
-      $total_posts = $this->getQuery( $batch_params, $filter_settings )->found_posts;                                    // TOTAL NUMBER OF POSTS FOUND IN THE QUERY ARGS PASSED
-      $batches = (int) ( $total_posts / $filter_settings['posts_per_page'] );    // DYNAMICALLY CREATE THE NUMBER OF BATCHES
-      if( !$batches ){ $batches = 1; }                                           // MINIMUM SHOULD BE 1
-
-      // KEEPING THE CONTENTS URL SAFE SO THAT WE DON'T LOOSE ANY INFORMATION DURING THE TRANSFER
-      //if( isset( $batch_params['tax'] ) ){ $batch_params['tax'] = urlencode( $batch_params['tax'] ); }
-
-      // ADDING THE FILE SLUG INTO THE PARMAETERS THAT NEEDS TO BE PASSED
-      $batch_params['file_slug'] = $file_slug;
-      $batch_params['id'] = $atts['id'];
-
-      // PROGRESS BAR TO SHOW THE BATCH PROCESSING OF EXPORTING POSTS INTO A CSV FILE
-      echo $batch_process->plain_shortcode( array(
-        'ajax_method' => 'POST',
-        'result'      => '',
-        'title'	      => 'Total Data: '.$total_posts.'. Please wait as the CSV is being exported.',
-        'desc'			  => 'Make sure that your popups are enabled for this url or the browser will stop the download. Do not press the back button until the export completes.',
-        'batches'		  => $batches,
-        'btn_text' 		=> 'Export CSV',
-        'batch_action'=> 'orbit_export',
-        'params'		  => $batch_params
-      ) );
-
-
+      $this->process_form( $atts['id'] );
     }
+    else{
+      $orbit_search->filters_form( $atts['id'] );
+    }
+
+    echo "</div>";
 
     return ob_get_clean();
   }

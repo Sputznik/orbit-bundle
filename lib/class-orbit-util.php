@@ -15,6 +15,7 @@ class ORBIT_UTIL extends ORBIT_BASE{
 
     if( is_array ( $params ) && ( count( $params ) >= 1 ) ){
 
+      
       /* USER VALUES FROM GET PARAMETERS */
       foreach( $params as $slug => $value ){
 
@@ -22,9 +23,13 @@ class ORBIT_UTIL extends ORBIT_BASE{
         $slug_arr = explode( '_', $slug );
 
         /* FOR CHECKBOX */
+        if( is_array($value) && !array_filter( $value ) ){ $value = array(); }      // ARRAY IS ACTUALLY EMPTY
         if( is_array( $value ) ){ $value = implode( ',', $value ); }
 
         if( count( $slug_arr ) > 1 && $value ){
+
+
+
           // LOOK FOR FIELD TYPE
           switch( $slug_arr[0] ){
             case 'tax':
