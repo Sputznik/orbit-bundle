@@ -1,6 +1,6 @@
 <?php
 
-	class ORBIT_SEARCH{
+	class ORBIT_SEARCH extends ORBIT_BASE{
 
 		function __construct(){
 
@@ -9,8 +9,6 @@
 			/* ADD FORMS THROUGH THE BACKEND */
 			add_filter( 'orbit_post_type_vars', array( $this, 'create_post_type' ) );
 
-			/* ADD THE RELEVANT META BOXES TO THE FORM */
-			add_filter( 'orbit_meta_box_vars', array( $this, 'create_meta_box' ) );
 
 			// THIS IS WHERE THE FILTERS THAT ARE ADDED BY THE USER FROM THE ADMIN PANEL IS SAVED IN THE DB
 			add_action( 'save_post', array( $this, 'save_post' ), 10, 2 );
@@ -34,77 +32,6 @@
 
 			/* ENQUEUE ASSETS */
 			add_action( 'wp_enqueue_scripts', array( $this, 'assets' ) );
-
-			// SEPERATE METABOX FOR FILTERS ONLY
-			add_action( 'orbit_meta_box_html', function( $post, $box ){
-
-				$orbit_filter = ORBIT_FILTER::getInstance();
-
-				// FORM ATTRIBUTES THAT IS NEEDED BY THE REPEATER FILTERS
-				$form_atts = $orbit_filter->vars();
-				if( !$form_atts || !is_array( $form_atts ) ){ $form_atts = array(); }
-				$form_atts['tax_options'] = get_taxonomies();
-
-
-				if( isset( $box['id'] ) && 'orbit-form-filters' == $box['id'] ){
-
-					// GET VALUE FROM THE DATABASE
-					$form_atts['db'] = $this->getFiltersFromDB( $post->ID );
-
-					$form_atts['sections'] = array(
-						'postdate'	=> 'Filter by Date',
-						'tax'				=> 'Filter by Taxonomy'
-					);
-
-					// TRIGGER THE REPEATER FILTER BY DATA BEHAVIOUR ATTRIBUTE
-					_e( "<div data-behaviour='orbit-admin-filters' data-atts='".wp_json_encode( $form_atts )."'></div>");
-				}
-
-				if( isset( $box['id'] ) && 'orbit-export-csv' == $box['id'] ){
-
-					// GET VALUE FROM THE DATABASE
-					$form_atts['db'] = $this->getExportColsFromDB( $post->ID );
-
-					$form_atts['sections'] = array(
-						'post'	=> 'Post Information',
-						'tax'		=> 'Taxonomies',
-						'cf'		=> 'Custom Fields'
-					);
-
-					$form_atts['post_options'] = array(
-						'title'				=>	'Title',
-						'description'	=>	'Description',
-						'date'				=>	'Date'
-					);
-
-					//TRIGGER THE REPEATER FILTER BY DATA BEHAVIOUR ATTRIBUTE
-					_e( "<div data-behaviour='orbit-export' data-atts='".wp_json_encode( $form_atts )."'></div>");
-				}
-
-				if( isset( $box['id'] ) && 'orbit-sort' == $box['id'] ){
-
-					// GET VALUE FROM THE DATABASE
-					$form_atts['db'] = $this->getSortingFieldsFromDB( $post->ID );
-
-					$form_atts['sections'] = array(
-						'post'	=> 'Post Information',
-						'cf'		=> 'Custom Fields'
-					);
-
-					$form_atts['post_options'] = array(
-						'ID'					=> 	'Post ID',
-						'author'			=>	'Author',
-						'title'				=>	'Title',
-						'date'				=>	'Date'
-					);
-
-					//TRIGGER THE REPEATER FILTER BY DATA BEHAVIOUR ATTRIBUTE
-					_e( "<div data-behaviour='orbit-sort' data-atts='".wp_json_encode( $form_atts )."'></div>");
-				}
-
-
-			}, 1, 2 );
-
 
 		}
 
@@ -178,72 +105,6 @@
 			wp_enqueue_script('orbit-search-script', plugin_dir_url( __FILE__ ).'js/main.js', array( 'jquery', 'typeahead', 'orbit-dropdown-checkboxes' ), ORBIT_BUNDLE_VERSION , true );
 			wp_enqueue_script('multirangeMain', plugin_dir_url( __FILE__ ).'js/multirange.js', array(), ORBIT_BUNDLE_VERSION, true );
 			wp_enqueue_script('multirange', plugin_dir_url( __FILE__ ).'js/jquery.multirange.js', array( 'jquery' ), ORBIT_BUNDLE_VERSION , true );
-		}
-
-		function create_meta_box( $meta_box ){
-
-			global $post_type;
-
-			if( 'orbit-form' != $post_type ) return $meta_box;
-
-			$meta_box['orbit-form'] = array(
-				array(
-					'id'		=> 'orbit-form-cf',
-					'title'		=> 'Settings',
-					'fields'	=> array(
-						'posttypes' => array(
-							'type' 		=> 'checkbox',
-							'text' 		=> 'Select Post Types',
-							'options'	=> array()
-						),
-						'posts_per_page'	=> array(
-							'type'		=> 'number',
-							'text'		=> 'Posts Per Page',
-							'default'	=> 10
-						),
-						'filter_heading'	=> array(
-							'type' 				=> 'text',
-							'text'				=> 'Results Heading',
-							'placeholder'	=> '',
-							'default'			=> 'FILTER'
-						),
-					),
-					'field_name'	=> 'filter_settings'
-				),
-				array(
-					'id'		=> 'orbit-form-filters',
-					'title'		=> 'Orbit Filters',
-					'fields'	=> array()
-				),
-				array(
-					'id'		=> 'orbit-sort',
-					'title'		=> 'Orbit Sorting Fields',
-					'fields'	=> array()
-				),
-				// array(
-				// 	'id'		=> 'orbit-export-csv',
-				// 	'title'		=> 'Export to csv',
-				// 	'fields'	=> array()
-				// ),
-				array(
-					'id'		=> 'orbit-header',
-					'title'		=> 'Header Section',
-					'fields'	=> array(
-						'results_heading'	=> array(
-							'type' 		=> 'text',
-							'text'		=> 'Results Heading',
-							'placeholder'	=> 'Items (%d)'
-						),
-						'taxonomies'	=> array(
-							'type'		=> 'checkbox',
-							'text'		=> 'Show Inline Terms Of The Taxonomies With Count',
-							'options'	=> array()
-						)
-					),
-					'field_name'	=> 'filter_header'
-				),
-			);
-			return $meta_box;
 		}
 
 		function create_post_type( $post_types ){
@@ -351,6 +212,8 @@
 			}
 		}
 
+		function getSettings($post_id){ return get_post_meta( $post_id, 'filter_settings', true ); }
+
 		function form( $atts ){
 
 			// CLASSES ORBIT
@@ -363,7 +226,7 @@
 			$atts = shortcode_atts( $this->get_default_atts(), $atts, 'orbit_search' );
 
 			// GET SETTINGS THAT ARE REQUIRED
-			$filter_settings = get_post_meta( $atts['id'], 'filter_settings', true );
+			$filter_settings = $this->getSettings( $atts['id'] );
 			$filter_header = get_post_meta( $atts['id'], 'filter_header', true );
 			if( !is_array( $filter_header ) ){ $filter_header = array(); }
 
@@ -388,6 +251,9 @@
 		}
 
 		function filters_form( $form ){
+
+			$form = get_post($form);
+
 			$orbit_filter = ORBIT_FILTER::getInstance();
 			$orbit_wp = ORBIT_WP::getInstance();
 			include( 'templates/filters-form.php' );
@@ -417,9 +283,9 @@
             echo "<div class='orbit-terms-count'><b>" . $taxonomy->label . "</b><span class='colon'>:</span> " . implode( '<span class="comma">,</span> ', $terms_list ) . "</div>";
           }
         }
-      }	
+      }
 			return ob_get_clean();
 		}
 	}
 
-	new ORBIT_SEARCH;
+	ORBIT_SEARCH::getInstance();
