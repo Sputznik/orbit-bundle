@@ -39,6 +39,16 @@ jQuery.fn.repeater_filters = function(){
 				var $header = $list_item.find( '.list-header' );
 				var $content = $list_item.find( '.list-content' );
 
+
+				if( filter['type'] == 'tax' ){
+					atts['forms'] = jQuery.extend( atts['forms'], atts['tax_forms'] );
+
+					console.log( atts['forms'] );
+					
+				}
+
+
+
 				// LABEL
 				var $textarea = repeater.createField({
 					element	: 'textarea',

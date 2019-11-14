@@ -1,15 +1,15 @@
 /*
 * NESTED DROPDOWN
 */
+
 jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
-	
+
 	var $el             = jQuery( this ),
 		$cats_dropdown    = $el.find( '.cats select' ),
 		$subcats_dropdown = $el.find( '.subcats select' ),
 		$cloneSubDropdown = $el.find( '.subcats select' ).clone();  // Clones all subcats from dropdown
 
 	function updateSubDropdown(){
-
 		var currentCategoryValue = $cats_dropdown.val();
 
 		$subcats_dropdown.find( 'option' ).remove();
@@ -23,24 +23,35 @@ jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 			$defaultOption.val( 0 );
 			$defaultOption.html('Select');
 			$defaultOption.appendTo( $subcats_dropdown );
+			
+			$options.appendTo( $subcats_dropdown );
+
+			$subcats_dropdown.val(0);
+
+			$subcats_dropdown.show();
 		}
 		else{
-			$options = $cloneSubDropdown.find('option').clone();
-			$options.first().val(0);
+			$subcats_dropdown.hide();
 		}
 
-		$options.appendTo( $subcats_dropdown );
 
-		$subcats_dropdown.val(0);
 
 	}
 
+	//updateSubDropdown();
+
 	// change subservices when the main service is changed
 	$cats_dropdown.change( function( ev ){
-
 		updateSubDropdown();
-
 	});
+
+	// ON THE INITIAL LOAD HIDE THE DROPDOWN
+	if( !$cats_dropdown.val() ){
+		$subcats_dropdown.hide();
+	}
+
+
+
 
 });
 

@@ -33,6 +33,10 @@
 					'date'										=> 'Date (input field)',
 					'multirange'							=>	'Multirange'
 				),
+				'tax_forms' => array(
+					'nested_dropdowns'					=> 'Nested Dropdowns (Hierarchial Terms)',
+					'dropdown_with_checkboxes'	=> 'Dropdown With Checkboxes (Hierarchial Terms)'
+				),
 				'shortcode'	=> array(
 					'type'						=> 'customfield',
 					'typeval'					=> '',
@@ -98,7 +102,7 @@
 
 			$custom_function = 'default';
 			$custom_function = apply_filters( 'orbit-filter-field', $custom_function, $atts );
-			
+
 			if( $custom_function == 'default' ){
 				$this->display( $atts );
 			}

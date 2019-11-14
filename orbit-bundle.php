@@ -9,7 +9,7 @@
     */
 
 
-	define( 'ORBIT_BUNDLE_VERSION', '1.4.6' ); //'
+	define( 'ORBIT_BUNDLE_VERSION', time() ); //1.4.7
 
 	add_action('wp_enqueue_scripts', function(){
 		wp_register_style( 'orbit-main', plugins_url( 'orbit-bundle/dist/css/main.css' ), array(), ORBIT_BUNDLE_VERSION );
