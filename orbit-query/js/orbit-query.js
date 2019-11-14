@@ -124,14 +124,17 @@ jQuery('document').ready(function(){
 			$ul.ajax_loading_list();
 
 			// Trigger load more on scroll
-			var bottom = $el.offset().top + parseInt( $el.height() ) + offset;
 
 			jQuery(window).scroll(function() {
 
 				var window_position = jQuery(this).scrollTop() + parseInt( jQuery(window).height() );
 
+				var bottom = $el.offset().top + parseInt( $el.height() ) - offset;
+
 				// Test if the load button has reached
 				if( window_position > bottom && !loading_flag ){
+					// console.log( bottom );
+
 					$ul.trigger( 'ajax-load:start' );
 					loading_flag = true;
 				}
