@@ -23,7 +23,7 @@ jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 			$defaultOption.val( 0 );
 			$defaultOption.html('Select');
 			$defaultOption.appendTo( $subcats_dropdown );
-			
+
 			$options.appendTo( $subcats_dropdown );
 
 			$subcats_dropdown.val(0);
@@ -52,6 +52,32 @@ jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 
 
 
+
+});
+
+jQuery('[data-behaviour~="orbit-nested-dropdown-checkboxes"]').each(function(){
+
+	var $el 					= jQuery(this),
+		$cats_dropdown  = $el.find( '.cats select' ),
+		$subcats_menu		= $el.find( '.subcats .orbit-dropdown-menu' );
+
+	function updateSubDropdown(){
+		var currentCategoryValue = $cats_dropdown.val();
+
+		if( currentCategoryValue > 0 ){
+			$subcats_menu.find('li.checkbox').hide();
+			$subcats_menu.find('li.checkbox[data-parent~="' + currentCategoryValue + '"]').show();
+		}
+		else{
+			$subcats_menu.find('li.checkbox').show();
+		}
+	}
+
+	$cats_dropdown.change( function( ev ){
+		updateSubDropdown();
+	});
+
+	updateSubDropdown();
 
 });
 

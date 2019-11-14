@@ -5,7 +5,7 @@
     <span class="caret"></span>
   </button>
   <ul class="orbit-dropdown-menu" role="menu" aria-labelledby="menu1">
-    <li style="padding: 0 10px;"><a href="#" data-btn="reset">Clear All</a></li>
+    <li style="padding: 0 10px; margin-bottom: 10px;"><a href="#" data-btn="reset">Clear All</a></li>
     <?php foreach( $atts['items'] as $item ): if( isset( $item['slug'] ) && $item['slug'] ):?>
     <li class="checkbox" <?php if( isset( $item['parent'] ) ){ _e("data-parent='".$item['parent']."'");}?>>
     	<label>
