@@ -143,6 +143,15 @@ jQuery.fn.repeater_columns = function(){
         });
         updateLabel();
 
+        // CLOSE EVENT ON CLICK OF THE BUTTON
+        $closeButton.click( function( ev ){
+					ev.preventDefault();
+					if( confirm( 'Are you sure you want to remove this?' ) ){
+						// IF PAGE ID IS NOT EMPTY THAT MEANS IT IS ALREADY IN THE DB, SO THE ID HAS TO BE PUSHED INTO THE HIDDEN DELETED FIELD
+						$list_item.remove();
+					}
+				});
+
       },
 			reorder: function( repeater ){
 				/*
