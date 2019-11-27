@@ -106,6 +106,21 @@ jQuery.fn.repeater_columns = function(){
           return $field;
         }
 
+        // 	HELPER FUNCTION TO CREATE BOOLEAN FIELDS
+				function createBooleanField( field ){
+					var flag = false;
+					if( filter && filter[ field['slug'] ] && filter[ field['slug'] ] > 0 ){ flag = true; }
+
+	        return repeater.createBooleanField({
+	          attr   :  {
+	            name		: getAttrName( field['slug'] ),
+	            checked	: flag,
+	          },
+	          label  :  field['label'],
+	          append :  field['append']
+	        });
+				}
+
         switch( filter['type'] ){
 
           case 'post':
@@ -125,6 +140,13 @@ jQuery.fn.repeater_columns = function(){
               options : data['tax_options'],
               append  : $content
             } );
+
+            var $boolMultiple = createBooleanField({
+              label : 'Breakup columns by each term',
+              slug  : 'multiple',
+              append  : $content
+            });
+
             break;
 
           case 'cf':

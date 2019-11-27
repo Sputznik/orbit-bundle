@@ -23,15 +23,17 @@ class ORBIT_EXPORT extends ORBIT_BASE{
       $form_id = $_REQUEST['id'];
 
       $headers = $this->getExportHeaders( $form_id );
+
       $headerInfo = $orbit_csv->getHeaderInfo( array( $headers ) );
       $settings = $orbit_search->getSettings( $form_id );
 
+      
       // GET QUERY ARGS
       $query_args = $this->getQueryArgs( $_REQUEST, $settings, $_REQUEST['orbit_batch_step'] );
 
       // ADD HEADER ROW FOR THE FIRST BATCH REQUEST ONLY
 			if( $step == 1 ){
-				$orbit_csv->addHeaderToCSV( $file_slug, $header );
+				$orbit_csv->addHeaderToCSV( $file_slug, $headers );
         echo "<p>Create the CSV file. First batch of records added.</p>";
 			}
       else if( $step == $total_batches ){
@@ -58,6 +60,11 @@ class ORBIT_EXPORT extends ORBIT_BASE{
 
     foreach( $cols as $col ){
       $new_column = $col['type'] . "_" . $col['field'];
+
+      if( isset( $col['multiple'] ) && '1' == isset( $col['multiple'] ) ){
+        $new_column .= '[]';
+      }
+
       array_push( $headers, $new_column );
     }
 

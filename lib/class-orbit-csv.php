@@ -172,9 +172,9 @@ class ORBIT_CSV extends ORBIT_BASE {
 	function exportPosts($file_slug, $headerInfo, $query_args) {
 
 		/*
-			echo "<pre>";
-			print_r( $headerInfo );
-			echo "</pre>";
+		echo "<pre>";
+		print_r( $headerInfo );
+		echo "</pre>";
 		*/
 
 		$orbit_wp = ORBIT_WP::getInstance();
@@ -214,7 +214,13 @@ class ORBIT_CSV extends ORBIT_BASE {
 							}
 							$row[$value] = implode(',', $term_names_arr);
 						}
-					} else {
+					} else if($type == 'cf_info'){
+						foreach ($valueArray as $metakey => $value) {
+							$metavalue = get_post_meta( get_the_ID(), $metakey, true );
+							$row[$value] = $metavalue;
+						}
+					}
+					else {
 
 						// CHECK IF THE NEXT HEADER INFORMATION IS A TAXONOMY
 						if (taxonomy_exists($type)) {
@@ -238,9 +244,9 @@ class ORBIT_CSV extends ORBIT_BASE {
 				// SORT ARRAY BY KEYS IN ASCENDING
 				ksort($row);
 				/*
-					echo "<pre>";
-					print_r( $row );
-					echo "</pre>";
+				echo "<pre>";
+				print_r( $row );
+				echo "</pre>";
 				*/
 
 				$this->addRowToCSV($file_slug, $row);

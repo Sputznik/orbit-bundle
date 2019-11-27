@@ -455,6 +455,10 @@ margin-bottom: 10px;
 	margin: 12px 0 33px;
 }
 
+[data-behaviour="orbit-export"] .orbit-slide-repeater .list-content label{
+	margin-bottom: 20px;
+}
+
 
 /* Orbit Batch */
 
@@ -463,7 +467,7 @@ margin-bottom: 10px;
 }
 
 [data-behaviour="orbit-batch"] .progress-container {
-	border: #333 solid 1px; 
+	border: #333 solid 1px;
 	margin-bottom: 10px;
 }
 
