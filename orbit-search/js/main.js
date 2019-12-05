@@ -198,7 +198,7 @@ jQuery('[data-behaviour~=orbit-field-files]').each(function(){
 
 
 
-$.fn.ajax_form_submit = function(options){
+jQuery.fn.ajax_form_submit = function(options){
   var options = $.extend({
     success : function(data){},
   }, options);

@@ -1,4 +1,4 @@
-$(document).ready(function(){
+jQuery(document).ready(function(){
 
   jQuery('[data-behaviour="multirange"]').each(function(){
 
