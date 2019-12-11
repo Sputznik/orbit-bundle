@@ -25,6 +25,7 @@ class ORBIT_FORM_FIELD extends ORBIT_BASE{
   // GETTING CATEGORIES AND SUBCATEGORIES SEPERATELY FOR A Taxonomy
   // USEFUL FOR LOCATIONS
   function getNestedTerms( $atts ){
+
     $data = array( 'cats' => array(), 'subcats' => array() );
     $terms = get_terms( array(
       'taxonomy'    => $atts['typeval'],
@@ -48,7 +49,17 @@ class ORBIT_FORM_FIELD extends ORBIT_BASE{
         ) );
       }
     }
+
+    //Sort the categories and sub-categories alphabetically
+    usort( $data['cats'], array( $this, 'locationByName' ) );
+    usort( $data['subcats'], array( $this, 'locationByName' ) );
+
     return $data;
+  }
+
+
+  function locationByName( $a, $b ) {
+    return strcmp( $a["name"], $b["name"] );
   }
 
   function display( $atts = array( 'name' => '', 'value' => '', 'label' => '', 'type' => '', 'class' => '' ) ){
@@ -96,15 +107,7 @@ class ORBIT_FORM_FIELD extends ORBIT_BASE{
 
     }
 
-
-
-
-
-
-
-
   }
-
 
 }
 
