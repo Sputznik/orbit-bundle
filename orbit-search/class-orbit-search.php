@@ -251,8 +251,9 @@
 
 			// FINAL RENDERING
 			$atts['theme'] .= "-theme";
+			$template_file = apply_filters( 'orbit_search_template', "templates/" . $atts['theme'] .".php", $atts );
 			_e("<div class='orbit-search-container ". $atts['theme']."' data-behaviour='orbit-search'>");
-			include( "templates/" . $atts['theme'] .".php" );
+			include( $template_file );
 			_e("</div>");
 
 			return ob_get_clean();
