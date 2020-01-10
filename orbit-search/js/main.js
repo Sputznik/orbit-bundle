@@ -59,6 +59,7 @@ jQuery('[data-behaviour~="orbit-nested-dropdown-checkboxes"]').each(function(){
 
 	var $el 					= jQuery(this),
 		$cats_dropdown  = $el.find( '.cats select' ),
+		$subcats 				= $el.find( '.subcats' ),
 		$subcats_menu		= $el.find( '.subcats .orbit-dropdown-menu' );
 
 	function updateSubDropdown(){
@@ -67,9 +68,11 @@ jQuery('[data-behaviour~="orbit-nested-dropdown-checkboxes"]').each(function(){
 		if( currentCategoryValue > 0 ){
 			$subcats_menu.find('li.checkbox').hide();
 			$subcats_menu.find('li.checkbox[data-parent~="' + currentCategoryValue + '"]').show();
+			$subcats.show();
 		}
 		else{
-			$subcats_menu.find('li.checkbox').show();
+			$subcats.hide();
+			//$subcats_menu.find('li.checkbox').show();
 		}
 	}
 
