@@ -38,7 +38,9 @@ jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 
 	}
 
-	//updateSubDropdown();
+	//alert('hi');
+
+
 
 	// change subservices when the main service is changed
 	$cats_dropdown.change( function( ev ){
@@ -48,6 +50,15 @@ jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 	// ON THE INITIAL LOAD HIDE THE DROPDOWN
 	if( !$cats_dropdown.val() ){
 		$subcats_dropdown.hide();
+	}
+	else{
+		var temp_subcat_val = $subcats_dropdown.val();
+		if( temp_subcat_val > 0 ){
+			updateSubDropdown();
+			$subcats_dropdown.val( temp_subcat_val );
+		}
+
+
 	}
 
 
