@@ -144,6 +144,7 @@
 					'rewrite' 						=> $post_type['rewrite'],
 					'has_archive' 				=> true,
 					'menu_icon'						=> isset( $post_type['menu_icon'] ) ? $post_type['menu_icon'] : 'dashicons-images-alt',
+					'taxonomies'					=> isset( $post_type['taxonomies'] ) ? $post_type['taxonomies'] : array(),
 					'supports'						=>	$post_type['supports']
 				)
 			);
