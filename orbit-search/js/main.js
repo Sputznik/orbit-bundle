@@ -5,6 +5,7 @@
 jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 
 	var $el             = jQuery( this ),
+		$form 						= $el.closest( 'form' ),
 		$cats_dropdown    = $el.find( '.cats select' ),
 		$subcats_dropdown = $el.find( '.subcats select' ),
 		$cloneSubDropdown = $el.find( '.subcats select' ).clone();  // Clones all subcats from dropdown
@@ -33,12 +34,9 @@ jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 		else{
 			$subcats_dropdown.hide();
 		}
-
-
-
 	}
 
-	//alert('hi');
+
 
 
 
@@ -46,6 +44,19 @@ jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 	$cats_dropdown.change( function( ev ){
 		updateSubDropdown();
 	});
+
+	/*
+	* CHANGE THE NAME OF THE PARENT DROPDOWN IF THE CHILD HAS BEEN SELECTED
+	* SO THAT THE QUERY IS DONE SOLELY BASED ON THE CHILD
+	*/
+	$form.submit( function( ev ){
+		if( $subcats_dropdown.val() ){
+			var taxonomy = $cats_dropdown.attr( 'name' ).replace( 'tax_', '' ).replace( '[]', '' ),
+				fieldName	 = 'parent_' + taxonomy;
+			$cats_dropdown.attr( 'name', fieldName );
+			//alert( fieldName );
+		}
+	} );
 
 	// ON THE INITIAL LOAD HIDE THE DROPDOWN
 	if( !$cats_dropdown.val() ){
@@ -57,9 +68,9 @@ jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 			updateSubDropdown();
 			$subcats_dropdown.val( temp_subcat_val );
 		}
-
-
 	}
+
+
 
 
 
@@ -69,6 +80,7 @@ jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 jQuery('[data-behaviour~="orbit-nested-dropdown-checkboxes"]').each(function(){
 
 	var $el 					= jQuery(this),
+		$form 					= $el.closest( 'form' ),
 		$cats_dropdown  = $el.find( '.cats select' ),
 		$subcats 				= $el.find( '.subcats' ),
 		$subcats_menu		= $el.find( '.subcats .orbit-dropdown-menu' );
@@ -90,6 +102,21 @@ jQuery('[data-behaviour~="orbit-nested-dropdown-checkboxes"]').each(function(){
 	$cats_dropdown.change( function( ev ){
 		updateSubDropdown();
 	});
+
+	/*
+	* CHANGE THE NAME OF THE PARENT DROPDOWN IF THE CHILD HAS BEEN SELECTED
+	* SO THAT THE QUERY IS DONE SOLELY BASED ON THE CHILD
+	*/
+	$form.submit( function( ev ){
+		var currentCategoryValue = $cats_dropdown.val();
+
+		// CONDITION FOR CHECKING IF THE CHILD IS SELECTED
+		if( $subcats_menu.find('li.checkbox[data-parent~="' + currentCategoryValue + '"] input[type=checkbox]:checked').length ){
+			var taxonomy = $cats_dropdown.attr( 'name' ).replace( 'tax_', '' ).replace( '[]', '' ),
+				fieldName	 = 'parent_' + taxonomy;
+			$cats_dropdown.attr( 'name', fieldName );
+		}
+	} );
 
 	updateSubDropdown();
 
