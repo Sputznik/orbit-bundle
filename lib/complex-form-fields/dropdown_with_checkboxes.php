@@ -23,19 +23,23 @@ $this->display( array(
 ) );
 _e( "</div>" );
 
-
+/*
 $child_values = array();
 if( isset( $_GET[ $parent_param ] ) ){
   foreach ( $values as $value ) {
     array_push( $child_values, $value[0] );
   }
 }
+*/
+
+
+
 _e( "<div class='subcats'>" );
 $this->display( array(
   'type'            => 'bt_dropdown_checkboxes',
-  'name'            => $name_param,
+  'name'            => $param,
   'items'           => $terms['subcats'],
-  'value'           => $child_values
+  'value'           => isset( $_GET[ $parent_param ] ) ? $values : array()
 ) );
 _e( "</div>" );
 
