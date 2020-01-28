@@ -132,11 +132,11 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 
 
 
-
+		/*
 		echo "<pre>";
 		print_r( $query_atts );
 		echo "</pre>";
-		
+		*/
 
 		$orbit_wp = ORBIT_WP::getInstance();
 
