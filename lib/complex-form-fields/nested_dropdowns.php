@@ -22,6 +22,9 @@ $this->display( array(
 _e( "</div>" );
 
 $child_value = isset( $_GET[ $parent_param ] ) && is_array( $values ) && count( $values ) ? $values[0] : ( ( is_array( $values ) && count( $values ) > 1 ) ? $values[1] : "" );
+
+
+
 _e( "<div class='subcats'>" );
 $this->display( array(
   //'label'           => apply_filters( 'orbit-nested-dropdown-label', 'Select Sub', $atts ),

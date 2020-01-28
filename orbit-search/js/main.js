@@ -10,8 +10,10 @@ jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 		$subcats_dropdown = $el.find( '.subcats select' ),
 		$cloneSubDropdown = $el.find( '.subcats select' ).clone();  // Clones all subcats from dropdown
 
-	function updateSubDropdown(){
+	function updateSubDropdown( defaultValue ){
 		var currentCategoryValue = $cats_dropdown.val();
+
+		var subcat_value = defaultValue ? defaultValue : 0;
 
 		$subcats_dropdown.find( 'option' ).remove();
 
@@ -27,7 +29,7 @@ jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 
 			$options.appendTo( $subcats_dropdown );
 
-			$subcats_dropdown.val(0);
+			$subcats_dropdown.val( subcat_value );
 
 			$subcats_dropdown.show();
 		}
@@ -50,7 +52,10 @@ jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 	* SO THAT THE QUERY IS DONE SOLELY BASED ON THE CHILD
 	*/
 	$form.submit( function( ev ){
-		if( $subcats_dropdown.val() ){
+
+		var subcat_value = parseInt( $subcats_dropdown.val() );
+
+		if( subcat_value ){
 			var taxonomy = $cats_dropdown.attr( 'name' ).replace( 'tax_', '' ).replace( '[]', '' ),
 				fieldName	 = 'parent_' + taxonomy;
 			$cats_dropdown.attr( 'name', fieldName );
@@ -64,17 +69,11 @@ jQuery( '[data-behaviour~="orbit-nested-dropdown"]' ).each( function(){
 	}
 	else{
 		var temp_subcat_val = $subcats_dropdown.val();
-		if( temp_subcat_val > 0 ){
-			updateSubDropdown();
-			$subcats_dropdown.val( temp_subcat_val );
-		}
+
+		temp_subcat_val = temp_subcat_val ? temp_subcat_val : 0;
+
+		updateSubDropdown( temp_subcat_val );
 	}
-
-
-
-
-
-
 });
 
 jQuery('[data-behaviour~="orbit-nested-dropdown-checkboxes"]').each(function(){
