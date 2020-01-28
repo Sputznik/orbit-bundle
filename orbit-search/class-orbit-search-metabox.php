@@ -100,6 +100,13 @@
 						'placeholder'	=> '',
 						'default'			=> 'FILTER'
 					),
+          'default_sorting' => array(
+            'type'        => 'dropdown',
+            'text'        => 'Default Sorting',
+            'options'     => array(
+              'post:title:ASC' => 'Alphabetic Order'
+            )
+          )
 				),
 				'field_name'	=> 'filter_settings'
 			);
@@ -115,9 +122,10 @@
 
 		function get_sorting_metabox(){
 			return array(
-				'id'		=> 'orbit-sort',
-				'title'		=> 'Orbit Sorting Fields',
-				'fields'	=> array()
+				'id'		      => 'orbit-sort',
+				'title'		    => 'Orbit Sorting Fields',
+        'field_name'	=> 'orbit_sort_fields',
+				'fields'	    => array()
 			);
 		}
 

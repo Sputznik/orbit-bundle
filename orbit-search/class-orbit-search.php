@@ -167,9 +167,19 @@
 			if( isset( $extra_params['date'] ) && $extra_params['date'] ){ $shortcode_str .= " date_query='".$extra_params['date']."'"; }
 
 			// ADD ORDER AND ORDER BY PARAMS
-			if( isset( $_GET['orbit_sort'] ) ){
+			if( ( isset( $_GET['orbit_sort'] ) && $_GET['orbit_sort'] ) ||
+					( isset( $filter_settings['default_sorting'] ) && $filter_settings['default_sorting'] ) ){
 
-				$orbit_sort = explode( ':', $_GET[ 'orbit_sort' ] );
+				if( isset( $_GET['orbit_sort'] ) && $_GET['orbit_sort'] ){
+					// USER SELECTED SORTING
+					$orbit_sort = $_GET['orbit_sort'];
+				}
+				else{
+					// DEFAULT SORTING SHOULD HAPPEN HERE
+					$orbit_sort = $filter_settings['default_sorting'];
+				}
+
+				$orbit_sort = explode( ':', $orbit_sort );
 				if( $orbit_sort[0] == 'post' ){
 					$shortcode_str .= " orderby='".$orbit_sort[1].":".$orbit_sort[2]."'";
 					//print_r( $orbit_sort );
@@ -179,6 +189,7 @@
 				}
 
 			}
+
 
 			// END OF SHORTCODE STRING
 			$shortcode_str .= "]";

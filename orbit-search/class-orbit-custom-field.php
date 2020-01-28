@@ -267,10 +267,23 @@
 			if( array_key_exists( $slug, $_POST ) ){
 				update_post_meta( $post_id, $slug, $_POST[ $slug ] );
 			}
+			else{
+				//print_r( "$slug needs to be deleted" );
+				delete_post_meta( $post_id, $slug );
+			}
 		}
 
 		function save( $post_id ){
 			$meta_boxes = $this->get_meta_boxes();
+
+			//echo "<pre>";
+			//print_r( $meta_boxes );
+			//echo "</pre>";
+
+			//echo "<pre>";
+			//print_r( $_POST );
+			//echo "</pre>";
+
 			foreach( $meta_boxes as $meta_box ){
 
 				if( isset( $meta_box['field_name'] ) ){
@@ -282,7 +295,8 @@
 					}	// end of foreach
 				}		// end of if
 			}			// end of foreach
-		}				// enf of function
+			//wp_die();
+		}				// end of function
 
 	}
 
