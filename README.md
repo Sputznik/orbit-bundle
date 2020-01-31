@@ -8,6 +8,6 @@ Create wordpress custom post types and custom taxonomies. Search and filter thro
 4. Paste code ```[orbit_query]``` for posts and ```[orbit_query_users]``` for authors.
 5. Publish the page.
 
-[Orbit Query Shortcode Documentation](https://github.com/Sputznik/orbit-bundle/wiki/Orbit-Query)
-
-[Orbit Query Users Shortcode Documentation](https://github.com/Sputznik/orbit-bundle/wiki/Orbit-Query-Users)
+## Shortcodes
+1. [Orbit Query](https://github.com/Sputznik/orbit-bundle/wiki/Orbit-Query)
+2. [Orbit Query Users](https://github.com/Sputznik/orbit-bundle/wiki/Orbit-Query-Users)
