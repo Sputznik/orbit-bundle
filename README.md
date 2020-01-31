@@ -11,5 +11,3 @@ Create wordpress custom post types and custom taxonomies. Search and filter thro
 [Orbit Query Shortcode Documentation](https://github.com/Sputznik/orbit-bundle/wiki/Orbit-Query)
 
 [Orbit Query Users Shortcode Documentation](https://github.com/Sputznik/orbit-bundle/wiki/Orbit-Query-Users)
-
-Works with WP Pusher plugin
