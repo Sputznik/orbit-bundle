@@ -104,7 +104,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			'posts_per_page'	=> $atts['posts_per_page'],
 			'cat' 						=> $atts['cat'],
 			'author'					=> $atts['author'],
-			'category_name' 	=> $atts['category_name'],
+			//'category_name' 	=> $atts['category_name'],
 			'tag' 						=> $atts['tag'],
 			's' 							=> $atts['s'],
 			'post__not_in' 		=> $orbit_util->explode_to_arr( $atts['post__not_in'] ),
