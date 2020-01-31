@@ -52,6 +52,17 @@ or multiple tags ```[orbit_query tag="bread,baking"]```.
 19. order: Designates the ascending or descending order of the 'orderby' parameter. Defaults to 'DESC'.
 20. orderby: Sort retrieved posts by parameter. Defaults to 'date (post_date)'. One or more options can be passed. Follow [WP DOCUMENTATION](https://developer.wordpress.org/reference/classes/wp_query/#order-orderby-parameters) to find the options that can be passed in the shortcode.
 
-
+## Parameters of orbit_query_users shortcode
+1. search: Show users based on a keyword search. ```[orbit_query_users search="keyword"]```
+2. role: Show users from a particular singular role. ```[orbit_query_users role="author"]```
+3. role__in: Show users from multiple roles. ```[orbit_query_users role__in="editor,author"]```
+4. role__not_in: To exclude users by role. ```[orbit_query_users role__not_in="editor,author"]```
+5. include: use author ids. Specify authors to retrieve. ```[orbit_query_users include="1,3"]```
+6. exclude: use author ids. Specify authors not to retrieve. ```[orbit_query_users exclude="1,3"]```
+7. orderby: Sort retrieved authors by parameter. Defaults to 'ID (author id)'.
+8. order: Designates the ascending or descending order of the 'orderby' parameter. Defaults to 'DESC'.
+9. number: The number of authors that should appear. By default the value is 10.
+10. paged: The number of page whose default value is 1. Show the authors that would normally show up just on page X when using pagination.
+11. style: To use the theme templates, within the shortcode ```[orbit_query_users style=list]```
 
 Works with WP Pusher plugin
