@@ -48,7 +48,7 @@ or multiple tags ```[orbit_query tag="bread,baking"]```.
 15. offset: The number of post to displace or pass over. By default the value is 0. This parameter is ignored if posts_per_page is set to -1.
 16. pagination: By default the value is 0. If set to 1, pagination appears below the posts.
 17. paged: The number of page whose default value is 1. Show the posts that would normally show up just on page X when using the "Older Entries" link.
-18. style:
+18. style: To use the theme templates, within the shortcode ```[orbit_query style=card]```
 19. order: Designates the ascending or descending order of the 'orderby' parameter. Defaults to 'DESC'.
 20. orderby: Sort retrieved posts by parameter. Defaults to 'date (post_date)'. One or more options can be passed. Follow [WP DOCUMENTATION](https://developer.wordpress.org/reference/classes/wp_query/#order-orderby-parameters) to find the options that can be passed in the shortcode.
 
