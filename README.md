@@ -10,8 +10,8 @@ Create wordpress custom post types and custom taxonomies. Search and filter thro
 
 ## Customising the templates in the Theme
 1. Create a folder "orbit_query" within the theme.
-2. To create a new template "card". Create a file with the name "articles-card" inside the folder "wp-content/[your-theme]/orbit_query".
-3. To use the new created template, within the shortcode ```[orbit_query]``` use ```[orbit_query style=card]```.  
+2. To create a new template "card" for ```[orbit_query]```, create a file with the name "articles-card" inside the folder "wp-content/[your-theme]/orbit_query". To create a new template "grid" for ```[orbit_query_users]```, create a file with the name "users-grid" inside the folder "wp-content/[your-theme]/orbit_query".
+3. To use the new created template, within the shortcode use ```[orbit_query style="card"]``` or ```[orbit_query_users style="grid"]```
 
 ## Parameters of orbit_query shortcode
 1. cache: By default the value is 0. Expects value in ms for which the query will be cached in the transient cache.
