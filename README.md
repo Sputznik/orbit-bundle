@@ -2,14 +2,14 @@
 Create wordpress custom post types and custom taxonomies. Search and filter through the wordpress post types and create custom queries using simple shortcodes.
 
 ## Installing the Plugin
-1. Upload "orbit-bundle" to the "/wp-content/plugins/" directory.
-2. Activate the plugin through the "Plugins" menu in WordPress.
+1. Upload **"orbit-bundle"** to the **"/wp-content/plugins/"** directory.
+2. Activate the plugin through the **"Plugins"** menu in WordPress.
 3. Create a new page.
-4. Paste code [orbit_query] for posts.
+4. Paste code ```[orbit_query]``` for posts and ```[orbit_query_users]``` for authors.
 5. Publish the page.
 
 ## Parameters of orbit_query shortcode
-1. cache: By default the value is 0. Expects value in ms for which the query will be cached in the transient cache.
+1. cache: By default the value is 0. Expects value in **ms** for which the query will be cached in the transient cache.
 2. tax_query: Show posts associated with certain taxonomy and terms.
 Display posts that have one taxonomy ```[orbit_query tax_query="video-category:reels"]```
 or multiple terms of the same taxonomy ```[orbit_query tax_query="video-category:reels,brands"]```
@@ -45,7 +45,7 @@ or multiple tags ```[orbit_query tag="bread,baking"]```.
 17. paged: The number of page whose default value is 1. Show the posts that would normally show up just on page X when using the "Older Entries" link.
 18. style: To use the theme templates, within the shortcode ```[orbit_query style=card]```
 19. order: Designates the ascending or descending order of the 'orderby' parameter. Defaults to 'DESC'.
-20. orderby: Sort retrieved posts by parameter. Defaults to 'date (post_date)'. One or more options can be passed. Follow [WP DOCUMENTATION](https://developer.wordpress.org/reference/classes/wp_query/#order-orderby-parameters) to find the options that can be passed in the shortcode.
+20. orderby: Sort retrieved posts by parameter. Defaults to 'date (post_date)'. One or more options can be passed. Follow [Worpress Documentation](https://developer.wordpress.org/reference/classes/wp_query/#order-orderby-parameters) to find the options that can be passed in the shortcode.
 
 ## Parameters of orbit_query_users shortcode
 1. search: Show users based on a keyword search. ```[orbit_query_users search="keyword"]```
@@ -61,8 +61,8 @@ or multiple tags ```[orbit_query tag="bread,baking"]```.
 11. style: To use the theme templates, within the shortcode ```[orbit_query_users style=list]```
 
 ## Customising the templates in the Theme
-1. Create a folder "orbit_query" within the theme.
-2. To create a new template "card" for ```[orbit_query]```, create a file with the name "articles-card" inside the folder "wp-content/[your-theme]/orbit_query". To create a new template "grid" for ```[orbit_query_users]```, create a file with the name "users-grid" inside the folder "wp-content/[your-theme]/orbit_query".
+1. Create a folder **"orbit_query"** within the theme.
+2. To create a new template **"card"** for ```[orbit_query]```, create a file with the name **"articles-card"** inside the folder **"wp-content/[your-theme]/orbit_query"**. To create a new template **"grid"** for ```[orbit_query_users]```, create a file with the name **"users-grid"** inside the folder **"wp-content/[your-theme]/orbit_query"**.
 3. To use the new created template, within the shortcode use ```[orbit_query style="card"]``` or ```[orbit_query_users style="grid"]```
 
 Works with WP Pusher plugin
