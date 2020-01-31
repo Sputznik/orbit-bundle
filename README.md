@@ -8,11 +8,6 @@ Create wordpress custom post types and custom taxonomies. Search and filter thro
 4. Paste code [orbit_query] for posts.
 5. Publish the page.
 
-## Customising the templates in the Theme
-1. Create a folder "orbit_query" within the theme.
-2. To create a new template "card" for ```[orbit_query]```, create a file with the name "articles-card" inside the folder "wp-content/[your-theme]/orbit_query". To create a new template "grid" for ```[orbit_query_users]```, create a file with the name "users-grid" inside the folder "wp-content/[your-theme]/orbit_query".
-3. To use the new created template, within the shortcode use ```[orbit_query style="card"]``` or ```[orbit_query_users style="grid"]```
-
 ## Parameters of orbit_query shortcode
 1. cache: By default the value is 0. Expects value in ms for which the query will be cached in the transient cache.
 2. tax_query: Show posts associated with certain taxonomy and terms.
@@ -64,5 +59,10 @@ or multiple tags ```[orbit_query tag="bread,baking"]```.
 9. number: The number of authors that should appear. By default the value is 10.
 10. paged: The number of page whose default value is 1. Show the authors that would normally show up just on page X when using pagination.
 11. style: To use the theme templates, within the shortcode ```[orbit_query_users style=list]```
+
+## Customising the templates in the Theme
+1. Create a folder "orbit_query" within the theme.
+2. To create a new template "card" for ```[orbit_query]```, create a file with the name "articles-card" inside the folder "wp-content/[your-theme]/orbit_query". To create a new template "grid" for ```[orbit_query_users]```, create a file with the name "users-grid" inside the folder "wp-content/[your-theme]/orbit_query".
+3. To use the new created template, within the shortcode use ```[orbit_query style="card"]``` or ```[orbit_query_users style="grid"]```
 
 Works with WP Pusher plugin
