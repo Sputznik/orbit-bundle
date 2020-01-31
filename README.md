@@ -15,7 +15,7 @@ Create wordpress custom post types and custom taxonomies. Search and filter thro
 
 ## Parameters of orbit_query shortcode
 1. cache: By default the value is 0. Expects value in ms for which the query will be cached in the transient cache.
-2. tax_query: Show posts associated with certain taxonomy and terms. Display posts that have one taxonomy '''[orbit_query tax_query="video-category:reels"]''' or multiple terms of the same taxonomy [orbit_query tax_query="video-category:reels,brands"] or multiple terms of different taxonomies [orbit_query tax_query="video-category:reels,brands#regions:asia,africa"]
+2. tax_query: Show posts associated with certain taxonomy and terms. Display posts that have one taxonomy ```[orbit_query tax_query="video-category:reels"]``` or multiple terms of the same taxonomy [orbit_query tax_query="video-category:reels,brands"] or multiple terms of different taxonomies [orbit_query tax_query="video-category:reels,brands#regions:asia,africa"]
 3. date_query: Show posts associated with a certain time and date period. [orbit_query date_query="after:2019/01/01"] will posts that were published after 1st January 2019. [orbit_query date_query="after:2019/01/01"] will posts that were published before 1st January 2019. [orbit_query date_query="after:2019/01/01#before:2019/31/12"] will posts that were published between 1st January 2019 and 31st December 2019.  
 4. sticky_posts: By default the value is 0. If set to 1, it will keep the sticky posts on the top.
 5. exclude_sticky_posts: By default the value is 0. If set to 1, it will remove all the sticky posts from the query.
