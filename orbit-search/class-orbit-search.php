@@ -49,6 +49,9 @@
 		// GET THE FILTERS STORED AS ARRAY IN POST META
 		function getFiltersFromDB( $post_id ){
 			$filtersFromDB = get_post_meta( $post_id, 'orbit_filters', true );
+
+			//ORBIT_UTIL::getInstance()->test( $filtersFromDB );
+
 			if( $filtersFromDB && is_array( $filtersFromDB ) ){
 				return $filtersFromDB;
 			}

@@ -32,7 +32,7 @@ class ORBIT_WP extends ORBIT_BASE{
     $data = $this->getCache( $cache_key );
     if( !$data ){
       $data = wp_get_post_terms( $post_id, $taxonomy );
-      $this->setCache( $cache_key, $terms );
+      $this->setCache( $cache_key, $data );
     }
     return $data;
 

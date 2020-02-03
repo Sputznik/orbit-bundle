@@ -280,7 +280,7 @@ class ORBIT_FEP extends ORBIT_BASE{
     return ob_get_clean();
   }
 
-  function create( $pages, $new_post = array() ){
+  function create( $pages, $new_post = array(), $callback_func = false ){
     // echo '<pre>';
     // print_r( $_POST );
     // echo '</pre>';
@@ -316,6 +316,9 @@ class ORBIT_FEP extends ORBIT_BASE{
       // echo "<div style='margin-top:50px;' class='form-alert'>" . $success_message . "</div>";
       //echo "<style>.soah-fep{ display:none; }</style>";
       $this->showMessage( $success_message );
+      if( is_callable( $callback_func ) ) {
+        call_user_func( $callback_func, $new_post_id );
+      }
     }
   }
   //Message on form submission
@@ -425,9 +428,19 @@ class ORBIT_FEP extends ORBIT_BASE{
         wp_set_post_terms( $post_id, $value, $taxonomy );
       }
       elseif( strpos( $slug, 'cf_') !== false ){
+
+        //print_r( $slug );
+        //print_r( $value );
+
+
         // ADDING CUSTOM META VALUES TO THE POST
         $meta_name = str_replace( "cf_", "", $slug );
+
+        //print_r( $meta_name );
+
         update_post_meta( $post_id, $meta_name, $value );
+
+        //wp_die();
       }
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-	class ORBIT_ADMIN{
+	class ORBIT_ADMIN extends ORBIT_BASE{
 
 		function __construct(){
 
@@ -154,6 +154,46 @@
 
 			wp_enqueue_style( 'orbit-admin', plugins_url( 'orbit-bundle/dist/css/admin-style.css' ), array(), ORBIT_BUNDLE_VERSION );
 		}
+
+		function tabs( $screens, $base_url = 'admin.php?page=orbit-settings', $disable_tab = false ){
+
+			$common_url = admin_url( $base_url );
+
+			$active_tab = '';
+
+			_e('<h2 class="nav-tab-wrapper">');
+
+			foreach ( $screens as $slug => $screen ) {
+				$url = $common_url;
+				if (isset($screen['action'])) {
+					$url = esc_url( add_query_arg( array('action' => $screen['action']), $common_url ) );
+				}
+
+				$nav_class = "nav-tab";
+
+				if ( isset( $screen['action'] ) && isset( $_GET['action'] ) && $screen['action'] == $_GET['action'] ) {
+					$nav_class .= " nav-tab-active";
+					$active_tab = $slug;
+				}
+
+				if ( !isset( $screen['action'] ) && !isset( $_GET['action'] ) ) {
+					$nav_class .= " nav-tab-active";
+					$active_tab = $slug;
+				}
+
+				echo "<a";
+				if( !$disable_tab){ echo " href='$url'"; }
+				echo " class='$nav_class'>" . $screen['label'] . "</a>";
+
+			}
+
+			_e('</h2>');
+
+			if (file_exists($screens[$active_tab]['tab'])) {
+				include $screens[$active_tab]['tab'];
+			}
+
+		}
 }
 
-new ORBIT_ADMIN;
+ORBIT_ADMIN::getInstance();

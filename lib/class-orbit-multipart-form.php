@@ -120,8 +120,23 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
       case 'cf':
         // ITERATE THE USER DEFINED OPTIONS INTO THE COMPATIBLE FORM OF OPTIONS
         if( isset( $field['options'] ) && is_array( $field['options'] ) && count( $field['options'] ) ){
-          foreach( $field['options'] as $option ){
-            array_push( $options, array( 'slug' => $option['value'], 'name' => $option['value'] ) );
+          foreach( $field['options'] as $opt_slug => $option ){
+            /*
+            * TWO KINDS OF DATA IS BEING SENT
+            * 1. [CHECKBOX] => CHECKBOXES
+            * 2. [CHECKBOX] => ARRAY( [VALUE] => CHECKBOXES, [ORDER] => 1 )
+            */
+            if( is_array( $option ) && isset( $option['value'] ) ){
+              $temp_slug = $option['value'];
+              $temp_name = $option['value'];
+            }
+            else{
+              $temp_slug = $opt_slug;
+              $temp_name = $option;
+            }
+
+            //$temp_slug = is_array( $option ) && isset( $option['value'] ) ? $option['value'] : $option;
+            array_push( $options, array( 'slug' => $temp_slug, 'name' => $temp_name ) );
           }
         }
 
@@ -180,9 +195,7 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
 
     }
 
-    // USING THE HELPER CLASS PROVIDED BY ORBIT BUNDLE
-    $orbit_form_field = new ORBIT_FORM_FIELD;
-    $orbit_form_field->display( array(
+    $temp_field = array(
       'name'        => $field['type'].'_'.$field['typeval'],  // NAME ATTRIBUTE FOR THE INPUT FIELD - this clearly identifies if the field is postfield, taxonomy or custom field
       'type'        => $field['form'],
       'label'       => $field['label'],
@@ -190,7 +203,14 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
       'required'    => isset( $field['required'] ) ? $field['required'] : false,
       'items'       => $options,
       'help'        => isset( $field['help'] ) ? $field['help'] : '',
-    ) );
+      'value'       => isset( $field['value'] ) ? $field['value'] : '',
+    );
+
+    if( isset( $field['class'] ) ){ $temp_field['class'] = $field['class']; }
+
+    // USING THE HELPER CLASS PROVIDED BY ORBIT BUNDLE
+    $orbit_form_field = new ORBIT_FORM_FIELD;
+    $orbit_form_field->display( $temp_field );
 
   }
 
