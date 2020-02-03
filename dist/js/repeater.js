@@ -83,11 +83,14 @@ var ORBIT_REPEATER = function( options ){
 		});
 
 		// TRIGGER: SO THAT THE ITEMS IN THE LIST CAN BE SORTABLE
-		self.$list.sortable({
-			stop: function( event, ui ){
-				self.reorder();
-			}
-		});
+		if( jQuery.isFunction( self.$list.sortable ) ){
+			self.$list.sortable({
+				stop: function( event, ui ){
+					self.reorder();
+				}
+			});
+		}
+
 
 		// BUTTON THAT ADDS THE REPEATER ITEM
 		self.$btn = self.createField({

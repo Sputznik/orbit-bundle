@@ -12,10 +12,8 @@
 			// GET CURRENT SLIDE IN THE LIST OF SLIDES THAT IS ACTIVE
 			function getCurrentSlide(){ return $el.find('.orbit-slide.active'); }
 
-			function getCurrentSlideValue(){
-	      var $currentSlide = getCurrentSlide();
-	      return $currentSlide.data('slide') + 1;
-	    }
+			// GET CURRENT SLIDE VALUE
+			function getCurrentSlideValue(){ var $currentSlide = getCurrentSlide(); return $currentSlide.data('slide') + 1; }
 
 			// FIND THE NEXT SLIDE TO THE ONE THAT IS CURRENTLY ACTIVE
 			function getNextSlide(){
@@ -24,7 +22,6 @@
 					nextSlideNumber 	= currentSlideNumber + 1;
 
 				if( nextSlideNumber >= totalSlides() ){ nextSlideNumber = 0; }
-
 				return $el.find( '[data-slide~=' + nextSlideNumber + ']' );
 			}
 
@@ -35,11 +32,8 @@
 					prevSlideNumber 	= currentSlideNumber - 1;
 
 				if( prevSlideNumber < 0 ){ prevSlideNumber = totalSlides() - 1; }
-
 				return $el.find( '[data-slide~=' + prevSlideNumber + ']' );
 			}
-
-
 
 			function createProgressBar(){
 				var $progress = $el.find('.orbit-form-progress');
@@ -216,13 +210,8 @@
 
 	};
 
-
-
-
-
-
-
-
 }(jQuery));
 
-jQuery( '[data-behaviour~=orbit-slides]' ).orbit_slides();
+jQuery('document').ready(function(){
+	jQuery( '[data-behaviour~=orbit-slides]' ).orbit_slides();
+});

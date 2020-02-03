@@ -16,51 +16,6 @@
 					$meta_box['orbit-types'][1]['fields']['custom_fields'] = array(
 						'type'	=> 'repeater_cf',
 						'text'	=> 'Custom Fields',
-						'items'	=> array(
-							'type' => array(
-								'type' 		=> 'dropdown',
-								'text' 		=> 'Select Field Type',
-								'options'	=> array(
-									'text'			=> 'Text',
-									'textarea'	=> 'Textarea',
-									'dropdown'	=> 'Dropdown',
-									'checkbox'	=> 'Checkboxes'
-								)
-							),
-							'text' => array(
-								'type' 		=> 'text',
-								'text' 		=> 'Label',
-							),
-							'placeholder'	=> array(
-								'type'	=> 'text',
-								'text'	=> 'Placeholder',
-								'help'	=> 'Apeears within the input text fields'
-							),
-							'options' => array(
-								'type' 		=> 'repeater-options',
-								'text' 		=> 'Options',
-								'help'		=> 'Only valid for dropdown or checkboxes. Enter each item on a new line.'
-							),
-						),
-						'rules'	=> array(
-							'options'	=> array(
-								'hide'	=> array(
-									'type'	=> array( 'text', 'textarea' )
-								),
-								'show'	=> array(
-									'type'	=> array( 'dropdown', 'checkbox' )
-								)
-							),
-							'placeholder'	=> array(
-								'show'	=> array(
-									'type'	=> array( 'text', 'textarea' )
-								),
-								'hide'	=> array(
-									'type'	=> array( 'dropdown', 'checkbox' )
-								)
-							),
-						)
-
 					);
 				}
 
@@ -99,6 +54,14 @@
 											$field['options'][$opt_slug] = $opt;
 										}
 									}
+									elseif( is_array( $field['options'] ) ){
+										$options = array();
+										foreach( $field['options'] as $opt ){
+											if( isset( $opt['value'] ) ){ array_push( $options, $opt['value'] ); }
+										}
+										$field['options'] = $options;
+										//ORBIT_UTIL::getInstance()->test( $field['options'] );
+									}
 
 
 
@@ -121,6 +84,8 @@
 
 				}
 
+
+
 				return $meta_box;
 			});
 
@@ -131,6 +96,8 @@
 
 
 		}
+
+
 
 		function orbit_fields( $meta_box ){
 
@@ -254,9 +221,13 @@
 				}
 			}
 
+			/*
 			if( $f['type'] == 'repeater_cf' && isset( $f['items'] ) ){
 				$form_field_atts['items'] = $f['items'];
 			}
+			*/
+
+			//ORBIT_UTIL::getInstance()->test( $form_field_atts );
 
 			$orbit_form_field->display( $form_field_atts );
 

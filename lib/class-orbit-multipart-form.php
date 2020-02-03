@@ -6,16 +6,23 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
 
   function __construct(){
 
-    add_action('wp_enqueue_scripts', function(){
-      wp_register_script( 'orbit-slides', plugins_url( 'orbit-bundle/dist/js/orbit-slides.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
-    });
+    // REGISTER ASSETS FOR BOTH FRONTEND AND BACKEND
+    add_action('wp_enqueue_scripts', array( $this, 'register_assets' ) );
+    add_action('admin_enqueue_scripts', array( $this, 'register_assets' ) );
 
   }
 
+  function register_assets(){
+    wp_register_script( 'orbit-slides', plugins_url( 'orbit-bundle/dist/js/orbit-slides.js' ), array( 'jquery' ), ORBIT_BUNDLE_VERSION, true );
+  }
+
   function enqueue_assets(){
+
     // LOAD THE MAIN STYLE IF IT HAS NOT BEEN LOADED YET
     wp_enqueue_style( 'orbit-main' );
-		wp_enqueue_script( 'orbit-slides' );
+    wp_enqueue_style( 'orbit-common' );
+
+    wp_enqueue_script( 'orbit-slides' );
 	}
 
   // DISPLAY INLINE SECTION THAT COMPRISES OF MULTIPLE FIELDS
@@ -114,7 +121,7 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
         // ITERATE THE USER DEFINED OPTIONS INTO THE COMPATIBLE FORM OF OPTIONS
         if( isset( $field['options'] ) && is_array( $field['options'] ) && count( $field['options'] ) ){
           foreach( $field['options'] as $option ){
-            array_push( $options, array( 'slug' => $option, 'name' => $option['value'] ) );
+            array_push( $options, array( 'slug' => $option['value'], 'name' => $option['value'] ) );
           }
         }
 
@@ -149,16 +156,25 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
 
       // FOR TAXONOMY TERMS
       case 'tax':
+
         // GET ALL THE TAXONOMY TERMS INCLUDING THE EMPTY ONES
         $tax_terms = get_terms( array(
           'taxonomy'    => $field['typeval'],
           'hide_empty'  => false
         ) );
 
-        // ITERATE AND ADD TO OPTIONS ARRAY
-        foreach( $tax_terms as $term ){
-          array_push( $options, array( 'slug' => $term->term_id, 'name' => $term->name, ) );
+        if( !is_wp_error( $tax_terms ) ){
+          // ITERATE AND ADD TO OPTIONS ARRAY
+          foreach( $tax_terms as $term ){
+            array_push( $options, array( 'slug' => $term->term_id, 'name' => $term->name, ) );
+          }
         }
+        else{
+          $error_string = $field['typeval'].": ".$tax_terms->get_error_message();
+          echo '<div id="message" class="error"><p>' . $error_string . '</p></div>';
+        }
+
+
         break;
       default:
 
@@ -170,9 +186,10 @@ class ORBIT_MULTIPART_FORM extends ORBIT_BASE{
       'name'        => $field['type'].'_'.$field['typeval'],  // NAME ATTRIBUTE FOR THE INPUT FIELD - this clearly identifies if the field is postfield, taxonomy or custom field
       'type'        => $field['form'],
       'label'       => $field['label'],
-      'placeholder' => $field['placeholder'] ? $field['placeholder'] : '',
+      'placeholder' => isset( $field['placeholder'] ) ? $field['placeholder'] : '',
       'required'    => isset( $field['required'] ) ? $field['required'] : false,
-      'items'       => $options
+      'items'       => $options,
+      'help'        => isset( $field['help'] ) ? $field['help'] : '',
     ) );
 
   }

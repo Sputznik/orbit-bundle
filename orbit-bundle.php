@@ -11,9 +11,9 @@
 
 	define( 'ORBIT_BUNDLE_VERSION', time() ); //1.4.7
 
-	add_action('wp_enqueue_scripts', function(){
-		wp_register_style( 'orbit-main', plugins_url( 'orbit-bundle/dist/css/main.css' ), array(), ORBIT_BUNDLE_VERSION );
-	});
+
+
+
 
 	$inc_files = array(
 		"lib/class-orbit-base.php",
@@ -26,6 +26,7 @@
 		"lib/class-orbit-wp.php",
 		"lib/class-orbit-multipart-form.php",
 		"lib/class-orbit-form-field.php",
+		"lib/class-orbit-assets.php",
 		"orbit-search/orbit-search.php",
 		"orbit-query/orbit-query.php",
 		"orbit-templates/orbit-templates.php",
@@ -38,6 +39,9 @@
 	foreach( $inc_files as $inc_file ){
 		require_once( $inc_file );
 	}
+
+	
+
 
 	/*
 	// GUTENBERG BLOCK

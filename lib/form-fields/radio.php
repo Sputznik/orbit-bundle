@@ -8,13 +8,17 @@
 		* 2. WHEN VALUE HAS BEEN PASSED, MATCH IT AGAINST THE CORRESPONDING RADIO BUTTON
 		*/
 		$checked_flag = false;
-		if( ( !$atts['value'] && !$i ) || ( $item['slug'] == $atts['value'] ) ){
+		if( ( ( !isset( $atts['value'] ) || !$atts['value'] ) && !$i ) || ( isset( $atts['value'] ) && $item['slug'] == $atts['value'] ) ){
 			$checked_flag = true;
 		}
 	?>
 	<li class="radio">
 		<label>
+			<?php //ORBIT_UTIL::getInstance()->test( $item );?>
+			<?php //ORBIT_UTIL::getInstance()->test( $atts );?>
+
 			<input type="radio" <?php if( $checked_flag ){_e("checked='checked'");}?> name="<?php _e( $atts['name'] );?>" value="<?php _e( $item['slug'] );?>" />&nbsp;<?php _e( $item['name'] );?>
+
 		</label>
 	</li>
 <?php $i++;endif; endforeach;?>

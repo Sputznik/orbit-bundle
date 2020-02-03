@@ -1,6 +1,6 @@
 <?php
 
-  $value = $atts['value'];
+  $value = isset( $atts['value'] ) ? $atts['value'] : "";
 
   if( !$value && isset( $atts['default'] ) && $atts['default'] ){
     $value = $atts['default'];

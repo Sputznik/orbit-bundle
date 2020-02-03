@@ -267,23 +267,26 @@ class ORBIT_FEP extends ORBIT_BASE{
     // GET FORM PAGES INFORMATION FROM THE METADATA IN ORBIT-FEP
     $fep_pages = $this->getDBData( $atts['id'] );
 
+    //ORBIT_UTIL::getInstance()->test( $fep_pages );
+
     $new_post = array(
-      'post_type'   => get_post_meta( $atts['id'], 'posttypes', true ),
-      'post_status' => get_post_meta( $atts['id'], 'poststatus', true )
+      'post_type'         => get_post_meta( $atts['id'], 'posttypes', true ),
+      'post_status'       => get_post_meta( $atts['id'], 'poststatus', true ),
+      'form_success_msg'  => get_post_meta( $atts['id'], 'form_success_msg',true )
     );
 
-    $this->create( $fep_pages, $new_post, $atts );
+    $this->create( $fep_pages, $new_post );
 
     return ob_get_clean();
   }
 
-  function create( $pages, $new_post = array(), $atts ){
+  function create( $pages, $new_post = array() ){
     // echo '<pre>';
     // print_r( $_POST );
     // echo '</pre>';
 
     $form_success_flag = false;
-    $success_message = get_post_meta( $atts['id'], 'form_success_msg',true );
+    $success_message = isset( $new_post['form_success_msg'] ) ? $new_post['form_success_msg'] : "";
 
     // INSERT POST ONCE THE FORM HAS BEEN SUBMITTED
     if( $_POST ){
@@ -292,12 +295,13 @@ class ORBIT_FEP extends ORBIT_BASE{
       // SEND EMAIL ON SUCCESSFUL FORM SUBMISSION
       if( $new_post_id ){
         $form_success_flag = true;
-        $this->sendMail( $atts['id'], $_POST, $new_post_id );
+
+        //$this->sendMail( $atts['id'], $_POST, $new_post_id ); COMMENTED FOR NOW TO BE ADDED LATER
       }
     }
 
     // STARTING OF FORM TAG
-    echo "<form class='soah-fep' method='post' enctype='multipart/form-data'>";
+    echo "<form class='orbit-fep' method='post' enctype='multipart/form-data'>";
 
     // USING THE ORBIT MULTIPART FORM TO CREATE SLIDES
     $orbit_multipart_form = ORBIT_MULTIPART_FORM::getInstance();
@@ -310,13 +314,13 @@ class ORBIT_FEP extends ORBIT_BASE{
     // DISPLAY MESSAGE ON FORM SUBMISSION
     if( $form_success_flag ){
       // echo "<div style='margin-top:50px;' class='form-alert'>" . $success_message . "</div>";
-      echo "<style>.soah-fep{ display:none; }</style>";
+      //echo "<style>.soah-fep{ display:none; }</style>";
       $this->showMessage( $success_message );
     }
   }
   //Message on form submission
   function showMessage( $success_message ){
-    echo "<div style='margin-top:50px;' class='form-alert'>" . $success_message . "</div>";
+    echo "<div style='margin-top:50px;' class='orbit-form-alert'>" . $success_message . "</div>";
   }
 
   function validateFiles(){
@@ -384,10 +388,40 @@ class ORBIT_FEP extends ORBIT_BASE{
 
     // ONLY IF POST ID IS VALID - ensures that the above insert was successfull
     foreach( $_POST as $slug => $value ){
+      // ADDING TERMS TO THE NEW POST
       if( strpos( $slug, 'tax_') !== false ){
-        // ADDING TERMS
-        // TO THE NEW POST
+
         $taxonomy = str_replace( "tax_", "", $slug );
+
+        // CHECK IF THE VALUE IS TERM ID OR TERM NAME
+        if( is_array( $value ) && count( $value ) && 'id' != ORBIT_UTIL::getInstance()->getVariableType( $value[0] ) ){
+          $term_ids = array();
+
+          foreach ( $value as $term_name ) {
+            // CHECK IF THE TERM EXISTS
+            $term = term_exists( $term_name, $taxonomy );
+
+            // print_r( $term );
+
+            // IF IT DOES NOT EXIST THEN CREATE ONE
+            if( !$term ){ $term = wp_insert_term( $term_name, $taxonomy ); }
+
+            // IF EVERYTHING IS FINE THEN ADD TO THE ARRAY
+            if( isset( $term->term_id ) ){
+              array_push( $term_ids, $term->term_id );
+            }
+            elseif ( isset( $term['term_id'] ) ) {
+              array_push( $term_ids, $term['term_id'] );
+            }
+            else{
+              print_r( $term );
+            }
+
+          }
+          $value = $term_ids;
+        }
+        //echo $post_id;
+        //print_r( $value );
         wp_set_post_terms( $post_id, $value, $taxonomy );
       }
       elseif( strpos( $slug, 'cf_') !== false ){
@@ -449,6 +483,8 @@ class ORBIT_FEP extends ORBIT_BASE{
     wp_enqueue_script( 'orbit-fields', plugins_url( '/orbit-bundle/dist/js/repeater-fields.js' ), array('jquery', 'orbit-repeater' ), ORBIT_BUNDLE_VERSION, true );
     wp_enqueue_script( 'orbit-options-repeater', plugins_url( '/orbit-bundle/dist/js/repeater-options.js' ), array('jquery', 'orbit-repeater' ), ORBIT_BUNDLE_VERSION, true );
 
+    $orbit_multipart_form = ORBIT_MULTIPART_FORM::getInstance();
+    $orbit_multipart_form->enqueue_assets();
 
     // NEEDED FOR THE RICH TEXT EDITOR IN THE FIELDS REPEATER
     wp_enqueue_editor();

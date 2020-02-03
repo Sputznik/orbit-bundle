@@ -423,22 +423,10 @@ margin-bottom: 10px;
 #orbit-custom .inside .form-wrap .orbit-form-group > label{
 	display: none;
 }
-[data-slug = "custom_fields"] .ui-sortable .orbit-choice-item{
-	margin-bottom: 20px;
-	position: relative;
-	padding: 0 10px;
-	background: #fff;
-	box-shadow: 1px 1px 4px 1px #ccc;
-}
-[data-slug = "custom_fields"] .list-header label{
-	margin: 0;
-}
-[data-slug = "custom_fields"] .list-content{
-	padding-bottom: 10px;
-}
-[data-behaviour = "orbit-repeater-cf"] .ui-sortable{
-	margin-top: 22px;
-}
+
+[data-slug = "custom_fields"] .list-header label{ margin: 0; }
+
+[data-behaviour = "orbit-repeater-cf"] .ui-sortable{ margin-top: 22px; }
 /* Export to csv */
 [data-behaviour="orbit-export"] .ui-sortable .orbit-slide-repeater{
 	min-width: 150px;

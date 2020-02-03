@@ -129,33 +129,6 @@ li.orbit-article-db img{
 }
 /* ORBIT TEMPLATES USING ORBIT QUERY SHORTCODE  */
 
-/* ORBIT SLIDES */
-[data-behaviour~=orbit-slides] .orbit-slide{ display: none; }
-[data-behaviour~=orbit-slides] .orbit-slide.active{ display: block; }
-[data-behaviour~=orbit-slides] .orbit-form-alert{
-	margin-top: 30px;
-	padding: 15px;
-	border: #b43636 solid 1px;
-	border-left: 10px solid #b43636;
-}
-
-[data-behaviour~=orbit-slides] .orbit-images-preview{
-	margin-top: 20px;
-}
-[data-behaviour~=orbit-slides] .orbit-images-preview li{
-	max-width: 100px;
-	max-height: 100px;
-	overflow: hidden;
-	border: #999 solid 1px;
-}
-[data-behaviour~=orbit-slides] .orbit-images-preview li img{
-	max-width: 100%;
-	height: auto;
-}
-[data-behaviour~=orbit-slides] .multi-field-wrapper{
-	margin-bottom: 20px;
-}
-/* ORBIT SLIDES */
 
 /* ORBIT BATCH PROCESS */
 [data-behaviour~=orbit-batch]{ margin: 20px auto; }
@@ -194,26 +167,7 @@ li.orbit-article-db img{
 /* ORBIT BATCH PROCESS */
 
 /* COMMON */
-.orbit-list-inline{
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
-.orbit-list-inline li{
-	display: inline-block;
-	margin-right: 20px;
-}
-.orbit-progress-bar{
-	height: 30px;
-	border: #ddd solid 1px;
-	border-radius: 2px;
-	margin-bottom: 30px;
-}
-.orbit-progress-bar .bar{
-	height: 100%;
-	background: #036493;
-	width: 0%;
-}
+
 
 /* COMMON */
 
@@ -251,96 +205,9 @@ form[data-behaviour~=meteor-slides] button{
 	border: #ddd solid 1px;
 	min-width: 200px;
 }
-form.soah-fep{
-	width: 100%;
-	max-width:650px;
-	margin-left:auto;
-	margin-right:auto;
-	padding: 50px 30px;
 
-}
 
-/* form.soah-fep .form-alert{
-	padding: 20px;
-	border: #eee solid 1px;
-	background: #ffffcc;
-	margin: 20px 0;
-} */
 
-form.soah-fep .form-field{
-	margin-bottom: 30px;
-}
-
-form.soah-fep label{
-	display: block;
-}
-
-form.soah-fep input[type=text],
-form.soah-fep input[type=number],
-form.soah-fep input[type=email],
-form.soah-fep textarea, form.soah-fep select{
-	width: 100%;
-	padding: 10px 15px;
-}
-
-form.soah-fep .form-categories ul{
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-gap: 10px;
-}
-
-form.soah-fep .form-categories ul li{
-	background: #eee;
-	margin: 0;
-	display: block;
-	min-height: 30px;
-	padding: 10px;
-	width: 100%;
-}
-
-form.soah-fep .form-multi-fields{ max-width: 400px; }
-
-form.soah-fep .form-multi-fields .add-btn{ margin-top: 5px;}
-
-form.soah-fep .form-multi-fields .multi-field-wrapper{ margin-bottom: 5px; }
-
-@media( min-width: 768px ){
-	form.soah-fep .grid-2 .section-fields{
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-gap: 20px;
-	}
-
-	form.soah-fep .form-address .section-fields{
-		display: grid;
-		grid-gap: 20px;
-		grid-template-columns: 1fr 1fr;
-		grid-template-areas: "state district" "address address";
-	}
-
-	form.soah-fep .form-address .form-state{
-		grid-area: state;
-	}
-	form.soah-fep .form-address .form-district{
-		grid-area: district;
-	}
-	form.soah-fep .form-address .form-address-text{
-		grid-area: address;
-	}
-	form.soah-fep .form-address .form-field{
-		margin-bottom: 0;
-	}
-}
-
-@media screen and (max-width: 768px) {
-  .form-links {
-    margin-top: 55px;
-		margin-bottom: 55px;
-  }
-	form.soah-fep .form-categories ul{
-		grid-template-columns: 1fr;
-	}
-}
 
 
 form[data-behaviour~=meteor-slides] .meteor-slide{
@@ -365,29 +232,26 @@ form[data-behaviour~=meteor-slides] .hide-label label{
 }
 
 /* REQUIRED */
-form.soah-fep span.red{
+form.orbit-fep span.red{
 	color: red;
 }
 
 /* LANGUAGE SWITCHER */
-form.soah-fep .lang-switcher{
+form.orbit-fep .lang-switcher{
 	float: right;
 	font-size: 14px;
 	margin-top: 10px;
 	margin-bottom: 10px !important;
 	margin-left: 10px;
 }
-form.soah-fep .lang-switcher select{
+form.orbit-fep .lang-switcher select{
 	padding: 2px !important;
 	width: auto !important;
 }
 
-.form-alert{
-	padding: 20px;
-	border: #eee solid 1px;
-	background: #ffffcc;
-	margin: 20px 0;
-	width: 500px;
-	margin: 50px auto;
-	text-align: center;
+form.orbit-fep input[type=text],
+form.orbit-fep input[type=number],
+form.orbit-fep input[type=email],
+form.orbit-fep textarea, form.orbit-fep select{
+	padding: 10px 15px;
 }

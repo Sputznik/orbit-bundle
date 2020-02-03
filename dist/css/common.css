@@ -1,0 +1,143 @@
+[data-behaviour~=orbit-slides] .orbit-slide{ display: none; }
+[data-behaviour~=orbit-slides] .orbit-slide.active{ display: block; }
+[data-behaviour~=orbit-slides] .orbit-form-alert{
+	margin-top: 30px;
+	padding: 15px;
+	border: #b43636 solid 1px;
+	border-left: 10px solid #b43636;
+}
+
+[data-behaviour~=orbit-slides] .orbit-images-preview{
+	margin-top: 20px;
+}
+[data-behaviour~=orbit-slides] .orbit-images-preview li{
+	max-width: 100px;
+	max-height: 100px;
+	overflow: hidden;
+	border: #999 solid 1px;
+}
+[data-behaviour~=orbit-slides] .orbit-images-preview li img{
+	max-width: 100%;
+	height: auto;
+}
+[data-behaviour~=orbit-slides] .multi-field-wrapper{
+	margin-bottom: 20px;
+}
+
+.orbit-list-inline{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.orbit-list-inline li{
+	display: inline-block;
+	margin-right: 20px;
+}
+.orbit-progress-bar{
+	height: 30px;
+	border: #ddd solid 1px;
+	border-radius: 2px;
+	margin-bottom: 30px;
+}
+.orbit-progress-bar .bar{
+	height: 100%;
+	background: #036493;
+	width: 0%;
+}
+
+/* ORBIT FEP */
+form.orbit-fep{
+	width: 100%;
+	max-width:650px;
+	margin-left:auto;
+	margin-right:auto;
+	padding: 50px 30px;
+}
+
+form.orbit-fep .form-field, form.orbit-fep .orbit-form-group{ margin-bottom: 30px; }
+form.orbit-fep label{ display: block;  }
+
+form.orbit-fep input[type=text],
+form.orbit-fep input[type=number],
+form.orbit-fep input[type=email],
+form.orbit-fep textarea, form.orbit-fep select{
+	width: 100%;
+}
+
+form.orbit-fep .form-categories ul{ display: grid; grid-template-columns: 1fr 1fr; grid-gap: 10px; }
+form.orbit-fep .form-categories ul li{
+	background: #eee;
+	margin: 0;
+	display: block;
+	min-height: 30px;
+	padding: 10px;
+	width: 100%;
+}
+
+form.orbit-fep .form-multi-fields{ max-width: 400px; }
+form.orbit-fep .form-multi-fields .add-btn{ margin-top: 5px;}
+form.orbit-fep .form-multi-fields .multi-field-wrapper{ margin-bottom: 5px; }
+form.orbit-fep button{
+	padding: 5px 10px;
+	border: #999 solid 1px;
+	background: none;
+	border-radius: 3px;
+	cursor: pointer;
+}
+form.orbit-fep button[type=submit]{
+	background: #036493;
+	color: #fff;
+	border-color: #036493;
+}
+
+form.orbit-fep [data-behaviour~="orbit-repeater-cf"],
+form.orbit-fep [data-behaviour~="orbit-repeater-cf"] .orbit-choice-item{
+	margin-top: 30px;
+}
+
+@media( min-width: 768px ){
+	form.orbit-fep .grid-2 .section-fields{
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: 20px;
+	}
+
+	form.orbit-fep .form-address .section-fields{
+		display: grid;
+		grid-gap: 20px;
+		grid-template-columns: 1fr 1fr;
+		grid-template-areas: "state district" "address address";
+	}
+
+	form.orbit-fep .form-address .form-state{ grid-area: state; }
+	form.orbit-fep .form-address .form-district{ grid-area: district; }
+	form.orbit-fep .form-address .form-address-text{ grid-area: address; }
+	form.orbit-fep .form-address .form-field{ margin-bottom: 0; }
+}
+
+@media screen and (max-width: 768px) {
+  .form-links {
+    margin-top: 55px;
+		margin-bottom: 55px;
+  }
+	form.orbit-fep .form-categories ul{ grid-template-columns: 1fr; }
+}
+
+.orbit-form-alert{
+	padding: 20px;
+	border: #eee solid 1px;
+	background: #ffffcc;
+	margin: 20px 0;
+	width: 500px;
+	margin: 50px auto;
+	text-align: center;
+}
+
+[data-behaviour~="orbit-repeater-cf"] .orbit-choice-item{
+	margin-bottom: 20px;
+	position: relative;
+	padding: 0 10px;
+	background: #fff;
+	box-shadow: 1px 1px 4px 1px #ccc;
+}
+[data-behaviour~="orbit-repeater-cf"] .list-content{ padding-bottom: 10px; }

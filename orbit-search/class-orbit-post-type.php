@@ -1,6 +1,6 @@
 <?php
 
-	class ORBIT_POST_TYPE{
+	class ORBIT_POST_TYPE extends ORBIT_BASE{
 
 		function __construct(){
 			add_action( 'init', array( $this, 'init' ) );
@@ -134,20 +134,18 @@
 
 
 
-			register_post_type($post_type['slug'],
-				array(
-					'labels' 							=> $post_type['labels'],
-					'public' 							=> isset( $post_type['public'] ) ? $post_type['public'] : true,
-					'publicly_queryable' 	=> true,
-					'show_ui'							=> true,
-					'query_var' 					=> true,
-					'rewrite' 						=> $post_type['rewrite'],
-					'has_archive' 				=> true,
-					'menu_icon'						=> isset( $post_type['menu_icon'] ) ? $post_type['menu_icon'] : 'dashicons-images-alt',
-					'taxonomies'					=> isset( $post_type['taxonomies'] ) ? $post_type['taxonomies'] : array(),
-					'supports'						=>	$post_type['supports']
-				)
-			);
+			register_post_type($post_type['slug'], array(
+				'labels' 							=> $post_type['labels'],
+				'public' 							=> isset( $post_type['public'] ) ? $post_type['public'] : true,
+				'publicly_queryable' 	=> true,
+				'show_ui'							=> true,
+				'query_var' 					=> true,
+				'rewrite' 						=> $post_type['rewrite'],
+				'has_archive' 				=> true,
+				'menu_icon'						=> isset( $post_type['menu_icon'] ) && $post_type['menu_icon'] ? $post_type['menu_icon'] : 'dashicons-images-alt',
+				'taxonomies'					=> isset( $post_type['taxonomies'] ) ? $post_type['taxonomies'] : array(),
+				'supports'						=>	$post_type['supports']
+			) );
 
 		}
 
@@ -197,4 +195,4 @@
 
 
 
-	new ORBIT_POST_TYPE;
+	ORBIT_POST_TYPE::getInstance();
