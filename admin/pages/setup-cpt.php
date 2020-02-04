@@ -40,8 +40,8 @@ $settings = array(
 
 
 $orbit_fep->create( $form_pages, $settings, function( $new_post_id ){
-
-  $url = admin_url('admin.php?page=orbit-setup&action=filters&id=13759');
-
-  echo $new_post_id;
+  if( $new_post_id ){
+    $url = admin_url("admin.php?page=orbit-setup&action=filters&id=$new_post_id");
+    echo "<script>window.location.href = '$url';</script>";
+  }
 } );

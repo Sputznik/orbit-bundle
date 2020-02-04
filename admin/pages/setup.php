@@ -10,6 +10,11 @@ $screens = array(
 		'tab' => plugin_dir_path(__FILE__) . 'setup-filters.php',
 		'action' => 'filters',
 	),
+  'details' => array(
+    'label'   => 'Details',
+    'tab'     => plugin_dir_path(__FILE__) . 'setup-details.php',
+    'action'  => 'details'
+  )
 );
 ?>
 <div class="wrap">
@@ -31,7 +36,7 @@ $screens = array(
   .orbit-fep{ margin-top: 20px; padding: 0px !important; }
   .orbit-fep button[type=submit]{ margin-top: 20px; }
   .orbit-form-progress{ display: none; }
-
+  
   .orbit-fep .orbit-hidden-field{ display: none; }
 
   .orbit-fep .inline-section .section-fields .inline-section {

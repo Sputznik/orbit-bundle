@@ -89,4 +89,9 @@ $settings = array(
   'form_success_msg'  => 'Your form was submitted successfully'
 );
 
-$orbit_fep->create( $form_pages, $settings );
+$orbit_fep->create( $form_pages, $settings, function( $new_post_id ){
+  if( $new_post_id ){
+    $url = admin_url("admin.php?page=orbit-setup&action=details&id=$cpt_post_id&filter_id=$new_post_id");
+    echo "<script>window.location.href = '$url';</script>";
+  }
+} );
