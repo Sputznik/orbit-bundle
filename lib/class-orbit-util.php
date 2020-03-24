@@ -15,7 +15,7 @@ class ORBIT_UTIL extends ORBIT_BASE{
 
     if( is_array ( $params ) && ( count( $params ) >= 1 ) ){
 
-      
+
       /* USER VALUES FROM GET PARAMETERS */
       foreach( $params as $slug => $value ){
 
@@ -62,29 +62,67 @@ class ORBIT_UTIL extends ORBIT_BASE{
 		return ! empty( $str ) ? explode( $seperator, $str ) : '';
 	}
 
+
+  function _eachTaxItem( $tax ){
+    // CHECK FOR INLINE PARAMETERS
+    if( strpos( $tax, '(' ) !== false && strpos( $tax, ')' ) !== false ){
+      // REMOVE THE BRACKETS
+      // THIS FUNCTION WON'T WORK FOR NESTED QUERIES
+      $tax = str_replace( "(", "", $tax );
+      $tax = str_replace( ")", "", $tax );
+      return $this->getTaxQueryParams( $tax );
+    }
+
+    $temp = $this->explode_to_arr( $tax, ':' );
+    if( count( $temp ) > 1 ){
+      $terms = $this->explode_to_arr( $temp[1] );
+      if( count( $terms ) ){
+        return array(
+          'taxonomy'	=> $temp[0],
+          'field'		  => apply_filters( 'orbit_tax_query_params_'.$temp[0], $this->getVariableType( $terms[0] ) ),
+          'terms'		  => $terms
+        );
+      }
+    }
+    return array();
+  }
+
+  /*
+  * SHOULD RETURN # OR &
+  * # - OR OPERATOR
+  * & - AND OPERATOR
+  * LOGIC IS TO FIND THE OPERATOR THAT COMES FIRST AND ASSUME THAT IT FOLLOWS THE SAME PATTERN
+  */
+  function _getInlineRelationalOperator( $tax_query_str ){
+    $or_index = strpos( $tax_query_str, '#' );
+    $and_index = strpos( $tax_query_str, '&' );
+    if( $or_index && $or_index < $and_index ) return '#';
+    return '&';
+  }
+
   /*
   * ORBIT QUERY
   * TAXONOMY QUERY PARAMS FROM STRING
   */
   function getTaxQueryParams( $tax_query_str ){
-    $tax_arr = $this->explode_to_arr( $tax_query_str, "#" );
-    $tax_query = array();
-    foreach( $tax_arr as $tax ){
-      $temp = $this->explode_to_arr( $tax, ':' );
-      if( count( $temp ) > 1 ){
-        $terms = $this->explode_to_arr( $temp[1] );
-        if( count( $terms ) ){
-          array_push( $tax_query,
-            array(
-              'taxonomy'	=> $temp[0],
-              'field'		  => apply_filters( 'orbit_tax_query_params_'.$temp[0], $this->getVariableType( $terms[0] ) ),
-              'terms'		  => $terms
-            )
-          );
-        }
+    $tax_query_str = str_replace( "amp;", "", $tax_query_str );
 
+    $operator = $this->_getInlineRelationalOperator( $tax_query_str );
+    $tax_arr = $this->explode_to_arr( $tax_query_str, $operator );
+
+    $tax_query = array(
+      'relation' => $operator == '#' ? "OR" : "AND"
+    );
+
+    foreach( $tax_arr as $tax ){
+      $temp_tax_query = $this->_eachTaxItem( $tax );
+      if( count( $temp_tax_query ) ){
+        array_push( $tax_query, $temp_tax_query );
       }
     }
+
+    //ORBIT_UTIL::getInstance()->test( $tax_query );
+    
     return $tax_query;
   }
 
