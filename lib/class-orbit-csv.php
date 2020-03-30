@@ -135,7 +135,8 @@ class ORBIT_CSV extends ORBIT_BASE {
 			'post_info' 	=> array(),
 			'tax_info'  	=> array(),
 			'cf_info'   	=> array(),
-			'term_info'		=> array()
+			'term_info'		=> array(),
+			'custom'			=> array()
 		);
 
 		$i = 0;
@@ -161,6 +162,9 @@ class ORBIT_CSV extends ORBIT_BASE {
 				// TERMS INFORMATION
 				$temp_col = explode('|', $col);
 				$headerInfo[$temp_col[0]][$temp_col[1]] = $i;
+			}
+			else{
+				$headerInfo['custom'][$col] = $i;
 			}
 
 			$i++;
@@ -218,6 +222,11 @@ class ORBIT_CSV extends ORBIT_BASE {
 						foreach ($valueArray as $metakey => $value) {
 							$metavalue = get_post_meta( get_the_ID(), $metakey, true );
 							$row[$value] = $metavalue;
+						}
+					}
+					else if( $type == 'custom' ){
+						foreach ( $valueArray as $slug => $value ) {
+							$row[ $value ] = apply_filters( 'orbit_csv_export_row', $slug );
 						}
 					}
 					else {
@@ -342,7 +351,7 @@ class ORBIT_CSV extends ORBIT_BASE {
 					}
 				}
 
-				// TEMRS INFO
+				// TERMS INFO
 				foreach ($headerInfo['term_info'] as $term_info => $value) {
 					// $term_col[0] - taxonomy
 					// $term_col[1] - term ID
@@ -436,6 +445,9 @@ class ORBIT_CSV extends ORBIT_BASE {
 				array_push($data, $headerItem);
 			}
 		}
+
+		$data  = apply_filters( 'orbit_csv_header_post_prepare', $data );
+
 		return $data;
 	}
 
