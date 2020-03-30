@@ -186,7 +186,7 @@
 
 				$orbit_form_field->display( array(
 					'name'	=> $atts['form_name'],
-					'value'	=> $atts['form_value'],
+					'value'	=> isset( $atts['form_value'] ) ? $atts['form_value'] : '',
 					'label'	=> $atts['label'],
 					'type'	=> $atts['form'],
 					'items'	=> $new_items
