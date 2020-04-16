@@ -275,15 +275,20 @@ class ORBIT_FEP extends ORBIT_BASE{
       'form_success_msg'  => get_post_meta( $atts['id'], 'form_success_msg',true )
     );
 
-    $this->create( $fep_pages, $new_post );
+    $new_post_id = $this->create( $fep_pages, $new_post );
+
+    if( $new_post_id && $_POST ){
+      
+      // SEND EMAIL AS NOTIFICATION WHEN THE POST HAS BEEN CREATED SUCCESSFULLY
+      $this->sendMail( $atts['id'], $_POST, $new_post_id );
+    }
 
     return ob_get_clean();
   }
 
   function create( $pages, $new_post = array(), $callback_func = false ){
-    // echo '<pre>';
-    // print_r( $_POST );
-    // echo '</pre>';
+
+    $new_post_id = 0;
 
     $form_success_flag = false;
     $success_message = isset( $new_post['form_success_msg'] ) ? $new_post['form_success_msg'] : "";
@@ -295,8 +300,6 @@ class ORBIT_FEP extends ORBIT_BASE{
       // SEND EMAIL ON SUCCESSFUL FORM SUBMISSION
       if( $new_post_id ){
         $form_success_flag = true;
-
-        //$this->sendMail( $atts['id'], $_POST, $new_post_id ); COMMENTED FOR NOW TO BE ADDED LATER
       }
     }
 
@@ -320,6 +323,7 @@ class ORBIT_FEP extends ORBIT_BASE{
         call_user_func( $callback_func, $new_post_id );
       }
     }
+    return $new_post_id;
   }
   //Message on form submission
   function showMessage( $success_message ){
@@ -472,10 +476,13 @@ class ORBIT_FEP extends ORBIT_BASE{
 
     // SENDS AN E-MAIL TO THE ADMIN ON FORM SUBMISSION
     $to = get_post_meta( $fep_id, 'user_email', true );
-    $subject = "New Post has been submitted: $type";
-    $message .= "Click the link to edit the post: $edit_link ";
+    if( !empty( $to ) ){
+      $subject = "New Post has been submitted: $type";
+      $message .= "Click the link to edit the post: $edit_link ";
+      $mail = wp_mail( $to, $subject, $message );
+    }
     // $headers = "Content-Type: text/html; charset=UTF-8\r\n";
-    $mail = wp_mail( $to, $subject, $message );
+
 
     // if ( $mail  ) {
     //   echo 'Email sent';
