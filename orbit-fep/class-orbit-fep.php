@@ -147,6 +147,27 @@ class ORBIT_FEP extends ORBIT_BASE{
           ),
         )
       ),
+      array(
+        'id'      =>  'orbit-fep-notification',
+        'title'   =>  'Notification Settings',
+        'fields'  =>  array(
+          'to' => array(
+            'type' 		=> 'text',
+            'text' 		=> 'Email To',
+          ),
+          'subject' => array(
+            'type' 		=> 'text',
+            'text' 		=> 'Subject',
+          ),
+          'content' => array(
+            'type' 		=> 'textarea',
+            'text' 		=> 'Enter the content of the email',
+            'help'    => 'Use variables like $post_title for title of the post',
+            'options'	=> array()
+          ),
+        ),
+        'field_name'	=> 'fep_email'
+      )
     );
     return $meta_box;
   }
@@ -278,7 +299,7 @@ class ORBIT_FEP extends ORBIT_BASE{
     $new_post_id = $this->create( $fep_pages, $new_post );
 
     if( $new_post_id && $_POST ){
-      
+
       // SEND EMAIL AS NOTIFICATION WHEN THE POST HAS BEEN CREATED SUCCESSFULLY
       $this->sendMail( $atts['id'], $_POST, $new_post_id );
     }
@@ -459,38 +480,42 @@ class ORBIT_FEP extends ORBIT_BASE{
   } // END OF FUNCTION
 
 
-  function sendMail( $fep_id, $form_info, $post_edit_id ){
-    // CONTAINS THE LINK TO EDIT THE POST
-    $edit_link = html_entity_decode( get_edit_post_link( $post_edit_id ), ENT_QUOTES, 'UTF-8' );
-    // GETS THE POST TYPE
-    $type = ucfirst( get_post_meta( $fep_id, 'posttypes', true ) );
+  function sendMail( $fep_id, $form_info, $new_post_id ){
 
-    //APPENDS POST TITLE AND POST DESCRIPTION TO THE EMAIL BODY
-    $message = '';
-    $mail_info = array( 'post_title', 'post_content' );
-    foreach( $form_info as $slug=>$field ){
-      if( in_array( $slug, $mail_info ) ){
-          $message .= ( $slug=='post_title' ) ? "Post Title: $field \r\n" : "Post Description: $field \r\n";
+    $post = get_post( $new_post_id );
+
+    if ( $post instanceof WP_Post ) {
+      // POST TITLE
+      $post_title = $post->post_title;
+
+      // POST DATE
+      $post_date = $post->post_date;
+
+      // CONTAINS THE LINK TO EDIT THE POST
+      $post_edit_link = html_entity_decode( get_edit_post_link( $new_post_id ), ENT_QUOTES, 'UTF-8' );
+
+      $settings = get_post_meta( $fep_id, 'fep_email', true );
+
+      if( isset( $settings['to'] ) && !empty( $settings['to'] ) && isset( $settings['content'] ) && isset( $settings['subject'] ) ){
+
+        $email_content = $settings['content'];
+        eval("\$email_content = \"$email_content\";");
+
+        $email_subject = $settings['subject'];
+        eval("\$email_subject = \"$email_subject\";");
+
+        $mail = wp_mail( $to, $email_subject, $email_content );
+
+        /*
+        if ( $mail  ) {
+         echo 'Email sent';
+        }
+        else{
+           echo 'Email not sent';
+        }
+        */
       }
     }
-
-    // SENDS AN E-MAIL TO THE ADMIN ON FORM SUBMISSION
-    $to = get_post_meta( $fep_id, 'user_email', true );
-    if( !empty( $to ) ){
-      $subject = "New Post has been submitted: $type";
-      $message .= "Click the link to edit the post: $edit_link ";
-      $mail = wp_mail( $to, $subject, $message );
-    }
-    // $headers = "Content-Type: text/html; charset=UTF-8\r\n";
-
-
-    // if ( $mail  ) {
-    //   echo 'Email sent';
-    // }
-    //
-    // else{
-    //   echo 'Email not sent';
-    // }
   }
 
   function assets(){
