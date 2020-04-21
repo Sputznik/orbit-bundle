@@ -162,7 +162,7 @@ class ORBIT_FEP extends ORBIT_BASE{
           'content' => array(
             'type' 		=> 'textarea',
             'text' 		=> 'Enter the content of the email',
-            'help'    => 'Use variables like $post_title for title of the post',
+            'help'    => 'Use variables like $post_title for title of the post, $post_date for date of the post, $post_edit_link for link of the post in the backend',
             'options'	=> array()
           ),
         ),
