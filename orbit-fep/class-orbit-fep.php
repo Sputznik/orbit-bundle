@@ -384,6 +384,9 @@ class ORBIT_FEP extends ORBIT_BASE{
         if( is_wp_error( $attachment_id ) ){
           // print_r( $attachment_id );
         }
+				elseif ( $key == 'post_featured' ) {
+					set_post_thumbnail( $post_id, $attachment_id );
+				}
       }
     }
 	}
