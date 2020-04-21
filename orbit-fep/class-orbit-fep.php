@@ -489,6 +489,9 @@ class ORBIT_FEP extends ORBIT_BASE{
 
     $post = get_post( $new_post_id );
 
+    // FEP SETTINGS
+    $settings = get_post_meta( $fep_id, 'fep_email', true );
+
     if ( ( $post instanceof WP_Post ) && isset( $settings['to'] ) && !empty( $settings['to'] ) && isset( $settings['content'] )
     && isset( $settings['subject'] ) ){
       // POST TITLE
@@ -499,9 +502,6 @@ class ORBIT_FEP extends ORBIT_BASE{
 
       // CONTAINS THE LINK TO EDIT THE POST
       $post_edit_link = html_entity_decode( get_edit_post_link( $new_post_id ), ENT_QUOTES, 'UTF-8' );
-
-			// FEP SETTINGS
-      $settings = get_post_meta( $fep_id, 'fep_email', true );
 
       $email_content = $settings['content'];
       eval("\$email_content = \"$email_content\";");
