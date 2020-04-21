@@ -504,7 +504,7 @@ class ORBIT_FEP extends ORBIT_BASE{
         $email_subject = $settings['subject'];
         eval("\$email_subject = \"$email_subject\";");
 
-        $mail = wp_mail( $to, $email_subject, $email_content );
+        $mail = wp_mail( $settings['to'], $email_subject, $email_content );
 
         /*
         if ( $mail  ) {
