@@ -348,8 +348,10 @@ class ORBIT_FEP extends ORBIT_BASE{
   }
   //Message on form submission
   function showMessage( $success_message ){
-    echo "<div style='margin-top:50px;' class='orbit-form-alert'>" . $success_message . "</div>";
-  }
+		if( !empty( $success_message ) ){
+			echo "<div style='margin-top:50px;' class='orbit-form-alert'>" . $success_message . "</div>";
+		}
+	}
 
   function validateFiles(){
     foreach( $_FILES as $key => $fileobject ){
