@@ -135,11 +135,12 @@ class ORBIT_FEP extends ORBIT_BASE{
             'text' 		=> 'Select Post Status',
             'options'	=> get_post_statuses()
           ),
+					/* NO LONGER NEEDED AS THE NEXT METABOX TAKES CARE OF IT
           'user_email' => array(
             'type' 		=> 'text',
             'text' 		=> 'Email',
             'options'	=> array()
-          ),
+          ),*/
           'form_success_msg' => array(
             'type' 		=> 'textarea',
             'text' 		=> 'Enter the message to be shown when the form gets submitted.',
