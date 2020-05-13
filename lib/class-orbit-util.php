@@ -122,7 +122,7 @@ class ORBIT_UTIL extends ORBIT_BASE{
     }
 
     //ORBIT_UTIL::getInstance()->test( $tax_query );
-    
+
     return $tax_query;
   }
 
@@ -137,6 +137,9 @@ class ORBIT_UTIL extends ORBIT_BASE{
       $temp = $this->explode_to_arr( $value_str, ':' );
       if( count( $temp ) > 1 ){ $date_query[ $temp[0] ] = $temp[1]; }
     }
+		if( is_array( $date_query ) && count( $date_query ) ){
+			$date_query['inclusive'] = true;
+		}
     return $date_query;
   }
 
