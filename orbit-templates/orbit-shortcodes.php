@@ -69,7 +69,7 @@
 		return '';
 	} );
 
-	/* SHORTCODE TO RETURN THE FEATURED IMAGE OF THE POST */
+	/* SHORTCODE TO RETURN TERMS OF THE POST */
 	add_shortcode( 'orbit_terms', function( $atts ){
 
 		/* CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE */
@@ -141,7 +141,7 @@
 		return $text;
 	} );
 
-	/* SHORTCODE TO RETURN THE AUTHOR LINK */
+	/* SHORTCODE TO RETURN THE AUTHOR AVATAR */
 	add_shortcode( 'orbit_avatar', function( $atts ){
 
 		/* CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE */
@@ -150,7 +150,7 @@
 		return get_avatar( get_the_author_meta( 'ID' ), $atts['size'] );
 	} );
 
-
+	/* SHORTCODE TO RETURN ORBIT USER DETAILS */
 	add_shortcode( 'orbit_user', function( $atts ){
 
 		/* CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE */
@@ -172,4 +172,25 @@
 		}
 
 		return $orbit_user->display_name;
+	} );
+
+	/* IF COAUTHORS PLUS PLUGIN IS ACTIVE */
+	/* SHORTCODE TO RETURN THE COAUTHORS OF THE POST */
+	add_shortcode( 'orbit_coauthors', function(){
+		if ( function_exists('coauthors') ) {
+			return coauthors(null, null, null, null, false);
+		}
+		else {
+			return "plugin inactive";
+		}
+	} );
+
+	/* SHORTCODE TO RETURN THE COAUTHOR LINKS */
+	add_shortcode( 'orbit_coauthors_links', function(){
+		if ( function_exists('coauthors_posts_links') ) {
+			return coauthors_posts_links(null, null, null, null, false);
+		}
+		else {
+			return "plugin inactive";
+		}
 	} );
