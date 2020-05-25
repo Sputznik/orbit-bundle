@@ -61,6 +61,15 @@ class ORBIT_TEMPLATES{
 
 		} );
 
+		/* OVERRIDE ARCHIVE TEMPLATE FOR POST-TYPES */
+		add_filter( 'author_template', function( $author_template ){
+
+			$author_template = plugin_dir_path(__FILE__)."templates/author.php";
+
+			return $author_template;
+
+		} );
+
 
 		/* ADD TEMPLATES CUSTOM FIELDS AS OPTION TO ORBIT TYPES */
 		add_filter( 'orbit_meta_box_vars', array( $this, 'meta_box_fields' ) );
@@ -213,6 +222,15 @@ class ORBIT_TEMPLATES{
 
 		return 0;
 
+	}
+
+	/* GET THE TEMPLATE ID OF THE AUTHOR TEMPLATE */
+	function get_current_author_template_id(){
+		$data = $this->get_override_options();
+		if( is_array( $data ) && isset( $data['author'] ) ){
+			return $data['author'];
+		}
+		return 0;
 	}
 
 	function create_post_type( $post_types ){
