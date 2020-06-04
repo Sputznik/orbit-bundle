@@ -1,5 +1,5 @@
 <?php
-	
+
 function the_oq_articles( $atts ){
 	global $orbit_query;
 	$orbit_query->include_template_file( 'articles', $atts );
