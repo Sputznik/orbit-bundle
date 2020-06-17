@@ -57,7 +57,10 @@
 									elseif( is_array( $field['options'] ) ){
 										$options = array();
 										foreach( $field['options'] as $opt ){
-											if( isset( $opt['value'] ) ){ array_push( $options, $opt['value'] ); }
+											if( isset( $opt['value'] ) ){
+												$options[sanitize_title( $opt['value'] )] = $opt['value'];
+												//array_push( $options, $opt['value'] );
+											}
 										}
 										$field['options'] = $options;
 										//ORBIT_UTIL::getInstance()->test( $field['options'] );
