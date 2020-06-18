@@ -19,7 +19,7 @@ class ORBIT_UTIL extends ORBIT_BASE{
       /* USER VALUES FROM GET PARAMETERS */
       foreach( $params as $slug => $value ){
 
-        /* DIFFERENTIATING FIELD TYPE AND VALUE */
+				/* DIFFERENTIATING FIELD TYPE AND VALUE */
         $slug_arr = explode( '_', $slug );
 
         /* FOR CHECKBOX */
@@ -28,9 +28,7 @@ class ORBIT_UTIL extends ORBIT_BASE{
 
         if( count( $slug_arr ) > 1 && $value ){
 
-
-
-          // LOOK FOR FIELD TYPE
+					// LOOK FOR FIELD TYPE
           switch( $slug_arr[0] ){
             case 'tax':
               array_push( $data['tax'], $slug_arr[1].":".$value );
@@ -38,16 +36,20 @@ class ORBIT_UTIL extends ORBIT_BASE{
 
             case 'postdate':
               array_push( $data['date'], $slug_arr[1].":".$value );
-              break;
+							break;
           }
         }
       }
     }
 
+		//ORBIT_UTIL::getInstance()->test( $data );
+
     // ITERATE THROUGH THE DATA ARRAY AND CONVERT THEM INTO STRING EQUIVALENT
     foreach( $data as $slug => $value_arr ){
       if( is_array( $value_arr ) ){
-        $data[ $slug ] = implode('&', $value_arr );
+				$operator = '&';
+				if( $slug == 'date' ){ $operator = '#'; }
+        $data[ $slug ] = implode( $operator, $value_arr );
       }
     }
 
