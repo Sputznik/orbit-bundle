@@ -47,7 +47,7 @@ class ORBIT_UTIL extends ORBIT_BASE{
     // ITERATE THROUGH THE DATA ARRAY AND CONVERT THEM INTO STRING EQUIVALENT
     foreach( $data as $slug => $value_arr ){
       if( is_array( $value_arr ) ){
-        $data[ $slug ] = implode('#', $value_arr );
+        $data[ $slug ] = implode('&', $value_arr );
       }
     }
 
@@ -96,8 +96,14 @@ class ORBIT_UTIL extends ORBIT_BASE{
   function _getInlineRelationalOperator( $tax_query_str ){
     $or_index = strpos( $tax_query_str, '#' );
     $and_index = strpos( $tax_query_str, '&' );
-    if( $or_index && $or_index < $and_index ) return '#';
-    return '&';
+
+		//echo $or_index." ". $and_index;
+
+		if( $or_index && $or_index < $and_index ) return '#';
+		elseif ( $and_index ) {
+			return '&';
+		}
+    return '#';
   }
 
   /*
@@ -108,7 +114,10 @@ class ORBIT_UTIL extends ORBIT_BASE{
     $tax_query_str = str_replace( "amp;", "", $tax_query_str );
 
     $operator = $this->_getInlineRelationalOperator( $tax_query_str );
-    $tax_arr = $this->explode_to_arr( $tax_query_str, $operator );
+
+		//echo $operator;
+
+		$tax_arr = $this->explode_to_arr( $tax_query_str, $operator );
 
     $tax_query = array(
       'relation' => $operator == '#' ? "OR" : "AND"

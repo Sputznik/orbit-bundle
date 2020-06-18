@@ -257,6 +257,9 @@
 
 			// GET RESULTS HTML
 			$shortcode_str = $this->getQueryShortcode( $atts, $filter_settings );
+
+			//echo $shortcode_str;
+
 			$results_html = do_shortcode( $shortcode_str );
 
 			global $orbit_wp_query;
