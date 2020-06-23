@@ -134,13 +134,10 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			$query_atts['date_query'] = $orbit_util->getDateQueryParams( $atts['date_query'] );
 		}
 
-		//echo "<!-- ORBIT BUNDLE -->";
 		echo "<pre>";
 		print_r( $query_atts );
 		echo "</pre>";
-		//echo "-->";
-
-
+		
 		$orbit_wp = ORBIT_WP::getInstance();
 
 		$this->query = $orbit_wp->query( $query_atts ); //new WP_Query( $query_atts );

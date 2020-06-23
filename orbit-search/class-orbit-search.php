@@ -169,6 +169,8 @@
 			if( isset( $extra_params['tax'] ) && $extra_params['tax'] ){ $shortcode_str .= "tax_query='".$extra_params['tax']."'"; }
 			if( isset( $extra_params['date'] ) && $extra_params['date'] ){ $shortcode_str .= " date_query='".$extra_params['date']."'"; }
 
+			ORBIT_UTIL::getInstance()->test( $extra_params );
+
 			// ADD ORDER AND ORDER BY PARAMS
 			if( ( isset( $_GET['orbit_sort'] ) && $_GET['orbit_sort'] ) ||
 					( isset( $filter_settings['default_sorting'] ) && $filter_settings['default_sorting'] ) ){
