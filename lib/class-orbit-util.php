@@ -15,7 +15,7 @@ class ORBIT_UTIL extends ORBIT_BASE{
 
     if( is_array ( $params ) && ( count( $params ) >= 1 ) ){
 
-
+			
       /* USER VALUES FROM GET PARAMETERS */
       foreach( $params as $slug => $value ){
 
@@ -47,8 +47,8 @@ class ORBIT_UTIL extends ORBIT_BASE{
     // ITERATE THROUGH THE DATA ARRAY AND CONVERT THEM INTO STRING EQUIVALENT
     foreach( $data as $slug => $value_arr ){
       if( is_array( $value_arr ) ){
-				$operator = '&';
-				if( $slug == 'date' ){ $operator = '#'; }
+				$operator = 'AND';
+				//if( $slug == 'date' ){ $operator = 'OR'; }
         $data[ $slug ] = implode( $operator, $value_arr );
       }
     }
@@ -96,16 +96,16 @@ class ORBIT_UTIL extends ORBIT_BASE{
   * LOGIC IS TO FIND THE OPERATOR THAT COMES FIRST AND ASSUME THAT IT FOLLOWS THE SAME PATTERN
   */
   function _getInlineRelationalOperator( $tax_query_str ){
-    $or_index = strpos( $tax_query_str, '#' );
-    $and_index = strpos( $tax_query_str, '&' );
+    $or_index = strpos( $tax_query_str, 'OR' );
+    $and_index = strpos( $tax_query_str, 'AND' );
 
 		//echo $or_index." ". $and_index;
 
-		if( $or_index && $or_index < $and_index ) return '#';
+		if( $or_index && $or_index < $and_index ) return 'OR';
 		elseif ( $and_index ) {
-			return '&';
+			return 'AND';
 		}
-    return '#';
+    return 'AND';
   }
 
   /*
@@ -122,7 +122,7 @@ class ORBIT_UTIL extends ORBIT_BASE{
 		$tax_arr = $this->explode_to_arr( $tax_query_str, $operator );
 
     $tax_query = array(
-      'relation' => $operator == '#' ? "OR" : "AND"
+      'relation' => $operator // == '#' ? "OR" : "AND"
     );
 
     foreach( $tax_arr as $tax ){
@@ -143,7 +143,7 @@ class ORBIT_UTIL extends ORBIT_BASE{
   */
   function getDateQueryParams( $date_query_str ){
     $date_query = array();
-    $date_arr = $this->explode_to_arr( $date_query_str, "#" );
+    $date_arr = $this->explode_to_arr( $date_query_str, "AND" );
     foreach( $date_arr as $value_str ){
       $temp = $this->explode_to_arr( $value_str, ':' );
       if( count( $temp ) > 1 ){ $date_query[ $temp[0] ] = $temp[1]; }

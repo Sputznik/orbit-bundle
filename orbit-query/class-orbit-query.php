@@ -134,14 +134,12 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			$query_atts['date_query'] = $orbit_util->getDateQueryParams( $atts['date_query'] );
 		}
 
-		//echo "<pre>";
-		//print_r( $query_atts );
-		//echo "</pre>";
+		//ORBIT_UTIL::getInstance()->test( $query_atts );
 
 		$orbit_wp = ORBIT_WP::getInstance();
 
 		$this->query = $orbit_wp->query( $query_atts ); //new WP_Query( $query_atts );
-
+		
 		do_action( 'orbit_query_heading', $query_atts );
 
 		if( $this->query->have_posts() ){
@@ -157,6 +155,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 
 	/* OVERRIDDEN FROM THE PARENT */
 	function get_ajax_url( $atts ){
+		//ORBIT_UTIL::getInstance()->test( $atts );
 		return $this->get_ajax_url_from_args( $atts, array('paged') );
 	}
 

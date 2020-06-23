@@ -4,12 +4,12 @@ $terms = $this->getNestedTerms( $atts );
 
 $param = "tax_" . $atts['typeval'];
 $name_param = $param . "[]";
-$values = $_GET[ $param ];
+$values = isset( $_GET[ $param ] ) ? $_GET[ $param ] : array();
 
 
 
 $parent_param = 'parent_' . $atts['typeval'];
-$parent_value = isset( $_GET[ $parent_param ] ) ? $_GET[ $parent_param ] : ( is_array( $values ) ? $values[0] : "" );
+$parent_value = isset( $_GET[ $parent_param ] ) ? $_GET[ $parent_param ] : ( is_array( $values ) && count( $values ) ? $values[0] : "" );
 
 _e( "<div data-behaviour='orbit-nested-dropdown-checkboxes'>" );
 
