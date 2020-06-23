@@ -197,6 +197,7 @@
 			// END OF SHORTCODE STRING
 			$shortcode_str .= "]";
 
+			echo $shortcode_str;
 
 			return $shortcode_str;
 		}
