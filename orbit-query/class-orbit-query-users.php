@@ -33,7 +33,7 @@ class ORBIT_QUERY_USERS extends ORBIT_QUERY_BASE{
 		$query_atts = array(
 			'search' 				=> $atts['search'],
 			'role'					=> $atts['role'],
-			//'role__in'			=> ! empty($atts['role__in']) ? explode(',', $atts['role__in']) : '',
+			'role__in'			=> ! empty($atts['role__in']) ? explode(',', $atts['role__in']) : '',
 			'role__not_in'	=> ! empty($atts['role__not_in']) ? explode(',', $atts['role__not_in']) : '',
 			'exclude' 			=> ! empty($atts['exclude']) ? explode(',', $atts['exclude']) : '',
 			'include' 			=> ! empty($atts['include']) ? explode(',', $atts['include']) : '',
