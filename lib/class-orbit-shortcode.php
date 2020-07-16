@@ -40,7 +40,9 @@ class ORBIT_SHORTCODE extends ORBIT_BASE{
 
 		foreach( $atts as $key => $val ){
 			if( ! in_array( $key, $this->remove_atts_from_cache_key() ) ){
-				$cache_key .= $val;
+				if( is_string( $val ) ){
+					$cache_key .= $val;
+				}
 			}
 		}
 
