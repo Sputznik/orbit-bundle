@@ -44,6 +44,9 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE {
 
 		ob_start();
 
+		//enqueue the registered script to include on the page
+		wp_enqueue_script('orbit-batch-process');
+
 		/* CREATE ATTS ARRAY FROM DEFAULT PARAMETERS IN THE SHORTCODE */
 		$atts = shortcode_atts(array(
 			'ajax_method'  => 'GET',
@@ -53,7 +56,7 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE {
 			'batches'      => '10',
 			'btn_text'     => 'Process Request',
 			'batch_action' => 'default',
-			'auto'         => '1',
+			'auto'         => 0,
 			'params'       => array(),
 		), $atts, $this->slug);
 
