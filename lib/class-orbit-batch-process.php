@@ -36,13 +36,18 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE {
 	}
 
 	function register_assets() {
-		wp_register_script('orbit-batch-process', plugins_url('orbit-bundle/dist/js/batch-process.js'), array('jquery'), ORBIT_BUNDLE_VERSION, true);
+		
+		global $post;
+		if( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'orbit_batch_process' ) ) {
+			$this->enqueue_assets();
+		}
 	}
 
 	/* SHORTCODE FUNCTION */
 	function plain_shortcode($atts, $content = false) {
 
 		ob_start();
+
 
 		/* CREATE ATTS ARRAY FROM DEFAULT PARAMETERS IN THE SHORTCODE */
 		$atts = shortcode_atts(array(
@@ -53,7 +58,7 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE {
 			'batches'      => '10',
 			'btn_text'     => 'Process Request',
 			'batch_action' => 'default',
-			'auto'         => '1',
+			'auto'         => 1,
 			'params'       => array(),
 		), $atts, $this->slug);
 
@@ -68,7 +73,8 @@ class ORBIT_BATCH_PROCESS extends ORBIT_SHORTCODE {
 	function enqueue_assets() {
 		// LOAD THE MAIN STYLE IF IT HAS NOT BEEN LOADED YET
 		wp_enqueue_style('orbit-main');
-		wp_enqueue_script('orbit-batch-process');
+		
+		wp_enqueue_script('orbit-batch-process', plugins_url('orbit-bundle/dist/js/batch-process.js'), array('jquery'), ORBIT_BUNDLE_VERSION, true);
 	}
 
 	/* AJAX CALLBACK */
