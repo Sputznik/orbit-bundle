@@ -129,6 +129,9 @@
 			if( $atts['is_link'] && $atts['label'] ){
 				$text = "<a href='".$meta_value."' target='_blank'>".$atts['label']."</a>";
 			}
+			elseif ( is_array( $meta_value ) ) {
+				$text = implode( ', ', $meta_value );
+			}
 			else{
 				if( $atts['label'] ){
 					$text = $atts['label'];
