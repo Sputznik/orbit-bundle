@@ -16,7 +16,9 @@
 	/* SHORTCODE TO RETURN THE CONTENT OF THE POST */
 	add_shortcode( 'orbit_content', function(){
 
-		global $post;
+		global $post, $post_id;
+
+		print_r( $post_id );
 
 		print_r( $post );
 
