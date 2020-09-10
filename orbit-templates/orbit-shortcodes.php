@@ -18,13 +18,13 @@
 
 		global $post, $post_id;
 
-		print_r( $post_id );
+		//print_r( $post_id );
 
-		print_r( $post );
+		//print_r( $post );
 
 		return $post->post_content;
 
-		return apply_filters( 'the_content', $post->post_content );
+		//return apply_filters( 'the_content', $post->post_content );
 
 		//return do_shortcode( $post->post_content );
 		//return get_the_content();
