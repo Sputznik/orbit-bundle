@@ -12,24 +12,11 @@
 		return wp_trim_excerpt();
 
 	} );
-	
 
-	/* SHORTCODE TO RETURN THE CONTENT OF THE POST *
+	/* SHORTCODE TO RETURN THE CONTENT OF THE POST */
 	add_shortcode( 'orbit_content', function(){
-
-		global $post, $post_id;
-
-		//print_r( $post_id );
-
-		//print_r( $post );
-
-		return $post->post_content;
-
-		//return apply_filters( 'the_content', $post->post_content );
-
-		//return do_shortcode( $post->post_content );
-		//return get_the_content();
-
+		global $post;
+		return apply_filters( 'the_content', $post->post_content );
 	} );
 
 	/* SHORTCODE TO RETURN THE TITLE OF THE POST */
