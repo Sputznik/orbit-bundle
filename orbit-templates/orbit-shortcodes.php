@@ -16,9 +16,11 @@
 	/* SHORTCODE TO RETURN THE CONTENT OF THE POST */
 	add_shortcode( 'orbit_content', function(){
 
-		global $post;
+		//global $post;
 
-		return do_shortcode( $post->post_content );
+		//return do_shortcode( $post->post_content );
+
+		return get_the_content();
 
 	} );
 
