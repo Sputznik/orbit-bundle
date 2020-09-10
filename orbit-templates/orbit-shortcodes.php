@@ -18,6 +18,8 @@
 
 		global $post;
 
+		print_r( $post );
+
 		return $post->post_content;
 
 		return apply_filters( 'the_content', $post->post_content );
