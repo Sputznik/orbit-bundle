@@ -17,7 +17,8 @@
 	add_shortcode( 'orbit_content', function(){
 
 		global $post;
-		return apply_filters('the_content', $post->post_content);
+		return apply_filters( 'the_content', $post->post_content );
+
 		//return do_shortcode( $post->post_content );
 		//return get_the_content();
 
