@@ -12,6 +12,7 @@
 		return wp_trim_excerpt();
 
 	} );
+	
 
 	/* SHORTCODE TO RETURN THE CONTENT OF THE POST *
 	add_shortcode( 'orbit_content', function(){
