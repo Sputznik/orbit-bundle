@@ -13,7 +13,7 @@
 
 	} );
 
-	/* SHORTCODE TO RETURN THE CONTENT OF THE POST */
+	/* SHORTCODE TO RETURN THE CONTENT OF THE POST *
 	add_shortcode( 'orbit_content', function(){
 
 		global $post, $post_id;
