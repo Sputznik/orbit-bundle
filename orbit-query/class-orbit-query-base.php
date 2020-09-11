@@ -46,6 +46,24 @@ class ORBIT_QUERY_BASE extends ORBIT_SHORTCODE{
 
 	}
 
+	function wp_loop( $query, $atts ){
+		global $orbit_templates;
+		if( isset( $atts['style_id'] ) ):?>
+		<ul id="<?php _e( $atts['id'] );?>" data-target="<?php _e('li.orbit-article-db');?>" data-url="<?php _e( $atts['url'] );?>" class="<?php $orbit_templates->print_template_class( $atts['style_id'] );?>">
+			<?php while( $query->have_posts() ) : $query->the_post();?>
+			<li class='orbit-article-db'><?php $orbit_templates->print_template( $atts['style_id'] );?></li>
+			<?php endwhile;?>
+		</ul>
+		<?php if($atts['pagination'] != '0'):?>
+		<div class='orbit-btn-load-parent'>
+			<button data-behaviour='oq-ajax-loading' data-list="<?php _e('#'.$atts['id']);?>" class="load-more" type="button">
+				<?php _e( 'Load More', 'orbit-bundle' );?>
+			</button>
+		</div>
+		<?php endif;
+		endif;
+	}
+
 	/* LOAD SCRIPTS AND STYLES IF THE SHORTCODE IS USED */
 	function assets($posts){
 

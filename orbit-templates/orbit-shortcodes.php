@@ -1,6 +1,20 @@
 <?php
 
 	/* SHORTCODE TO RETURN THE EXCERPT OF THE POST */
+	add_shortcode( 'orbit_archives', function( $atts ){
+
+		$orbit_query = ORBIT_QUERY::getInstance();
+		$atts = $orbit_query->get_atts( $atts );
+		$atts['style'] = 'db';
+
+		ob_start();
+		global $wp_query;
+		$orbit_query->wp_loop( $wp_query, $atts );
+		return ob_get_clean();
+
+	} );
+
+	/* SHORTCODE TO RETURN THE EXCERPT OF THE POST */
 	add_shortcode( 'orbit_excerpt', function(){
 
 		global $post;
