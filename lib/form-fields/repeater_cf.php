@@ -28,6 +28,7 @@
         'text' 		=> 'Select Field Type',
         'options'	=> array(
           'text'			=> 'Text',
+					'media'			=> 'Media',
           'textarea'	=> 'Textarea',
           'dropdown'	=> 'Dropdown',
           'checkbox'	=> 'Checkboxes'

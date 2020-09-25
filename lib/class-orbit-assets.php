@@ -30,7 +30,14 @@
         ),
       );
 
-      $admin_assets = array();
+      $admin_assets = array(
+				array(
+          'handle'  => 'orbit_media_picker',
+          'url'     => plugins_url( 'orbit-bundle/dist/js/media-picker.js' ),
+          'deps'    => array(),
+          'type' 	 	=> 'script'
+        ),
+			);
 
       $this->wp_assets = apply_filters( 'orbit_wp_assets', $wp_assets );
 
