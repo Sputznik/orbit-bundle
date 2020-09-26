@@ -1,5 +1,13 @@
 <?php
 
+	// CUSTOM CODE FOR SONS OF GLLORY.NET HAS TO BE REMOVED SOMETIME
+	add_action( 'pre_get_posts', function( $query ){
+		if( ! is_admin() && $query->is_post_type_archive( 'sermon-series' ) && $query->is_main_query() ){
+			$query->set( 'posts_per_page', 10 );
+    }
+	} );
+	// CUSTOM CODE FOR SONS OF GLLORY.NET HAS TO BE REMOVED SOMETIME
+
 	/* SHORTCODE TO RETURN THE EXCERPT OF THE POST */
 	add_shortcode( 'orbit_archives', function( $atts ){
 
@@ -9,6 +17,12 @@
 
 		ob_start();
 		global $wp_query;
+
+		if( isset( $wp_query->query_vars ) && isset( $wp_query->query_vars['posts_per_page'] ) ){
+			$wp_query->query_vars['posts_per_page'] = $atts['posts_per_page'];
+		}
+
+		//ORBIT_UTIL::getInstance()->test( $wp_query );
 		$orbit_query->wp_loop( $wp_query, $atts );
 		return ob_get_clean();
 
