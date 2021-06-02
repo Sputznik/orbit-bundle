@@ -76,6 +76,14 @@
 							'custom_fields'	=> 'Custom Fields',
 						)
 					),
+					'show_in_rest' => array(
+						'type' 		=> 'checkbox',
+						'text' 		=> 'Rest API Support',
+						'options'	=> array(
+							'show_post'			=> 'Enable rest api for post',
+							'show_taxonomy'	=> 'Enable rest api for taxonomies',
+						)
+					),
 				)
 			),
 		);
