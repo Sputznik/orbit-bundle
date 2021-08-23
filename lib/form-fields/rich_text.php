@@ -1,5 +1,5 @@
 <?php
-$content = '';
+$content = $atts['value'];
 $editor_id = $atts['name'];
 $settings = array(
     'media_buttons' => false,
