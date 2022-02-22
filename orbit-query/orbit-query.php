@@ -13,6 +13,7 @@ $inc_files = array(
 	'class-orbit-query.php',
 	'class-orbit-query-users.php',
 	'class-orbit-related-query.php',
+	'class-orbit-coauthors-query.php',
 	'the.php',
 );
 

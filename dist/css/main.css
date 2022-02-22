@@ -255,3 +255,16 @@ form.orbit-fep input[type=email],
 form.orbit-fep textarea, form.orbit-fep select{
 	padding: 10px 15px;
 }
+
+.oq-coauthors-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
+}
+.oq-coauthors-grid .author-avatar {
+	width: 100%;
+	height: 320px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+}
