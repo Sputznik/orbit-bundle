@@ -25,6 +25,8 @@ class ORBIT_FORM_FIELD extends ORBIT_BASE{
   // GETTING CATEGORIES AND SUBCATEGORIES SEPERATELY FOR A Taxonomy
   // USEFUL FOR LOCATIONS
   function getNestedTerms( $atts ){
+    global $orbit_wp_query;
+    $current_post_types = $orbit_wp_query->query['post_type'];
 
     $data = array( 'cats' => array(), 'subcats' => array() );
 
@@ -34,7 +36,12 @@ class ORBIT_FORM_FIELD extends ORBIT_BASE{
       'orderby'     => 'term_id'
     );
 
-    $terms = apply_filters('orbit_filter_nested_terms', get_terms( $args ), $args );
+    $terms = get_terms( $args );
+
+    // CHECK IF POST TYPE IS NOT EMPTY
+    if( $current_post_types && !( count( $current_post_types ) > 1 ) ){
+      $terms = apply_filters('orbit_filter_nested_terms', $terms, $args, $current_post_types );
+    }
 
     foreach ( $terms as $term ) {
       if( $term->parent ){
