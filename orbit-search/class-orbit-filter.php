@@ -160,7 +160,8 @@
 
 			$orbit_wp = 	ORBIT_WP::getInstance();
 
-			$terms = $orbit_wp->get_terms( $args );
+			$terms = apply_filters('orbit_filter_terms', $orbit_wp->get_terms( $args ), $args );
+
 			foreach($terms as $term){
 				array_push($final_arr, $term->name);
 			}

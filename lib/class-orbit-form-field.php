@@ -27,11 +27,14 @@ class ORBIT_FORM_FIELD extends ORBIT_BASE{
   function getNestedTerms( $atts ){
 
     $data = array( 'cats' => array(), 'subcats' => array() );
-    $terms = get_terms( array(
+
+    $args = array(
       'taxonomy'    => $atts['typeval'],
       'hide_empty'  => $atts['tax_hide_empty'] == 1 ? true : false,
       'orderby'     => 'term_id'
-    ) );
+    );
+
+    $terms = apply_filters('orbit_filter_nested_terms', get_terms( $args ), $args );
 
     foreach ( $terms as $term ) {
       if( $term->parent ){
