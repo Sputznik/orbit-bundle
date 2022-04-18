@@ -94,7 +94,7 @@ class ORBIT_FORM_FIELD extends ORBIT_BASE{
           $atts['new_label'] .= " <span>*</span>";
         }
 
-        _e("<label>". $atts['new_label'] ."</label>");
+        echo sprintf( '<label>%s</label>', __( $atts['new_label'], 'orbit-bundle' ) );
       }
 
       // CHECK IF FORM VALUE IS NOT SET FOR CHECKBOXES THEN SET DEFAULT VALUE TO ARRAY
