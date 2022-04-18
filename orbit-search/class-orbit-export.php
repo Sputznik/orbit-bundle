@@ -27,7 +27,7 @@ class ORBIT_EXPORT extends ORBIT_BASE{
       $headerInfo = $orbit_csv->getHeaderInfo( array( $headers ) );
       $settings = $orbit_search->getSettings( $form_id );
 
-      
+
       // GET QUERY ARGS
       $query_args = $this->getQueryArgs( $_REQUEST, $settings, $_REQUEST['orbit_batch_step'] );
 
@@ -169,7 +169,7 @@ class ORBIT_EXPORT extends ORBIT_BASE{
 
     echo "<div style='max-width:650px;'>";
 
-    if( $_GET && count( $_GET ) > 1 ){
+    if( $_GET && count( $_GET ) >= 1 ){
       $this->process_form( $atts['id'] );
     }
     else{
