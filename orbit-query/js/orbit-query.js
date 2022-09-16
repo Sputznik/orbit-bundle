@@ -82,9 +82,10 @@ jQuery('document').ready(function(){
   jQuery.fn.ajax_loading = function() {
 		return this.each(function() {
 
-			var $btn 			= jQuery( this ),
-				paged_attr 	= $btn.attr( 'data-paged-attr' ) ? $btn.attr( 'data-paged-attr' ) : 'paged',
-				$ul 				= jQuery( $btn.data( 'list' ) );
+			var $btn 				= jQuery( this ),
+				paged_attr 		= $btn.attr( 'data-paged-attr' ) ? $btn.attr( 'data-paged-attr' ) : 'paged',
+				$ul 					= jQuery( $btn.data( 'list' ) ),
+				loading_text	= $btn.data( 'loading-text' ) ? $btn.data( 'loading-text' ) : 'Loading ...';
 
 			$ul.attr( 'data-paged-attr', paged_attr );
 
@@ -93,7 +94,7 @@ jQuery('document').ready(function(){
 			// Trigger load more on click
 			$btn.click( function( ev ) {
 				$btn.data( 'html', $btn.html() );
-				$btn.html( 'Loading ...' );
+				$btn.html( loading_text );
 				$ul.trigger( 'ajax-load:start' );
 			});
 
