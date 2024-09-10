@@ -143,6 +143,9 @@
 		*/
 
 		function get_terms_arr( $term_type, $parent = -1, $hide_empty = true ){
+			global $orbit_wp_query;
+			$current_post_types = $orbit_wp_query->query['post_type'];
+
 			$final_arr = array();
 
 			$args = array(
@@ -160,7 +163,13 @@
 
 			$orbit_wp = 	ORBIT_WP::getInstance();
 
-			$terms = $orbit_wp->get_terms( $args );
+			$terms = get_terms( $args );
+
+			// CHECK IF POST TYPE IS NOT EMPTY
+			if( $current_post_types && !( count( $current_post_types ) > 1 ) ){
+				$terms = apply_filters('orbit_filter_terms', $terms, $args, $current_post_types );
+			}
+
 			foreach($terms as $term){
 				array_push($final_arr, $term->name);
 			}

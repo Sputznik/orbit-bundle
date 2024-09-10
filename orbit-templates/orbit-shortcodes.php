@@ -155,7 +155,12 @@
 				$text = "<a href='".$meta_value."' target='_blank'>".$atts['label']."</a>";
 			}
 			elseif ( is_array( $meta_value ) ) {
-				$text = implode( ', ', $meta_value );
+				$i = 0;
+				$text = '';
+				foreach( $meta_value as $val ){
+					if( $i ){ $text .= ", "; }
+					$text .= __( $val ); $i++;
+				} 
 			}
 			else{
 				if( $atts['label'] ){

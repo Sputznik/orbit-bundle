@@ -14,3 +14,8 @@ function the_oq_users( $atts ){
 	global $orbit_query_users;
 	$orbit_query_users->include_template_file( 'users', $atts );
 }
+
+function the_oq_coauthors( $atts ){
+	global $orbit_coauthors_query;
+	$orbit_coauthors_query->include_template_file( 'coauthors', $atts );
+}
