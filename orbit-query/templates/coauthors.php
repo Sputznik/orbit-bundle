@@ -1,5 +1,5 @@
 <?php if( function_exists('coauthors_posts_links') ):?>
-	<ul class="oq-coauthors-grid list-unstyled" id="<?php _e( $atts['id'] );?>">
+	<ul class="oq-coauthors-grid list-unstyled" id="<?php _e( $atts['id'] );?>" data-target="<?php _e('li.list-article');?>" data-url="<?php _e( $atts['url'] );?>">
 	<?php foreach ( $this->query as $author ): ?>
 	<li class="list-article">
 		<a href="<?php _e( get_author_posts_url( $author->ID, $author->user_nicename ) ); ?>">
