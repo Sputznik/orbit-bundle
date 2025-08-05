@@ -54,12 +54,8 @@ class ORBIT_QUERY_BASE extends ORBIT_SHORTCODE{
 			<li class='orbit-article-db'><?php $orbit_templates->print_template( $atts['style_id'] );?></li>
 			<?php endwhile;?>
 		</ul>
-		<?php if($atts['pagination'] != '0'):?>
-		<div class='orbit-btn-load-parent'>
-			<button data-behaviour='oq-ajax-loading' data-list="<?php _e('#'.$atts['id']);?>" class="load-more" type="button">
-				<?php _e( 'Load More', 'orbit-bundle' );?>
-			</button>
-		</div>
+		<?php if( $query->max_num_pages > 1 ): ?>
+			<?php include( plugin_dir_path(__FILE__).'templates/oq-pagination-layout.php' ); ?>
 		<?php endif;
 		endif;
 	}

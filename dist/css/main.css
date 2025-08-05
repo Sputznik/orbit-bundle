@@ -268,3 +268,7 @@ form.orbit-fep textarea, form.orbit-fep select{
 	background-repeat: no-repeat;
 	background-position: center;
 }
+
+.orbit-numbered-pagination .navigation {
+	display: block;
+}
