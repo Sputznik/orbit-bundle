@@ -40,6 +40,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			'tag__not_in'						=> '',
 			'offset'								=> '0',
 			'pagination'						=> '0',
+			'pagination_style'			=> 'default', // default, numbered
 			'paged'									=> '1',
 			'style'									=> '',
 			'order'									=> 'DESC',
@@ -55,10 +56,16 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 
 	function get_offset($atts){
 
-		// IF PAGED ATTRIBUTE IS PASSED AS A GET PARAM
+		$paged = $atts['paged'];
+
+		// IF PAGED / PAGE ATTRIBUTE IS PASSED AS A GET PARAM
 		if( get_query_var('paged') ){
-			$atts['paged'] = max( 1, get_query_var('paged') );
+			$paged = max( $paged, get_query_var('paged') );
+		} elseif( get_query_var( 'page' ) ){
+			$paged = max( $paged, get_query_var('page') );
 		}
+
+		$atts['paged'] = $paged;
 
 		return (((int)$atts['paged'] - 1) * (int)$atts['posts_per_page']) + (int)$atts['offset'];
 	}
@@ -66,8 +73,6 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 	function get_sticky_posts(){
 		return get_option( 'sticky_posts' );
 	}
-
-
 
 	function plain_shortcode( $atts, $content = false ){
 
@@ -126,6 +131,19 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			$query_atts['no_found_rows'] = true;
 		}
 
+		// DYNAMICALLY ADD PAGED ATTRIBUTE IN NUMBERED PAGINATION
+		if( $atts['pagination_style'] == 'numbered' ){
+			$paged = $atts['paged'];
+
+			if( get_query_var( 'paged' ) ){
+				$paged = get_query_var( 'paged' );
+			} elseif( get_query_var( 'page' ) ){
+				$paged = get_query_var( 'page' );
+			}
+
+			$query_atts['paged'] = $paged;
+		}
+
 		/* SET TAXONOMY QUERY IF ANY */
 		if( isset( $atts['tax_query'] ) && !empty( $atts['tax_query'] ) ){
 			$query_atts['tax_query'] = $orbit_util->getTaxQueryParams( $atts['tax_query'] );
@@ -159,8 +177,14 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 
 	/* OVERRIDDEN FROM THE PARENT */
 	function get_ajax_url( $atts ){
-		//ORBIT_UTIL::getInstance()->test( $atts );
+		// ORBIT_UTIL::getInstance()->test( $atts );
 		return $this->get_ajax_url_from_args( $atts, array('paged') );
+	}
+
+	function get_total_pages( $atts ){
+		$total_rows = max( 0, $this->query->found_posts - $atts['offset'] );
+		$total_pages = ceil( $total_rows / $atts['posts_per_page'] );
+		return $total_pages;
 	}
 
 }
