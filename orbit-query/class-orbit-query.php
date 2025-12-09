@@ -37,6 +37,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			'cat'										=> '',
 			'category_name' 				=> '',
 			'tag' 									=> '',
+			'tag__not_in'						=> '',
 			'offset'								=> '0',
 			'pagination'						=> '0',
 			'pagination_style'			=> 'default', // default, numbered
@@ -115,6 +116,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			'author'							=> $atts['author'],
 			//'category_name' 	=> $atts['category_name'],
 			'tag' 								=> $atts['tag'],
+			'tag__not_in'					=> $orbit_util->explode_to_arr( $atts['tag__not_in'] ),
 			's' 									=> $atts['s'],
 			'post__not_in' 				=> $orbit_util->explode_to_arr( $atts['post__not_in'] ),
 			'post__in'						=> $orbit_util->explode_to_arr( $atts['post__in'] ),
