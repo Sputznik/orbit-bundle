@@ -4,12 +4,12 @@
     Plugin URI: http://sputznik.com
     Description: Create Wordpress Custom post types and custom taxonomies. Search and filter through the wordpress post types and create custom queries using simple shortcodes.
     Author: Samuel Thomas
-    Version: 2.2.0
+    Version: 2.3.0
     Author URI: http://sputznik.com
     */
 
 
-	define( 'ORBIT_BUNDLE_VERSION', '2.2.0' );
+	define( 'ORBIT_BUNDLE_VERSION', '2.3.0' );
 
 	$inc_files = array(
 		"lib/class-orbit-base.php",
