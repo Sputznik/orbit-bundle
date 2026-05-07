@@ -46,6 +46,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			'order'									=> 'DESC',
 			'orderby'								=> 'date',
 			'meta_key'							=> '', // ORDER BY
+			'meta_value'						=> '', // STRING
 			'id'										=> 'posts-'.rand()
 		);
 	}
@@ -124,6 +125,7 @@ class ORBIT_QUERY extends ORBIT_QUERY_BASE{
 			'order' 							=> $atts['order'],
 			'orderby' 						=> $atts['orderby'],
 			'meta_key' 						=> $atts['meta_key'],
+			'meta_value'					=> $atts['meta_value']
 		);
 
 		/* DONT FETCH SQL_CALC_FOUND_ROWS */
