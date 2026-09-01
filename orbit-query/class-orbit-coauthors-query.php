@@ -31,16 +31,16 @@ class ORBIT_COAUTHORS_QUERY extends ORBIT_QUERY_BASE{
 
 		$atts = $this->get_atts($atts);
 
-		$atts['guest_authors_only'] = (bool) $atts['guest_authors_only'];
+		$atts['hide_empty'] 				= wp_validate_boolean( $atts['hide_empty'] );
+		$atts['guest_authors_only'] = wp_validate_boolean( $atts['guest_authors_only'] );
 
 		$query_atts = array(
 			'taxonomy'      => 'author',
+			'hide_empty'		=> $atts['hide_empty'],
 			'orderby'				=> $atts['orderby'],
 			'order'					=> $atts['order'],
 			'number'				=> $atts['per_page']
 		);
-
-		$query_atts['hide_empty'] = wp_validate_boolean( $atts['hide_empty'] );
 
 		$authors = get_terms( $query_atts );
 
