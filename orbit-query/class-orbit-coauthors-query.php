@@ -35,11 +35,12 @@ class ORBIT_COAUTHORS_QUERY extends ORBIT_QUERY_BASE{
 
 		$query_atts = array(
 			'taxonomy'      => 'author',
-			'hide_empty'		=> (bool) $atts['hide_empty'],
 			'orderby'				=> $atts['orderby'],
 			'order'					=> $atts['order'],
 			'number'				=> $atts['per_page']
 		);
+
+		$query_atts['hide_empty'] = wp_validate_boolean( $atts['hide_empty'] );
 
 		$authors = get_terms( $query_atts );
 
