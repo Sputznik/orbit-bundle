@@ -47,9 +47,9 @@ class ORBIT_COAUTHORS_QUERY extends ORBIT_QUERY_BASE{
 
 		$this->query = array();
 
-		foreach ( $authors as $author_term ){
+		foreach( $authors as $author_term ){
 
-			if ( false === ( $contributor = $coauthors_plus->get_coauthor_by( 'user_login', $author_term->name ) ) ) {
+			if( false === ( $contributor = $coauthors_plus->get_coauthor_by( 'user_nicename', $author_term->slug ) ) ){
 				continue;
 			}
 
