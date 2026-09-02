@@ -33,6 +33,8 @@ class ORBIT_COAUTHORS_QUERY extends ORBIT_QUERY_BASE{
 
 		$atts['hide_empty'] 				= wp_validate_boolean( $atts['hide_empty'] );
 		$atts['guest_authors_only'] = wp_validate_boolean( $atts['guest_authors_only'] );
+		$atts['order'] 							= strtoupper( $atts['order'] );
+		$sort_order 								= $atts['order'];
 
 		$query_atts = array(
 			'taxonomy'      => 'author',
@@ -73,6 +75,17 @@ class ORBIT_COAUTHORS_QUERY extends ORBIT_QUERY_BASE{
 			}
 
 		} //endforeach
+
+		// SORT BY DISPLAY NAME
+		if( !empty( $this->query ) && ( $atts['orderby'] === 'name' ) && !empty( $sort_order ) ){
+			usort( $this->query, function( $a, $b ) use ( $sort_order ){
+				if( $sort_order === 'DESC' ){
+					return strcasecmp( $b->display_name, $a->display_name );
+				} else {
+					return strcasecmp( $a->display_name, $b->display_name );
+				}
+			} );
+		}
 
 		if( ! empty( $this->query ) ){
 			the_oq_coauthors( $atts );
