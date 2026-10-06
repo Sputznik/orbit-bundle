@@ -265,3 +265,13 @@ button.btn,
   float: right;
 }
 /* dropdown checkboxes */
+
+/* ORBIT_SEARCH INVALID FILTER ID */
+.orbit-search-container .orbit-search-notice-error {
+	line-height: 1;
+	padding: 15px;
+	font-size: 14px;
+	border-radius: 4px;
+	display: inline-block;
+	border: 4px solid #d63638;
+}

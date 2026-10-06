@@ -199,7 +199,7 @@
 			// END OF SHORTCODE STRING
 			$shortcode_str .= "]";
 
-			
+
 			//echo $shortcode_str;
 
 			return $shortcode_str;
@@ -240,6 +240,10 @@
 
 		function getSettings($post_id){ return get_post_meta( $post_id, 'filter_settings', true ); }
 
+		private function isValidFilterForm( $filter_form_id ){
+			return !empty( $filter_form_id ) && $filter_form_id > 0 && get_post_type( $filter_form_id ) === 'orbit-form' && get_post_status( $filter_form_id ) === 'publish';
+		}
+
 		function form( $atts ){
 
 			// CLASSES ORBIT
@@ -250,6 +254,18 @@
 
 			// CREATE ATTS ARRAY FROM DEFAULT AND USER PARAMETERS IN THE SHORTCODE
 			$atts = shortcode_atts( $this->get_default_atts(), $atts, 'orbit_search' );
+
+			$atts['id'] = intval( $atts['id'] );
+
+			if( !$this->isValidFilterForm( $atts['id'] ) ){
+
+				_e("<div class='orbit-search-container'><div class='orbit-search-notice-error'>
+					The requested page could not be loaded due to an invalid or missing reference ID. Please verify your shortcode configuration.
+					</div></div>");
+
+				return ob_get_clean();
+
+			}
 
 			// GET SETTINGS THAT ARE REQUIRED
 			$filter_settings = $this->getSettings( $atts['id'] );
