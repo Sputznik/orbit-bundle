@@ -150,8 +150,15 @@
 
 			// TEMPLATE FOR OBJECT QUERY
 			$tmpl_id = isset( $filter_settings[ 'orbit-tmpl' ] ) ? $filter_settings[ 'orbit-tmpl' ] : "";
-			if( $tmpl_id ){
-				$shortcode_str .= "style='".$atts['style']."' style_id='".$tmpl_id."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
+			$tmpl_style = isset( $atts['style'] ) && !empty( $atts['style'] ) ? $atts['style'] : "";
+
+			// LOAD ORBIT-TEMPLATE FROM BACKEND
+			if( !empty( $tmpl_id ) && $tmpl_style === "db" ){
+				$shortcode_str .= "style='db' style_id='".$tmpl_id."' ";	/* ADD TO THE SHORTCODE AS AN ATTRIBUTE */
+			}
+			// LOAD ORBIT-TEMPLATE FROM THEME/CHILD-THEME
+			else if( !empty( $tmpl_style) && $tmpl_style !== "db" ){
+				$shortcode_str .= "style='".$tmpl_style."' ";
 			}
 
 			// POST TYPES - FORM
