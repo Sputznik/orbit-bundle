@@ -295,6 +295,7 @@
 
 			// FINAL RENDERING
 			$atts['theme'] .= "-theme";
+
 			$template_file = apply_filters( 'orbit_search_template', "templates/" . $atts['theme'] .".php", $atts );
 			_e("<div class='orbit-search-container ". $atts['theme']."' data-behaviour='orbit-search'>");
 			include( $template_file );
@@ -316,7 +317,10 @@
 			if( !isset( $filter_header['results_heading'] ) || empty( $filter_header['results_heading'] ) ){
 				$filter_header['results_heading'] = "Total Items (%d)";
 			}
-			return sprintf( $filter_header['results_heading'], $total_posts );
+
+			$results_heading = sprintf( $filter_header['results_heading'], $total_posts );
+
+			return apply_filters( 'orbit_search_results_heading', $results_heading, array('total_posts' => $total_posts ) );
 		}
 
 		function results_inline_terms( $filter_header, $posts ){
